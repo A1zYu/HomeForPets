@@ -4,7 +4,7 @@ namespace HomeForPets.Models;
 
 public class Pet
 {
-    private readonly List<PaymentDetails> _requisites = [];
+    private readonly List<PaymentDetails> _paymentDetails = [];
     
     public Guid Id { get; private set; }
 
@@ -36,7 +36,7 @@ public class Pet
     
     public HelpStatus HelpStatus { get; private set; }
 
-    public IReadOnlyList<PaymentDetails> Requisites => _requisites;
+    public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
     
     public DateOnly CreatedDate { get; private set; }
 
