@@ -5,7 +5,8 @@ namespace HomeForPets.Models;
 public class Pet
 {
     private readonly List<PaymentDetails> _paymentDetails = [];
-    
+    private List<PetPhoto> _petPhotes =[];
+
     public Guid Id { get; private set; }
 
     public string Name { get; private set; } = default!;
@@ -40,4 +41,5 @@ public class Pet
     
     public DateOnly CreatedDate { get; private set; }
 
+    public IReadOnlyList<PetPhoto> PetPhotos => _petPhotes;
 }
