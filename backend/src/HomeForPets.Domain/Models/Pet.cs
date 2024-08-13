@@ -7,6 +7,12 @@ public class Pet
     private readonly List<PaymentDetails> _paymentDetails = [];
     private List<PetPhoto> _petPhotes =[];
 
+    //ef core
+    private Pet()
+    {
+        
+    }
+    
     public Guid Id { get; private set; }
 
     public string Name { get; private set; } = default!;
