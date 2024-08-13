@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Enums;
+using HomeForPets.ValueObject;
 
 namespace HomeForPets.Models;
 
@@ -14,7 +15,7 @@ public class Pet
     }
 
     private Pet(string name, string species, string description, string breed, string color, string healthInfo,
-        string address, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
+        Address address, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
         bool isVaccinated, HelpStatus helpStatus)
     {
         Name = name;
@@ -23,7 +24,6 @@ public class Pet
         Breed = breed;
         Color = color;
         HealthInfo = healthInfo;
-        Address = address;
         Weight = weight;
         Height = height;
         PhoneNumber = phoneNumber;
@@ -31,6 +31,7 @@ public class Pet
         BirthOfDate = birthOfDate;
         IsVaccinated = isVaccinated;
         HelpStatus = helpStatus;
+        Address = address;
         CreatedDate = DateOnly.FromDateTime(DateTime.Now.Date);
     }
 
@@ -48,7 +49,7 @@ public class Pet
 
     public string HealthInfo { get; private set; } = default!;
 
-    public string Address { get; private set; } = default!;
+    public Address Address { get; private set; } = default!;
 
     public double Weight { get; private set; }
 
@@ -79,9 +80,8 @@ public class Pet
     public void SetCastrated() => IsNeutered = !IsNeutered;
 
     public static Result<Pet> Create(string name, string species, string description, string breed,
-        string color, string healthInfo,
-        string address, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
-        bool isVaccinated, HelpStatus helpStatus)
+        string color, string healthInfo, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
+        bool isVaccinated, HelpStatus helpStatus, string city, string district, int houseNumber, int flatNumber)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -112,12 +112,6 @@ public class Pet
         {
             return Result.Failure<Pet>("Health information can not be empty");
         }
-
-        if (string.IsNullOrWhiteSpace(address))
-        {
-            return Result.Failure<Pet>("Address can not be empty");
-        }
-
         if (weight <= 0)
         {
             return Result.Failure<Pet>("Weight must be greater than zero");
@@ -132,10 +126,15 @@ public class Pet
         {
             return Result.Failure<Pet>("Phone number can not be empty");
         }
+        var address = Address.Create(city, district,houseNumber,flatNumber);
+        if (address.IsSuccess)
+        {
+            var pet = new Pet(name, species, description, breed,
+                color, healthInfo,address.Value, weight, height, phoneNumber,
+                isNeutered, birthOfDate, isVaccinated, helpStatus);
+            return Result.Success(pet);
+        }
 
-        var pet = new Pet(name, species, description, breed,
-            color, healthInfo, address, weight, height, phoneNumber,
-            isNeutered, birthOfDate, isVaccinated, helpStatus);
-        return Result.Success(pet);
+        return Result.Failure<Pet>("Address not corect");
     }
 }

@@ -36,9 +36,9 @@ public class Volunteer
     public void AddPetPhotos(Pet pet) => _pets.Add(pet);
     public void AddSocialNetwork(SocialNetwork socialNetwork) => _socialNetworks.Add(socialNetwork);
 
-    public Result<Volunteer> Create(string firstName,string lastName, string middleName)
+    public static Result<Volunteer> Create(string firstName,string lastName, string middleName)
     {
-        var fullName = FullName.Create(firstName, lastName, middleName);
+        var fullName =  FullName.Create(firstName, lastName, middleName);
         if (fullName.IsSuccess)
         {
             var volunteer = new Volunteer(fullName.Value);

@@ -69,11 +69,6 @@ namespace HomeForPets.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("address");
-
                     b.Property<DateOnly>("BirthOfDate")
                         .HasColumnType("date")
                         .HasColumnName("birth_of_date");
@@ -147,6 +142,29 @@ namespace HomeForPets.Migrations
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Address", "HomeForPets.Models.Pet.Address#Address", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("address_city");
+
+                            b1.Property<string>("District")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("address_district");
+
+                            b1.Property<int>("FlatNumber")
+                                .HasColumnType("integer")
+                                .HasColumnName("address_flat_number");
+
+                            b1.Property<int>("HouseNumber")
+                                .HasColumnType("integer")
+                                .HasColumnName("address_house_number");
+                        });
 
                     b.HasKey("Id")
                         .HasName("pk_pets");

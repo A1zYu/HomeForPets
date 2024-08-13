@@ -2,8 +2,9 @@
 
 namespace HomeForPets.ValueObject;
 
-public record FullName
+public class FullName
 {
+    //ef core
     private FullName(){}
 
     private FullName(string lastName, string firstName, string middleName)
@@ -12,15 +13,15 @@ public record FullName
         FirstName = firstName;
         MiddleName = middleName;
     }
-    public string LastName { get; private set; } = default!;
-    public string FirstName { get; private set; } = default!;
-    public string MiddleName { get; private set; } = default!;
+    public string LastName { get;} = default!;
+    public string FirstName { get;  } = default!;
+    public string MiddleName { get;  } = default!;
     public override string ToString()
     {
         return $"{FirstName} {LastName} {MiddleName}";
     }
 
-    public Result<FullName> Create(string firstName, string lastName, string middleName)
+    public static Result<FullName> Create(string firstName, string lastName, string middleName)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {

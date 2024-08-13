@@ -17,6 +17,14 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.Weight).IsRequired();
         builder.Property(p => p.PhoneNumber).IsRequired().HasMaxLength(Constraints.Constraints.LOW_VALUE_LENGTH);
         builder.Property(p => p.HealthInfo).IsRequired().HasMaxLength(Constraints.Constraints.LOW_VALUE_LENGTH);
+
+        builder.ComplexProperty(p => p.Address, a =>
+        {
+            a.Property(x => x.City).IsRequired();
+            a.Property(x => x.District).IsRequired();
+            a.Property(x => x.FlatNumber).IsRequired();
+            a.Property(x => x.HouseNumber).IsRequired();
+        });
         
         builder.HasMany(x => x.PetPhotos)
             .WithOne()
