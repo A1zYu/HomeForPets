@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HomeForPets.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,13 +16,15 @@ namespace HomeForPets.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    full_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     description = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: false),
                     years_of_experience = table.Column<int>(type: "integer", nullable: false),
                     pet_home_found_count = table.Column<int>(type: "integer", nullable: false),
                     pet_search_for_home_count = table.Column<int>(type: "integer", nullable: false),
                     pet_treatment_count = table.Column<int>(type: "integer", nullable: false),
-                    phone_number = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false)
+                    phone_number = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    full_name_first_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    full_name_last_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    full_name_middle_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {

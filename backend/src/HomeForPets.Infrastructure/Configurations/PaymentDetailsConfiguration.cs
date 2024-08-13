@@ -1,5 +1,4 @@
-﻿using HomeForPets.Domain.Constraints;
-using HomeForPets.Models;
+﻿using HomeForPets.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,7 +9,7 @@ public class PaymentDetailsConfiguration : IEntityTypeConfiguration<PaymentDetai
     public void Configure(EntityTypeBuilder<PaymentDetails> builder)
     {
         builder.HasKey(x => x.Id);
-        builder.Property(p => p.Name).IsRequired().HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
-        builder.Property(p => p.Description).IsRequired().HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
+        builder.Property(p => p.Name).IsRequired().HasMaxLength(Constraints.Constraints.HIGH_VALUE_LENGTH);
+        builder.Property(p => p.Description).IsRequired().HasMaxLength(Constraints.Constraints.HIGH_VALUE_LENGTH);
     }
 }

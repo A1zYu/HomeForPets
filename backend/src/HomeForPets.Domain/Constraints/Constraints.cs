@@ -1,4 +1,4 @@
-﻿namespace HomeForPets.Domain.Constraints;
+﻿namespace HomeForPets.Constraints;
 
 public static class Constraints
 {
