@@ -11,4 +11,10 @@
       <ProjectReference Include="..\HomeForPets.Application\HomeForPets.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0-preview.7.23375.6" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+    </ItemGroup>
+
 </Project>

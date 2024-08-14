@@ -1,36 +1,63 @@
-﻿namespace HomeForPets.Models;
+﻿using CSharpFunctionalExtensions;
+using HomeForPets.ValueObject;
+
+namespace HomeForPets.Models;
 
 public class Volunteer
 {
     private readonly List<PaymentDetails> _paymentDetails = [];
-    private readonly List<Pet> _pets=[];
-    private readonly List<SocialNetwork> _socialNetworks=[];
-    
+    private readonly List<Pet> _pets = [];
+    private readonly List<SocialNetwork> _socialNetworks = [];
+
+    //ef core
+    private Volunteer() {}
+
+    public Volunteer(FullName fullName, string description, int yearsOfExperience, int petHomeFoundCount,
+        int petSearchForHomeCount, int petTreatmentCount, string phoneNumber, List<Pet> pets,
+        List<SocialNetwork> socialNetworks, List<PaymentDetails> paymentDetails)
+    {
+        FullName = fullName;
+        Description = description;
+        YearsOfExperience = yearsOfExperience;
+        PetHomeFoundCount = petHomeFoundCount;
+        PetSearchForHomeCount = petSearchForHomeCount;
+        PetTreatmentCount = petTreatmentCount;
+        PhoneNumber = phoneNumber;
+        _pets = pets;
+        _socialNetworks = socialNetworks;
+        _paymentDetails = paymentDetails;
+    }
+
     public Guid Id { get; private set; }
-    public string FullName { get; private set; } = default!;
+    public FullName FullName { get; private set; }
     public string Description { get; private set; } = default!;
     public int YearsOfExperience { get; private set; }
     public int PetHomeFoundCount { get; private set; }
     public int PetSearchForHomeCount { get; private set; }
     public int PetTreatmentCount { get; private set; }
-    public int PhoneNumber { get; private set; }
+    public string PhoneNumber { get; private set; } = default!;
     public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
     public IReadOnlyList<Pet> Pets => _pets;
-    public IReadOnlyList<SocialNetwork> SocialNetworks=> _socialNetworks;
-}
+    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
 
-#region Описание волонтера
-// Нужно создать модель волонтёра - Volunteer со следующими полями:
-//
-// 1. Id
-// 2. ФИО
-// 3. Общее описание
-// 4. Опыт в годах
-// 5. Количество домашних животных, которые смогли найти дом
-// 6. Количество домашних животных, которые ищут дом в данный момент времени
-// 7. Количество животных, которые сейчас находятся на лечении
-// 8. Номер телефона
-// 9. Социальные сети (список соц. сетей, у каждой социальной сети должна быть ссылка и название), поэтому нужно сделать отдельный класс для социальной сети.
-// 10. Реквизиты для помощи (у каждого реквизита будет название и описание, как сделать перевод), поэтому нужно сделать отдельный класс для реквизита
-// 11. Список домашних животных, которыми владеет волонтёр
-#endregion
+
+    public void AddPaymentDetails(PaymentDetails paymentDetails) => _paymentDetails.Add(paymentDetails);
+    public void AddPetPhotos(Pet pet) => _pets.Add(pet);
+    public void AddSocialNetwork(SocialNetwork socialNetwork) => _socialNetworks.Add(socialNetwork);
+
+    public static Result<Volunteer> Create(string firstName, string lastName, string middleName, string description,
+        int yearsOfExperience, int petHomeFoundCount,
+        int petSearchForHomeCount, int petTreatmentCount, string phoneNumber, List<Pet> pets,
+        List<SocialNetwork> socialNetworks, List<PaymentDetails> paymentDetails)
+    {
+        var fullName = FullName.Create(firstName, lastName, middleName);
+        if (fullName.IsSuccess)
+        {
+            var volunteer = new Volunteer(fullName.Value, description, yearsOfExperience, petHomeFoundCount,
+                petSearchForHomeCount, petTreatmentCount, phoneNumber, pets, socialNetworks, paymentDetails);
+            return Result.Success(volunteer);
+        }
+
+        return Result.Failure<Volunteer>("Fullname can not empty");
+    }
+}
