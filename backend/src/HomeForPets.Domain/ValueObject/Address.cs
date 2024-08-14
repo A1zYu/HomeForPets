@@ -30,7 +30,6 @@ public class Address
         {
             return Result.Failure<Address>("District can not be empty");
         }
-
         if (houseNumber <= 0)
         {
             return Result.Failure<Address>("House number can not be empty");

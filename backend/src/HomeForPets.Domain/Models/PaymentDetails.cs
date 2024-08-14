@@ -7,4 +7,5 @@ public class PaymentDetails
     public string Description { get; set; } = default!;
     public Guid? PetId { get; private set; }
     public Guid? VolunteerId { get; private set; }
+    
 }

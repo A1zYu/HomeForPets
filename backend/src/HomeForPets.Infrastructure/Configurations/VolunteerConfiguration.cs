@@ -38,7 +38,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .HasForeignKey(x => x.VolunteerId)
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(x => x.SocialNetworks)
-            .WithOne().HasForeignKey(x => x.VolunteerId)
+            .WithOne()
             .OnDelete(DeleteBehavior.Cascade);
 
     }

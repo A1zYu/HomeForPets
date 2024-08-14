@@ -167,12 +167,12 @@ namespace HomeForPets.Migrations
                         });
 
                     b.HasKey("Id")
-                        .HasName("pk_pets");
+                        .HasName("pk_pet");
 
                     b.HasIndex("VolunteerId")
-                        .HasDatabaseName("ix_pets_volunteer_id");
+                        .HasDatabaseName("ix_pet_volunteer_id");
 
-                    b.ToTable("pets", (string)null);
+                    b.ToTable("pet", (string)null);
                 });
 
             modelBuilder.Entity("HomeForPets.Models.PetPhoto", b =>
@@ -192,17 +192,17 @@ namespace HomeForPets.Migrations
                         .HasColumnType("character varying(2048)")
                         .HasColumnName("path");
 
-                    b.Property<Guid>("PetId")
+                    b.Property<Guid?>("PetId")
                         .HasColumnType("uuid")
                         .HasColumnName("pet_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_pet_photos");
+                        .HasName("pk_pet_photo");
 
                     b.HasIndex("PetId")
-                        .HasDatabaseName("ix_pet_photos_pet_id");
+                        .HasDatabaseName("ix_pet_photo_pet_id");
 
-                    b.ToTable("pet_photos", (string)null);
+                    b.ToTable("pet_photo", (string)null);
                 });
 
             modelBuilder.Entity("HomeForPets.Models.SocialNetwork", b =>
@@ -229,12 +229,12 @@ namespace HomeForPets.Migrations
                         .HasColumnName("volunteer_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_social_networks");
+                        .HasName("pk_social_network");
 
                     b.HasIndex("VolunteerId")
-                        .HasDatabaseName("ix_social_networks_volunteer_id");
+                        .HasDatabaseName("ix_social_network_volunteer_id");
 
-                    b.ToTable("social_networks", (string)null);
+                    b.ToTable("social_network", (string)null);
                 });
 
             modelBuilder.Entity("HomeForPets.Models.Volunteer", b =>
@@ -307,7 +307,7 @@ namespace HomeForPets.Migrations
                         .WithMany("PaymentDetailsList")
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_payment_details_pets_pet_id");
+                        .HasConstraintName("fk_payment_details_pet_pet_id");
 
                     b.HasOne("HomeForPets.Models.Volunteer", null)
                         .WithMany("PaymentDetailsList")
@@ -322,7 +322,7 @@ namespace HomeForPets.Migrations
                         .WithMany("Pets")
                         .HasForeignKey("VolunteerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_pets_volunteers_volunteer_id");
+                        .HasConstraintName("fk_pet_volunteers_volunteer_id");
                 });
 
             modelBuilder.Entity("HomeForPets.Models.PetPhoto", b =>
@@ -331,8 +331,7 @@ namespace HomeForPets.Migrations
                         .WithMany("PetPhotos")
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_pet_photos_pets_pet_id");
+                        .HasConstraintName("fk_pet_photo_pet_pet_id");
                 });
 
             modelBuilder.Entity("HomeForPets.Models.SocialNetwork", b =>
@@ -341,7 +340,7 @@ namespace HomeForPets.Migrations
                         .WithMany("SocialNetworks")
                         .HasForeignKey("VolunteerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_social_networks_volunteers_volunteer_id");
+                        .HasConstraintName("fk_social_network_volunteers_volunteer_id");
                 });
 
             modelBuilder.Entity("HomeForPets.Models.Pet", b =>

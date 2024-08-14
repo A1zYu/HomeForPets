@@ -8,11 +8,7 @@ namespace HomeForPets;
 public class ApplicationDbContext(IConfiguration configuration) : DbContext
 {
     private const string DATABASE = "localDb";
-    public DbSet<Pet> Pets => Set<Pet>();
     public DbSet<Volunteer> Volunteers => Set<Volunteer>();
-    public DbSet<PetPhoto> PetPhotos => Set<PetPhoto>();
-    public DbSet<PaymentDetails> PaymentDetails => Set<PaymentDetails>();
-    public DbSet<SocialNetwork> SocialNetworks => Set<SocialNetwork>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
