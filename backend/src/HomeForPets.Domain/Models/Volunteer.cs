@@ -1,21 +1,23 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Shared;
 using HomeForPets.ValueObject;
 
 namespace HomeForPets.Models;
 
-public class Volunteer
+public class Volunteer : Shared.Entity<VolunteerId>
 {
     private readonly List<PaymentDetails> _paymentDetails = [];
     private readonly List<Pet> _pets = [];
     private readonly List<SocialNetwork> _socialNetworks = [];
 
     //ef core
-    private Volunteer() {}
+    private Volunteer(VolunteerId id) : base(id) {}
 
-    public Volunteer(FullName fullName, string description, int yearsOfExperience, int petHomeFoundCount,
+    public Volunteer(VolunteerId id,FullName fullName, string description, int yearsOfExperience, int petHomeFoundCount,
         int petSearchForHomeCount, int petTreatmentCount, string phoneNumber, List<Pet> pets,
-        List<SocialNetwork> socialNetworks, List<PaymentDetails> paymentDetails)
+        List<SocialNetwork> socialNetworks, List<PaymentDetails> paymentDetails) : base(id)
     {
+        
         FullName = fullName;
         Description = description;
         YearsOfExperience = yearsOfExperience;
@@ -28,7 +30,6 @@ public class Volunteer
         _paymentDetails = paymentDetails;
     }
 
-    public Guid Id { get; private set; }
     public FullName FullName { get; private set; }
     public string Description { get; private set; } = default!;
     public int YearsOfExperience { get; private set; }
@@ -45,7 +46,7 @@ public class Volunteer
     public void AddPetPhotos(Pet pet) => _pets.Add(pet);
     public void AddSocialNetwork(SocialNetwork socialNetwork) => _socialNetworks.Add(socialNetwork);
 
-    public static Result<Volunteer> Create(string firstName, string lastName, string middleName, string description,
+    public static Result<Volunteer> Create(VolunteerId id,string firstName, string lastName, string middleName, string description,
         int yearsOfExperience, int petHomeFoundCount,
         int petSearchForHomeCount, int petTreatmentCount, string phoneNumber, List<Pet> pets,
         List<SocialNetwork> socialNetworks, List<PaymentDetails> paymentDetails)
@@ -53,7 +54,7 @@ public class Volunteer
         var fullName = FullName.Create(firstName, lastName, middleName);
         if (fullName.IsSuccess)
         {
-            var volunteer = new Volunteer(fullName.Value, description, yearsOfExperience, petHomeFoundCount,
+            var volunteer = new Volunteer(id,fullName.Value, description, yearsOfExperience, petHomeFoundCount,
                 petSearchForHomeCount, petTreatmentCount, phoneNumber, pets, socialNetworks, paymentDetails);
             return Result.Success(volunteer);
         }

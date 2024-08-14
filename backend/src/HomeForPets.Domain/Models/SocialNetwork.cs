@@ -1,8 +1,9 @@
-﻿namespace HomeForPets.Models;
+﻿using HomeForPets.Shared;
 
-public class SocialNetwork
+namespace HomeForPets.Models;
+
+public class SocialNetwork(string name, string path) : Entity<Guid>(Guid.NewGuid())
 {
-    public Guid Id { get;private set; }
-    public string Name { get; private set; }
-    public string Path { get; private set; }
+    public string Name { get; private set; } = name;
+    public string Path { get; private set; } = path;
 }

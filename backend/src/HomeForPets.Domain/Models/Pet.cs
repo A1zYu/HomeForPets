@@ -4,19 +4,34 @@ using HomeForPets.ValueObject;
 
 namespace HomeForPets.Models;
 
-public class Pet
+public class Pet : Shared.Entity<PetId>
 {
     private readonly List<PaymentDetails> _paymentDetails = [];
     private readonly List<PetPhoto> _petPhotos = [];
 
     //ef core
-    private Pet()
+    private Pet(PetId id) : base(id)
     {
     }
 
-    private Pet(string name, string species, string description, string breed, string color, string healthInfo,
-        Address address, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
-        bool isVaccinated, HelpStatus helpStatus, List<PetPhoto> petPhotos, List<PaymentDetails> paymentDetails)
+    public Pet(
+        PetId id,
+        string name,
+        string species,
+        string description,
+        string breed,
+        string color,
+        string healthInfo,
+        Address address,
+        double weight,
+        double height,
+        string phoneNumber,
+        bool isNeutered,
+        DateOnly birthOfDate,
+        bool isVaccinated,
+        HelpStatus helpStatus,
+        List<PetPhoto> petPhotos,
+        List<PaymentDetails> paymentDetails) : base(id)
     {
         Name = name;
         Species = species;
@@ -24,6 +39,7 @@ public class Pet
         Breed = breed;
         Color = color;
         HealthInfo = healthInfo;
+        Address = address;
         Weight = weight;
         Height = height;
         PhoneNumber = phoneNumber;
@@ -31,14 +47,34 @@ public class Pet
         BirthOfDate = birthOfDate;
         IsVaccinated = isVaccinated;
         HelpStatus = helpStatus;
-        Address = address;
-        CreatedDate = DateOnly.FromDateTime(DateTime.Now.Date);
+        CreatedDate = DateOnly.FromDateTime(DateTime.Now);
         _petPhotos = petPhotos;
         _paymentDetails = paymentDetails;
     }
-
-    public Guid Id { get; private set; }
-
+    // private Pet(PetId id, string name, string species, string description, string breed, string color,
+    //     string healthInfo,
+    //     Address address, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
+    //     bool isVaccinated, HelpStatus helpStatus, List<PetPhoto> petPhotos,
+    //     List<PaymentDetails> paymentDetails) : base(id)
+    // {
+    //     Name = name;
+    //     Species = species;
+    //     Description = description;
+    //     Breed = breed;
+    //     Color = color;
+    //     HealthInfo = healthInfo;
+    //     Weight = weight;
+    //     Height = height;
+    //     PhoneNumber = phoneNumber;
+    //     IsNeutered = isNeutered;
+    //     BirthOfDate = birthOfDate;
+    //     IsVaccinated = isVaccinated;
+    //     HelpStatus = helpStatus;
+    //     Address = address;
+    //     CreatedDate = DateOnly.FromDateTime(DateTime.Now.Date);
+    //     _petPhotos = petPhotos;
+    //     _paymentDetails = paymentDetails;
+    // }
     public string Name { get; private set; } = default!;
 
     public string Species { get; private set; } = default!;
@@ -66,7 +102,7 @@ public class Pet
     public bool IsVaccinated { get; private set; }
 
     public HelpStatus HelpStatus { get; private set; }
-    
+
     public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
 
     public DateOnly CreatedDate { get; private set; }
@@ -79,9 +115,25 @@ public class Pet
     public void SetVaccinated() => IsVaccinated = !IsVaccinated;
     public void SetCastrated() => IsNeutered = !IsNeutered;
 
-    public static Result<Pet> Create(string name, string species, string description, string breed,
-        string color, string healthInfo, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
-        bool isVaccinated, HelpStatus helpStatus, string city, string district, int houseNumber, int flatNumber, List<PaymentDetails> paymentDetailsList, List<PetPhoto> petPhotos)
+    public static Result<Pet> Create(PetId id,
+        string name,
+        string species,
+        string description,
+        string breed,
+        string color,
+        string healthInfo,
+        Address address,
+        double weight,
+        double height,
+        string phoneNumber,
+        bool isNeutered,
+        DateOnly birthOfDate,
+        bool isVaccinated,
+        HelpStatus helpStatus,
+        List<PetPhoto> petPhotos,
+        List<PaymentDetails> paymentDetails,
+        string city, string district, int houseNumber, int flatNumber
+       )
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -112,6 +164,7 @@ public class Pet
         {
             return Result.Failure<Pet>("Health information can not be empty");
         }
+
         if (weight <= 0)
         {
             return Result.Failure<Pet>("Weight must be greater than zero");
@@ -126,15 +179,31 @@ public class Pet
         {
             return Result.Failure<Pet>("Phone number can not be empty");
         }
-        var address = Address.Create(city, district,houseNumber,flatNumber);
-        if (address.IsSuccess)
+
+        var addressCreate = Address.Create(city, district, houseNumber, flatNumber);
+        if (addressCreate.IsSuccess)
         {
-            var pet = new Pet(name, species, description, breed,
-                color, healthInfo,address.Value, weight, height, phoneNumber,
-                isNeutered, birthOfDate, isVaccinated, helpStatus,petPhotos,paymentDetailsList);
+            var pet = new Pet(
+                id,
+                name,
+                species,
+                description,
+                breed,
+                color,
+                healthInfo,
+                address,
+                weight,
+                height,
+                phoneNumber,
+                isNeutered,
+                birthOfDate,
+                isVaccinated,
+                helpStatus,
+                petPhotos,
+                paymentDetails
+            );
             return Result.Success(pet);
         }
-
         return Result.Failure<Pet>("Address not corect");
     }
 }

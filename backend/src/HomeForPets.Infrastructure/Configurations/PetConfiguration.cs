@@ -10,6 +10,11 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.ToTable("pets");
         
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .HasConversion(
+                id => id.Value,
+                value => PetId.Create(value)
+            );
         builder.Property(p => p.Name)
             .IsRequired()
             .HasMaxLength(Constraints.Constraints.LOW_VALUE_LENGTH);
