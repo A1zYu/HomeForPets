@@ -1,4 +1,5 @@
 ﻿using HomeForPets.Models;
+using HomeForPets.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,6 +10,11 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .HasConversion(
+                id => id.Value,
+                value => VolunteerId.Create(value)
+                );
         builder.Property(v => v.Description)
             .IsRequired()
             .HasMaxLength(Constraints.Constraints.HIGH_VALUE_LENGTH);
