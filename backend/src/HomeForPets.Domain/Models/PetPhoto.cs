@@ -1,8 +1,9 @@
-﻿namespace HomeForPets.Models;
+﻿using HomeForPets.Shared;
 
-public class PetPhoto
+namespace HomeForPets.Models;
+
+public class PetPhoto (string path, bool isMain) : Entity<Guid>(Guid.NewGuid())
 {
-    public Guid Id { get;private set; }
-    public string Path { get; private set; } = default!;
-    public bool IsMain { get; private set; }
+    public string Path { get; private set; } = path;
+    public bool IsMain { get; private set; } = isMain;
 }

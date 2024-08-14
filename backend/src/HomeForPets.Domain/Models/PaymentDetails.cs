@@ -1,8 +1,9 @@
-﻿namespace HomeForPets.Models;
+﻿using HomeForPets.Shared;
 
-public class PaymentDetails
+namespace HomeForPets.Models;
+
+public class PaymentDetails (string name , string description) : Entity<Guid>(Guid.NewGuid())
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = default!;
-    public string Description { get; set; } = default!;
+    public string Name { get; set; } = name;
+    public string Description { get; set; } = description;
 }
