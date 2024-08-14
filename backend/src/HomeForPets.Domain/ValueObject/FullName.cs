@@ -2,20 +2,17 @@
 
 namespace HomeForPets.ValueObject;
 
-public class FullName 
+public record FullName 
 {
-    //ef core
-    private FullName(){}
-
     private FullName(string lastName, string firstName, string? middleName)
     {
         LastName = lastName;
         FirstName = firstName;
         MiddleName = middleName;
     }
-    public string LastName { get;} = default!;
-    public string FirstName { get;  } = default!;
-    public string? MiddleName { get;  }
+    public string LastName { get;}
+    public string FirstName { get;}
+    public string? MiddleName { get;}
     public override string ToString()
     {
         return $"{FirstName} {LastName} {MiddleName}";

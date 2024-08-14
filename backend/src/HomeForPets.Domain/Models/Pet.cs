@@ -16,7 +16,7 @@ public class Pet
 
     private Pet(string name, string species, string description, string breed, string color, string healthInfo,
         Address address, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
-        bool isVaccinated, HelpStatus helpStatus)
+        bool isVaccinated, HelpStatus helpStatus, List<PetPhoto> petPhotos, List<PaymentDetails> paymentDetails)
     {
         Name = name;
         Species = species;
@@ -33,6 +33,8 @@ public class Pet
         HelpStatus = helpStatus;
         Address = address;
         CreatedDate = DateOnly.FromDateTime(DateTime.Now.Date);
+        _petPhotos = petPhotos;
+        _paymentDetails = paymentDetails;
     }
 
     public Guid Id { get; private set; }
@@ -64,9 +66,7 @@ public class Pet
     public bool IsVaccinated { get; private set; }
 
     public HelpStatus HelpStatus { get; private set; }
-
-    public Guid? VolunteerId { get; private set; }
-
+    
     public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
 
     public DateOnly CreatedDate { get; private set; }
@@ -81,7 +81,7 @@ public class Pet
 
     public static Result<Pet> Create(string name, string species, string description, string breed,
         string color, string healthInfo, double weight, double height, string phoneNumber, bool isNeutered, DateOnly birthOfDate,
-        bool isVaccinated, HelpStatus helpStatus, string city, string district, int houseNumber, int flatNumber)
+        bool isVaccinated, HelpStatus helpStatus, string city, string district, int houseNumber, int flatNumber, List<PaymentDetails> paymentDetailsList, List<PetPhoto> petPhotos)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -131,7 +131,7 @@ public class Pet
         {
             var pet = new Pet(name, species, description, breed,
                 color, healthInfo,address.Value, weight, height, phoneNumber,
-                isNeutered, birthOfDate, isVaccinated, helpStatus);
+                isNeutered, birthOfDate, isVaccinated, helpStatus,petPhotos,paymentDetailsList);
             return Result.Success(pet);
         }
 

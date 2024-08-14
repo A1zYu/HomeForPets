@@ -32,7 +32,7 @@ namespace HomeForPets.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "pet",
+                name: "pets",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -49,8 +49,8 @@ namespace HomeForPets.Migrations
                     birth_of_date = table.Column<DateOnly>(type: "date", nullable: false),
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     help_status = table.Column<int>(type: "integer", nullable: false),
-                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
                     created_date = table.Column<DateOnly>(type: "date", nullable: false),
+                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
                     address_city = table.Column<string>(type: "text", nullable: false),
                     address_district = table.Column<string>(type: "text", nullable: false),
                     address_flat_number = table.Column<int>(type: "integer", nullable: false),
@@ -58,9 +58,9 @@ namespace HomeForPets.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pet", x => x.id);
+                    table.PrimaryKey("pk_pets", x => x.id);
                     table.ForeignKey(
-                        name: "fk_pet_volunteers_volunteer_id",
+                        name: "fk_pets_volunteers_volunteer_id",
                         column: x => x.volunteer_id,
                         principalTable: "volunteers",
                         principalColumn: "id",
@@ -103,7 +103,7 @@ namespace HomeForPets.Migrations
                     table.ForeignKey(
                         name: "fk_payment_details_pet_pet_id",
                         column: x => x.pet_id,
-                        principalTable: "pet",
+                        principalTable: "pets",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -129,7 +129,7 @@ namespace HomeForPets.Migrations
                     table.ForeignKey(
                         name: "fk_pet_photo_pet_pet_id",
                         column: x => x.pet_id,
-                        principalTable: "pet",
+                        principalTable: "pets",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -145,14 +145,14 @@ namespace HomeForPets.Migrations
                 column: "volunteer_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_pet_volunteer_id",
-                table: "pet",
-                column: "volunteer_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_pet_photo_pet_id",
                 table: "pet_photo",
                 column: "pet_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_pets_volunteer_id",
+                table: "pets",
+                column: "volunteer_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_social_network_volunteer_id",
@@ -173,7 +173,7 @@ namespace HomeForPets.Migrations
                 name: "social_network");
 
             migrationBuilder.DropTable(
-                name: "pet");
+                name: "pets");
 
             migrationBuilder.DropTable(
                 name: "volunteers");

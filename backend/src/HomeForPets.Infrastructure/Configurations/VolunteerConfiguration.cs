@@ -32,10 +32,9 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         
         builder.HasMany(x => x.PaymentDetailsList)
             .WithOne()
-            .HasForeignKey(x=>x.VolunteerId)
             .OnDelete(DeleteBehavior.Cascade);
-        builder.HasMany(x => x.Pets).WithOne()
-            .HasForeignKey(x => x.VolunteerId)
+        builder.HasMany(x => x.Pets)
+            .WithOne()
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(x => x.SocialNetworks)
             .WithOne()

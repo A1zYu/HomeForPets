@@ -2,12 +2,8 @@
 
 namespace HomeForPets.ValueObject;
 
-public class Address
+public record Address 
 {
-    private Address()
-    {
-        
-    }
     private Address(string city, string district, int houseNumber, int flatNumber)
     {
         City = city;
