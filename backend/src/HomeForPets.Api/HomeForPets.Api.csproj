@@ -4,7 +4,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>HomeForPets.WebApi</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>8581be0b-dd39-44e6-93e1-a170c805fcfe</UserSecretsId>
     </PropertyGroup>

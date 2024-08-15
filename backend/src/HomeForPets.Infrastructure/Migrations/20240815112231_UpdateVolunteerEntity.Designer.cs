@@ -14,8 +14,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeForPets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240814130346_ConversionBaseId")]
-    partial class ConversionBaseId
+    [Migration("20240815112231_UpdateVolunteerEntity")]
+    partial class UpdateVolunteerEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,12 +126,6 @@ namespace HomeForPets.Migrations
                         .HasColumnType("character varying(128)")
                         .HasColumnName("name");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("phone_number");
-
                     b.Property<string>("Species")
                         .IsRequired()
                         .HasMaxLength(2048)
@@ -167,6 +161,17 @@ namespace HomeForPets.Migrations
                             b1.Property<int>("HouseNumber")
                                 .HasColumnType("integer")
                                 .HasColumnName("address_house_number");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("PhoneNumberOwner", "HomeForPets.Models.Pet.PhoneNumberOwner#PhoneNumber", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(128)
+                                .HasColumnType("character varying(128)")
+                                .HasColumnName("phone_number_owner_number");
                         });
 
                     b.HasKey("Id")
@@ -208,38 +213,6 @@ namespace HomeForPets.Migrations
                     b.ToTable("pet_photo", (string)null);
                 });
 
-            modelBuilder.Entity("HomeForPets.Models.SocialNetwork", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)")
-                        .HasColumnName("path");
-
-                    b.Property<Guid?>("VolunteerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("volunteer_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_social_network");
-
-                    b.HasIndex("VolunteerId")
-                        .HasDatabaseName("ix_social_network_volunteer_id");
-
-                    b.ToTable("social_network", (string)null);
-                });
-
             modelBuilder.Entity("HomeForPets.Models.Volunteer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -252,25 +225,7 @@ namespace HomeForPets.Migrations
                         .HasColumnType("character varying(2048)")
                         .HasColumnName("description");
 
-                    b.Property<int>("PetHomeFoundCount")
-                        .HasColumnType("integer")
-                        .HasColumnName("pet_home_found_count");
-
-                    b.Property<int>("PetSearchForHomeCount")
-                        .HasColumnType("integer")
-                        .HasColumnName("pet_search_for_home_count");
-
-                    b.Property<int>("PetTreatmentCount")
-                        .HasColumnType("integer")
-                        .HasColumnName("pet_treatment_count");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .HasColumnName("phone_number");
-
-                    b.Property<int>("YearsOfExperience")
+                    b.Property<int?>("YearsOfExperience")
                         .HasColumnType("integer")
                         .HasColumnName("years_of_experience");
 
@@ -336,13 +291,34 @@ namespace HomeForPets.Migrations
                         .HasConstraintName("fk_pet_photo_pets_pet_id");
                 });
 
-            modelBuilder.Entity("HomeForPets.Models.SocialNetwork", b =>
+            modelBuilder.Entity("HomeForPets.Models.Volunteer", b =>
                 {
-                    b.HasOne("HomeForPets.Models.Volunteer", null)
-                        .WithMany("SocialNetworks")
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_social_network_volunteers_volunteer_id");
+                    b.OwnsOne("HomeForPets.Models.Contact", "Contact", b1 =>
+                        {
+                            b1.Property<Guid>("VolunteerId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("contact_phone_number");
+
+                            b1.Property<string>("SocialNetworks")
+                                .IsRequired()
+                                .HasColumnType("jsonb")
+                                .HasColumnName("contact_social_networks");
+
+                            b1.HasKey("VolunteerId");
+
+                            b1.ToTable("volunteers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VolunteerId")
+                                .HasConstraintName("fk_volunteers_volunteers_id");
+                        });
+
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("HomeForPets.Models.Pet", b =>
@@ -357,8 +333,6 @@ namespace HomeForPets.Migrations
                     b.Navigation("PaymentDetailsList");
 
                     b.Navigation("Pets");
-
-                    b.Navigation("SocialNetworks");
                 });
 #pragma warning restore 612, 618
         }

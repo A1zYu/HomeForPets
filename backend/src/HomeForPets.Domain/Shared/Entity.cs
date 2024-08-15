@@ -1,4 +1,4 @@
-﻿namespace HomeForPets.Shared;
+﻿namespace HomeForPets.Domain.Shared;
 
 public abstract class Entity<TId>
     where TId:notnull

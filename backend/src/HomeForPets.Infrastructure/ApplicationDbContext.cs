@@ -1,9 +1,9 @@
-﻿using HomeForPets.Models;
+﻿using HomeForPets.Domain.Models.Volunteer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace HomeForPets;
+namespace HomeForPets.Infrastructure;
 
 public class ApplicationDbContext(IConfiguration configuration) : DbContext
 {
