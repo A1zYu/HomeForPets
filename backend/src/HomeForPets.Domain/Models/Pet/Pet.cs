@@ -17,9 +17,7 @@ public class Pet : Shared.Entity<PetId>
     public Pet(
         PetId id,
         string name,
-        string species,
         string description,
-        string breed,
         string color,
         string healthInfo,
         Address address,
@@ -29,14 +27,13 @@ public class Pet : Shared.Entity<PetId>
         bool isNeutered,
         DateOnly birthOfDate,
         bool isVaccinated,
+        SpeciesBreed speciesBreed,
         HelpStatus helpStatus,
         List<PetPhoto> petPhotos,
         List<PaymentDetails> paymentDetails) : base(id)
     {
         Name = name;
-        Species = species;
         Description = description;
-        Breed = breed;
         Color = color;
         HealthInfo = healthInfo;
         Address = address;
@@ -48,6 +45,7 @@ public class Pet : Shared.Entity<PetId>
         IsVaccinated = isVaccinated;
         HelpStatus = helpStatus;
         CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+        SpeciesBreed = speciesBreed;
         _petPhotos = petPhotos;
         _paymentDetails = paymentDetails;
     }
@@ -58,10 +56,9 @@ public class Pet : Shared.Entity<PetId>
     public string HealthInfo { get; private set; } = default!;
     public double Weight { get; private set; }
     public double Height { get; private set; }
-    public string Species { get; private set; } = default!;
-    public string Breed { get; private set; } = default!;
     public bool IsVaccinated { get; private set; }
     public bool IsNeutered { get; private set; }
+    public SpeciesBreed SpeciesBreed { get; private set; }
     public DateOnly BirthOfDate { get; private set; }
     public HelpStatus HelpStatus { get; private set; }
 
@@ -96,6 +93,7 @@ public class Pet : Shared.Entity<PetId>
         DateTime birthOfDate,
         bool isVaccinated,
         HelpStatus helpStatus,
+        SpeciesBreed speciesBreed,
         List<PetPhoto> petPhotos,
         List<PaymentDetails> paymentDetails
     )
@@ -136,9 +134,7 @@ public class Pet : Shared.Entity<PetId>
         var pet = new Pet(
             id,
             name,
-            species,
             description,
-            breed,
             color,
             healthInfo,
             address,
@@ -148,6 +144,7 @@ public class Pet : Shared.Entity<PetId>
             isNeutered,
             DateOnly.FromDateTime(birthOfDate),
             isVaccinated,
+            speciesBreed,
             helpStatus,
             petPhotos,
             paymentDetails

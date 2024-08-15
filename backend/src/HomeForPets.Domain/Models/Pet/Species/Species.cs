@@ -6,8 +6,7 @@ namespace HomeForPets.Domain.Models.Pet;
 public class Species: Shared.Entity<SpeciesId>
 {
     private readonly List<Breed> _breeds = [];
-    private Species() : base(SpeciesId.NewId)
-    {}
+    private Species(SpeciesId id) : base(id) {}
     private Species(SpeciesId speciesId,string name, List<Breed> breeds)
         : base(speciesId)
     {

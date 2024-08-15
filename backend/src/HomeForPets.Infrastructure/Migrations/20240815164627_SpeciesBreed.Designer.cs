@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using HomeForPets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeForPets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815164627_SpeciesBreed")]
+    partial class SpeciesBreed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,6 +60,12 @@ namespace HomeForPets.Migrations
                     b.Property<DateOnly>("BirthOfDate")
                         .HasColumnType("date")
                         .HasColumnName("birth_of_date");
+
+                    b.Property<string>("Breed")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .HasColumnName("breed");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -101,6 +110,12 @@ namespace HomeForPets.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)")
                         .HasColumnName("name");
+
+                    b.Property<string>("Species")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .HasColumnName("species");
 
                     b.Property<Guid?>("VolunteerId")
                         .HasColumnType("uuid")
