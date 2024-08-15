@@ -1,4 +1,4 @@
-﻿namespace HomeForPets.UseCase;
+﻿namespace HomeForPets.Application;
 
 public class Class1
 {

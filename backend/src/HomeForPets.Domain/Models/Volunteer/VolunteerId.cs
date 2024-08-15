@@ -1,6 +1,4 @@
-﻿using HomeForPets.Shared;
-
-namespace HomeForPets.Models;
+﻿namespace HomeForPets.Domain.Models.Volunteer;
 
 public class VolunteerId
 {

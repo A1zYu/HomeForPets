@@ -1,8 +1,6 @@
-using HomeForPets.Enums;
-using HomeForPets.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HomeForPets.WebApi.Controllers
+namespace HomeForPets.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

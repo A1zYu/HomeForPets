@@ -1,7 +1,9 @@
-﻿using HomeForPets.Models;
+﻿using HomeForPets.Domain.Constraints;
+using HomeForPets.Domain.Models.Pet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-namespace HomeForPets.Configurations;
+
+namespace HomeForPets.Infrastructure.Configurations;
 
 public class PetConfiguration : IEntityTypeConfiguration<Pet>
 {
@@ -11,47 +13,80 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
+            .HasColumnName("Id")
             .HasConversion(
                 id => id.Value,
                 value => PetId.Create(value)
             );
         builder.Property(p => p.Name)
+            .HasColumnName("name")
             .IsRequired()
-            .HasMaxLength(Constraints.Constraints.LOW_VALUE_LENGTH);
-        builder.Property(p => p.Description).IsRequired()
-            .HasMaxLength(Constraints.Constraints.HIGH_VALUE_LENGTH);
-        builder.Property(p => p.Species)
+            .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
+        builder.Property(p => p.Description)
             .IsRequired()
-            .HasMaxLength(Constraints.Constraints.HIGH_VALUE_LENGTH);
+            .HasColumnName("description")
+            .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
+        
         builder.Property(p => p.Breed)
+            .HasColumnName("breed")
             .IsRequired()
-            .HasMaxLength(Constraints.Constraints.HIGH_VALUE_LENGTH);
-        builder.Property(p => p.Color).IsRequired()
-            .HasMaxLength(Constraints.Constraints.LOW_VALUE_LENGTH);
+            .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
+        builder.Property(p => p.Species)
+            .HasColumnName("species")
+            .IsRequired()
+            .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
+        
+        
+        builder.Property(p => p.Color)
+            .HasColumnName("color")
+            .IsRequired()
+            .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
         builder.Property(p => p.Height)
+            .HasColumnName("height")
             .IsRequired();
         builder.Property(p => p.Weight)
+            .HasColumnName("weight")
             .IsRequired();
-        builder.Property(p => p.PhoneNumber)
-            .IsRequired()
-            .HasMaxLength(Constraints.Constraints.LOW_VALUE_LENGTH);
+       
         builder.Property(p => p.HealthInfo)
             .IsRequired()
-            .HasMaxLength(Constraints.Constraints.LOW_VALUE_LENGTH);
+            .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
 
         builder.ComplexProperty(p => p.Address, a =>
         {
-            a.Property(x => x.City).IsRequired();
-            a.Property(x => x.District).IsRequired();
-            a.Property(x => x.FlatNumber).IsRequired();
-            a.Property(x => x.HouseNumber).IsRequired();
+            a.Property(x => x.City)
+                .HasColumnName("city")
+                .IsRequired();
+            a.Property(x => x.District)
+                .HasColumnName("district")
+                .IsRequired();
+            a.Property(x => x.FlatNumber)
+                .HasColumnName("flat_number")
+                .IsRequired();
+            a.Property(x => x.HouseNumber)
+                .HasColumnName("house_number")
+                .IsRequired();
         });
-        
+        builder.ComplexProperty(p => p.PhoneNumberOwner, a =>
+        {
+            a.Property(x => x.Number)
+                .IsRequired()
+                .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
+                .HasColumnName("phone_number");
+        });
         builder.HasMany(x => x.PetPhotos)
             .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
-        builder.HasMany(x => x.PaymentDetailsList)
-            .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("pet_photos");
+        builder.OwnsMany(x => x.PaymentDetailsList, p =>
+        {
+            p.ToJson();
+            p.Property(y => y.Name)
+                .IsRequired()
+                .HasColumnName("payment_details_name");
+            p.Property(y => y.Description)
+                .IsRequired()
+                .HasColumnName("payment_details_description");
+        });
     }
 }
