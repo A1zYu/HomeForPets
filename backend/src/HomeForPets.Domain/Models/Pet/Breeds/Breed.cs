@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace HomeForPets.Domain.Models.Pet.Breed;
+namespace HomeForPets.Domain.Models.Pet.Breeds;
 
 public class Breed: Shared.Entity<BreedId>
 {

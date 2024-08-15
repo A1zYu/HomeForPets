@@ -5,6 +5,7 @@ using HomeForPets.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.VisualBasic;
 
 namespace HomeForPets.Infrastructure.Configurations;
 
@@ -21,23 +22,24 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(v => v.Description)
             .IsRequired()
             .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
-
-        builder.OwnsOne(v => v.Contact, contact =>
+        
+        builder.OwnsOne(v => v.Contact, cb =>
         {
-            contact.Property(x => x.PhoneNumber)
+            cb.ToJson();
+            cb.Property(x => x.PhoneNumber)
                 .HasConversion(
                     phoneNumber => phoneNumber.Number,
                     value => PhoneNumber.Create(value).Value);
-
-            var socialNetworksConverter = new ValueConverter<List<SocialNetwork>, string>(
-                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                v => JsonSerializer.Deserialize<List<SocialNetwork>>(v, (JsonSerializerOptions)null),
-                new ConverterMappingHints(size: 5000)
-            );
-
-            contact.Property(c => c.SocialNetworks)
-                .HasConversion(socialNetworksConverter)
-                .HasColumnType("jsonb");
+            cb.OwnsMany(d => d.SocialNetworks, sb =>
+            {
+                sb.Property(f => f.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
+                sb.Property(f => f.Path)
+                    .IsRequired()
+                    .HasColumnName("path");
+            });
         });
         
         builder.ComplexProperty(x => x.FullName,

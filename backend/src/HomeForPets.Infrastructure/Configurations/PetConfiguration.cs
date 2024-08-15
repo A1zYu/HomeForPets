@@ -13,7 +13,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
-            .HasColumnName("Id")
+            .HasColumnName("id")
             .HasConversion(
                 id => id.Value,
                 value => PetId.Create(value)

@@ -27,7 +27,7 @@ namespace HomeForPets.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<DateOnly>("BirthOfDate")
                         .HasColumnType("date")
@@ -300,26 +300,54 @@ namespace HomeForPets.Migrations
                     b.OwnsOne("HomeForPets.Domain.ValueObjects.Contact", "Contact", b1 =>
                         {
                             b1.Property<Guid>("VolunteerId")
-                                .HasColumnType("uuid")
-                                .HasColumnName("id");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("PhoneNumber")
                                 .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("contact_phone_number");
-
-                            b1.Property<string>("SocialNetworks")
-                                .IsRequired()
-                                .HasColumnType("jsonb")
-                                .HasColumnName("contact_social_networks");
+                                .HasColumnType("text");
 
                             b1.HasKey("VolunteerId");
 
                             b1.ToTable("volunteers");
 
+                            b1.ToJson("contact");
+
                             b1.WithOwner()
                                 .HasForeignKey("VolunteerId")
                                 .HasConstraintName("fk_volunteers_volunteers_id");
+
+                            b1.OwnsMany("HomeForPets.Domain.ValueObjects.SocialNetwork", "SocialNetworks", b2 =>
+                                {
+                                    b2.Property<Guid>("ContactVolunteerId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasMaxLength(128)
+                                        .HasColumnType("character varying(128)")
+                                        .HasColumnName("name");
+
+                                    b2.Property<string>("Path")
+                                        .IsRequired()
+                                        .HasColumnType("text")
+                                        .HasColumnName("path");
+
+                                    b2.HasKey("ContactVolunteerId", "Id");
+
+                                    b2.ToTable("volunteers");
+
+                                    b2.ToJson("contact");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ContactVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_contact_volunteer_id");
+                                });
+
+                            b1.Navigation("SocialNetworks");
                         });
 
                     b.Navigation("Contact");

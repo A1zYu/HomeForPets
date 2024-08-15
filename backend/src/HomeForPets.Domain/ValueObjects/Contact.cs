@@ -4,6 +4,7 @@ namespace HomeForPets.Domain.ValueObjects;
 
 public record Contact 
 {
+    private Contact() { }
     private Contact(PhoneNumber phoneNumber, List<SocialNetwork> socialNetworks)
     {
         PhoneNumber = phoneNumber;
@@ -11,7 +12,7 @@ public record Contact
     }
     public PhoneNumber PhoneNumber { get; }
     public  List<SocialNetwork> SocialNetworks  { get; }
-
+    
     public static Result<Contact> Create(string number, List<SocialNetwork> socialNetworks)
     {
         var phoneNumber = PhoneNumber.Create(number);

@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace HomeForPets.Domain.Models;
+namespace HomeForPets.Domain.ValueObjects;
 
 public record PaymentDetails
 {

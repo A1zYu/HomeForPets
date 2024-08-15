@@ -1,4 +1,4 @@
-﻿namespace HomeForPets.Domain.Models.Pet.Species;
+﻿namespace HomeForPets.Domain.Models.Pet;
 
 public record SpeciesId
 {

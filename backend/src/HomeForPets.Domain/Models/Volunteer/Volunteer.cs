@@ -51,29 +51,20 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public void AddPetPhotos(Pet.Pet pet) => _pets.Add(pet);
     public void AddSocialNetwork(SocialNetwork socialNetwork) => _socialNetworks.Add(socialNetwork);
 
-    public static Result<Volunteer> Create(VolunteerId id, string firstName, string lastName, string middleName,
-        string description,
+    public static Result<Volunteer> Create(VolunteerId id, FullName fullName,
+        string description, Contact contact,
         int yearsOfExperience, PhoneNumber phoneNumber, List<Pet.Pet> pets,
         List<SocialNetwork> socialNetworks, List<PaymentDetails> paymentDetails)
     {
-        var contact = Contact.Create(phoneNumber.Number, socialNetworks);
-        if (contact.IsFailure)
-        {
-            return Result.Failure<Volunteer>("Contact in not correct");
-        }
-
-        var fullName = FullName.Create(firstName, lastName, middleName);
-        if (fullName.IsFailure)
-        {
-            return Result.Failure<Volunteer>("Full name in not correct");
-        }
+        if (string.IsNullOrWhiteSpace(description) || description.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
+            return Result.Failure<Volunteer>("Description is not correct");
 
         var volunteer = new Volunteer(
             id,
-            fullName.Value,
+            fullName,
             description,
             yearsOfExperience,
-            contact.Value,
+            contact,
             pets,
             socialNetworks,
             paymentDetails);

@@ -18,10 +18,14 @@ namespace HomeForPets.Migrations
             migrationBuilder.DropTable(
                 name: "payment_details");
 
+            migrationBuilder.DropColumn(
+                name: "contact_phone_number",
+                table: "volunteers");
+
             migrationBuilder.RenameColumn(
-                name: "id",
-                table: "pets",
-                newName: "Id");
+                name: "contact_social_networks",
+                table: "volunteers",
+                newName: "payment_details_list");
 
             migrationBuilder.RenameColumn(
                 name: "phone_number_owner_number",
@@ -49,7 +53,7 @@ namespace HomeForPets.Migrations
                 newName: "city");
 
             migrationBuilder.AddColumn<string>(
-                name: "payment_details_list",
+                name: "contact",
                 table: "volunteers",
                 type: "jsonb",
                 nullable: true);
@@ -65,7 +69,7 @@ namespace HomeForPets.Migrations
                 table: "pet_photo",
                 column: "pet_id",
                 principalTable: "pets",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -77,7 +81,7 @@ namespace HomeForPets.Migrations
                 table: "pet_photo");
 
             migrationBuilder.DropColumn(
-                name: "payment_details_list",
+                name: "contact",
                 table: "volunteers");
 
             migrationBuilder.DropColumn(
@@ -85,9 +89,9 @@ namespace HomeForPets.Migrations
                 table: "pets");
 
             migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "pets",
-                newName: "id");
+                name: "payment_details_list",
+                table: "volunteers",
+                newName: "contact_social_networks");
 
             migrationBuilder.RenameColumn(
                 name: "phone_number",
@@ -113,6 +117,12 @@ namespace HomeForPets.Migrations
                 name: "city",
                 table: "pets",
                 newName: "address_city");
+
+            migrationBuilder.AddColumn<string>(
+                name: "contact_phone_number",
+                table: "volunteers",
+                type: "text",
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "payment_details",
