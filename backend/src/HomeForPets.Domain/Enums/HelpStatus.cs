@@ -1,8 +1,8 @@
-﻿namespace HomeForPets.Enums;
+﻿namespace HomeForPets.Domain.Enums;
 
 public enum HelpStatus
 {
     NeedForHelp,
-    LookingForHome,
+    SearchHome,
     FoundHome
 }

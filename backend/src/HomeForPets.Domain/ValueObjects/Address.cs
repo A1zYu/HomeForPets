@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace HomeForPets.ValueObject;
+namespace HomeForPets.Domain.ValueObjects;
 
 public record Address 
 {

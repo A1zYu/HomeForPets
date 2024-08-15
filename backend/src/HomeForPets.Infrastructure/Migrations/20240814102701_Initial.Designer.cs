@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using HomeForPets;
+using HomeForPets.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
