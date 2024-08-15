@@ -1,5 +1,6 @@
 ﻿using HomeForPets.Domain.Constraints;
 using HomeForPets.Domain.Models.Pet;
+using HomeForPets.Domain.Models.Pet.Breeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -27,23 +28,15 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasColumnName("description")
             .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
         
-        builder.Property(p => p.Breed)
-            .HasColumnName("breed")
-            .IsRequired()
-            .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
-        builder.Property(p => p.Species)
-            .HasColumnName("species")
-            .IsRequired()
-            .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
-        
-        
         builder.Property(p => p.Color)
             .HasColumnName("color")
             .IsRequired()
             .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
+        
         builder.Property(p => p.Height)
             .HasColumnName("height")
             .IsRequired();
+        
         builder.Property(p => p.Weight)
             .HasColumnName("weight")
             .IsRequired();
@@ -52,6 +45,20 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .IsRequired()
             .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
 
+        builder.ComplexProperty(p => p.SpeciesBreed, s =>
+        {
+            s.Property(x => x.BreedId)
+                .HasConversion(
+                    id => id.Value,
+                    value => BreedId.Create(value)
+                ).IsRequired();
+            s.Property(x => x.SpeciesId)
+                .HasConversion(
+                    id => id.Value,
+                    value => SpeciesId.Create(value)
+                ).IsRequired();
+        });
+        
         builder.ComplexProperty(p => p.Address, a =>
         {
             a.Property(x => x.City)

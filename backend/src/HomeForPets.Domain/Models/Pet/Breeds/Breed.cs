@@ -4,7 +4,7 @@ namespace HomeForPets.Domain.Models.Pet.Breeds;
 
 public class Breed: Shared.Entity<BreedId>
 {
-    private Breed() : base(BreedId.NewId())
+    private Breed(BreedId id) : base(id)
     {}
     private Breed(BreedId breedId, string name) : base(breedId)
     {
