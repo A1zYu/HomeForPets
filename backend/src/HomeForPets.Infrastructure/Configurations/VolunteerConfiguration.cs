@@ -47,13 +47,16 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             {
                 f.Property(p => p.FirstName)
                     .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
+                    .HasColumnName("first_name")
                     .IsRequired();
                 f.Property(p => p.LastName)
                     .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
+                    .HasColumnName("last_name")
                     .IsRequired();
                 f.Property(p => p.MiddleName)
                     .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
-                    .IsRequired();
+                    .HasColumnName("middle_name")
+                    .IsRequired(false);
             });
         
         builder.OwnsMany(x => x.PaymentDetailsList, p =>

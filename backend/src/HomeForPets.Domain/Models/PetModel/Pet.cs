@@ -2,7 +2,7 @@
 using HomeForPets.Domain.Enums;
 using HomeForPets.Domain.ValueObjects;
 
-namespace HomeForPets.Domain.Models.Pet;
+namespace HomeForPets.Domain.Models.PetModel;
 
 public class Pet : Shared.Entity<PetId>
 {
@@ -80,9 +80,7 @@ public class Pet : Shared.Entity<PetId>
 
     public static Result<Pet> Create(PetId id,
         string name,
-        string species,
         string description,
-        string breed,
         string color,
         string healthInfo,
         Address address,

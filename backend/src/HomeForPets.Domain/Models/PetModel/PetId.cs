@@ -1,4 +1,4 @@
-﻿namespace HomeForPets.Domain.Models.Pet;
+﻿namespace HomeForPets.Domain.Models.PetModel;
 
 public class PetId
 {

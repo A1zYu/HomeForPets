@@ -23,7 +23,7 @@ namespace HomeForPets.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.Breeds.Breed", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.Breeds.Breed", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -48,7 +48,7 @@ namespace HomeForPets.Migrations
                     b.ToTable("breed", (string)null);
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.Pet", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.Pet", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -110,7 +110,7 @@ namespace HomeForPets.Migrations
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Address", "HomeForPets.Domain.Models.Pet.Pet.Address#Address", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("Address", "HomeForPets.Domain.Models.PetModel.Pet.Address#Address", b1 =>
                         {
                             b1.IsRequired();
 
@@ -133,7 +133,7 @@ namespace HomeForPets.Migrations
                                 .HasColumnName("house_number");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("PhoneNumberOwner", "HomeForPets.Domain.Models.Pet.Pet.PhoneNumberOwner#PhoneNumber", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("PhoneNumberOwner", "HomeForPets.Domain.Models.PetModel.Pet.PhoneNumberOwner#PhoneNumber", b1 =>
                         {
                             b1.IsRequired();
 
@@ -144,7 +144,7 @@ namespace HomeForPets.Migrations
                                 .HasColumnName("phone_number");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("SpeciesBreed", "HomeForPets.Domain.Models.Pet.Pet.SpeciesBreed#SpeciesBreed", b1 =>
+                    b.ComplexProperty<Dictionary<string, object>>("SpeciesBreed", "HomeForPets.Domain.Models.PetModel.Pet.SpeciesBreed#SpeciesBreed", b1 =>
                         {
                             b1.IsRequired();
 
@@ -166,7 +166,7 @@ namespace HomeForPets.Migrations
                     b.ToTable("pets", (string)null);
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.PetPhoto", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.PetPhoto", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -195,7 +195,7 @@ namespace HomeForPets.Migrations
                     b.ToTable("pet_photo", (string)null);
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.Species", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.Species", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -237,19 +237,18 @@ namespace HomeForPets.Migrations
                                 .IsRequired()
                                 .HasMaxLength(128)
                                 .HasColumnType("character varying(128)")
-                                .HasColumnName("full_name_first_name");
+                                .HasColumnName("first_name");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
                                 .HasMaxLength(128)
                                 .HasColumnType("character varying(128)")
-                                .HasColumnName("full_name_last_name");
+                                .HasColumnName("last_name");
 
                             b1.Property<string>("MiddleName")
-                                .IsRequired()
                                 .HasMaxLength(128)
                                 .HasColumnType("character varying(128)")
-                                .HasColumnName("full_name_middle_name");
+                                .HasColumnName("middle_name");
                         });
 
                     b.HasKey("Id")
@@ -258,16 +257,16 @@ namespace HomeForPets.Migrations
                     b.ToTable("volunteers", (string)null);
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.Breeds.Breed", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.Breeds.Breed", b =>
                 {
-                    b.HasOne("HomeForPets.Domain.Models.Pet.Species", null)
+                    b.HasOne("HomeForPets.Domain.Models.PetModel.Species", null)
                         .WithMany("Breeds")
                         .HasForeignKey("SpeciesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_breed_species_species_id");
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.Pet", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.Pet", b =>
                 {
                     b.HasOne("HomeForPets.Domain.Models.Volunteer.Volunteer", null)
                         .WithMany("Pets")
@@ -309,9 +308,9 @@ namespace HomeForPets.Migrations
                     b.Navigation("PaymentDetailsList");
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.PetPhoto", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.PetPhoto", b =>
                 {
-                    b.HasOne("HomeForPets.Domain.Models.Pet.Pet", null)
+                    b.HasOne("HomeForPets.Domain.Models.PetModel.Pet", null)
                         .WithMany("PetPhotos")
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -408,12 +407,12 @@ namespace HomeForPets.Migrations
                     b.Navigation("PaymentDetailsList");
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.Pet", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.Pet", b =>
                 {
                     b.Navigation("PetPhotos");
                 });
 
-            modelBuilder.Entity("HomeForPets.Domain.Models.Pet.Species", b =>
+            modelBuilder.Entity("HomeForPets.Domain.Models.PetModel.Species", b =>
                 {
                     b.Navigation("Breeds");
                 });

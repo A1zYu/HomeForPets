@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using HomeForPets.Domain.Models.Pet;
-using HomeForPets.Domain.Models.Pet.Breeds;
+using HomeForPets.Domain.Models.PetModel;
+using HomeForPets.Domain.Models.PetModel.Breeds;
 
 namespace HomeForPets.Domain.ValueObjects;
 
