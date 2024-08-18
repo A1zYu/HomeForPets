@@ -21,6 +21,10 @@ public class CreateVolunteerHandler
             return Result.Failure<Guid>(fullname.Error);
         }
         var contact = Contact.Create(request.PhoneNumber);
+        if (contact.IsFailure)
+        {
+            return Result.Failure<Guid>(contact.Error);
+        }
         
         
         var volunteer = Volunteer.Create(
