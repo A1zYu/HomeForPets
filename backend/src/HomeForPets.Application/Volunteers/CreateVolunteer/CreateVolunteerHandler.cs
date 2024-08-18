@@ -26,11 +26,13 @@ public class CreateVolunteerHandler
         {
             return phoneNumber.Error;
         }
-        var isPhoneNumber =await _volunteersRepository.GetByPhoneNumber(phoneNumber.Value);
-        if (isPhoneNumber.IsFailure)
+
+        var existVolunteerByPhone =await _volunteersRepository.GetByPhoneNumber(phoneNumber.Value);
+        if (existVolunteerByPhone is not null)
         {
-            return isPhoneNumber.Error;
+            return Errors.Volunteer.AlreadyExist();
         }
+        
         var contact = Contact.Create(phoneNumber.Value);
         if (contact.IsFailure)
         {

@@ -22,7 +22,7 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Volunteer>> GetById(VolunteerId volunteerId)
+    public async Task<Result<Volunteer,Error>> GetById(VolunteerId volunteerId)
     {
         var volunteer = await _dbContext.Volunteers
             .Include(x=>x.PaymentDetailsList)
@@ -31,21 +31,16 @@ public class VolunteersRepository : IVolunteersRepository
             .FirstOrDefaultAsync(v => v.Id == volunteerId);
         if (volunteer is null)
         {
-            return Result.Failure<Volunteer>("Volunteer not found");
+            return Errors.General.NotFound();
         }
 
         return volunteer;
     }
 
-    public async Task<Result<bool,Error>> GetByPhoneNumber(PhoneNumber phoneNumber)
+    public async Task<Volunteer?> GetByPhoneNumber(PhoneNumber phoneNumber)
     {
         var volunteer = await _dbContext.Volunteers
-            .AnyAsync(x => x.Contact != null && x.Contact.PhoneNumber == phoneNumber);
-        if (volunteer)
-        {
-            return Errors.PhoneNumber.AlreadyExist();
-        }
-
-        return false;
+            .FirstOrDefaultAsync(x => x.Contact != null && x.Contact.PhoneNumber == phoneNumber);
+        return volunteer;
     }
 }

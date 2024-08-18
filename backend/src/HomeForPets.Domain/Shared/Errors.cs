@@ -15,7 +15,7 @@ public static class Errors
             return Error.Validation("is.not.invalid", $"record not found {forId}");
         }
     }
-    public static class PhoneNumber
+    public static class Volunteer
     {
         public static Error AlreadyExist()
         {
