@@ -1,12 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace HomeForPets.Domain.Models.Pet;
+namespace HomeForPets.Domain.Models.PetModel;
 
 public class PetPhoto  : Shared.Entity<PetPhotoId>
 {
     public string Path { get; private set; } 
     public bool IsMain { get; private set; } 
-
+    
     private PetPhoto(PetPhotoId id) : base(id)
     {
     }

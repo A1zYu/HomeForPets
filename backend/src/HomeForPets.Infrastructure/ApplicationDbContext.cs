@@ -1,4 +1,4 @@
-﻿using HomeForPets.Domain.Models.Pet;
+﻿using HomeForPets.Domain.Models.PetModel;
 using HomeForPets.Domain.Models.Volunteer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
