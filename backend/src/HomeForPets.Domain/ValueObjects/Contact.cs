@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.ValueObjects;
 
@@ -15,12 +16,9 @@ public record Contact
     public  List<SocialNetwork> SocialNetworks  { get; }
     public void AddSocialNetwork(SocialNetwork socialNetwork) => _socialNetworks.Add(socialNetwork);
     
-    public static Result<Contact> Create(string number)
+    public static Result<Contact,Error> Create(PhoneNumber number)
     {
-        var phoneNumber = PhoneNumber.Create(number);
-        if (!phoneNumber.IsSuccess)
-            return Result.Failure<Contact>("Contact is invalid");
-        var contact = new Contact(phoneNumber.Value);
-        return Result.Success(contact);
+        var contact = new Contact(number);
+        return contact;
     }
 }

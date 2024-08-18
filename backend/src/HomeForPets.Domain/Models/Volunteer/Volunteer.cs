@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Enums;
 using HomeForPets.Domain.Models.PetModel;
+using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.ValueObjects;
 
 namespace HomeForPets.Domain.Models.Volunteer;
@@ -44,12 +45,19 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public void AddPaymentDetails(PaymentDetails paymentDetails) => _paymentDetails.Add(paymentDetails);
     public void AddPetPhotos(Pet pet) => _pets.Add(pet);
 
-    public static Result<Volunteer> Create(VolunteerId id, FullName fullName,
+    public static Result<Volunteer,Error> Create(VolunteerId id, FullName fullName,
         string description, Contact contact,
         int yearsOfExperience)
     {
         if (string.IsNullOrWhiteSpace(description) || description.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
-            return Result.Failure<Volunteer>("Description is not correct");
+        {
+            return Errors.General.Validation("Description");
+        }
+
+        if (yearsOfExperience < 0)
+        {
+            return Errors.General.Validation("Years of experience");
+        }
 
         var volunteer = new Volunteer(
             id,
@@ -57,6 +65,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
             description,
             yearsOfExperience,
             contact);
-        return Result.Success(volunteer);
+        
+        return volunteer;
     }
 }

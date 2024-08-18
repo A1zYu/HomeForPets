@@ -1,4 +1,5 @@
-﻿using HomeForPets.Application.Volunteers.CreateVolunteer;
+﻿using HomeForPets.Api.Extensions;
+using HomeForPets.Application.Volunteers.CreateVolunteer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers;
@@ -14,10 +15,7 @@ public class VolunteerController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request, cancellationToken);
-        if (result.IsFailure)
-        {
-            return BadRequest(result.Error);
-        }
-        return Ok(result.Value);
+
+        return result.ToResponse();
     }
 }

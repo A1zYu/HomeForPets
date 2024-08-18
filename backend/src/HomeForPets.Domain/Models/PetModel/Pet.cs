@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Enums;
+using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.ValueObjects;
 
 namespace HomeForPets.Domain.Models.PetModel;
@@ -78,7 +79,7 @@ public class Pet : Shared.Entity<PetId>
     public void SetVaccinated() => IsVaccinated = !IsVaccinated;
     public void SetCastrated() => IsNeutered = !IsNeutered;
 
-    public static Result<Pet> Create(PetId id,
+    public static Result<Pet,Error> Create(PetId id,
         string name,
         string description,
         string color,
@@ -98,34 +99,35 @@ public class Pet : Shared.Entity<PetId>
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            return Result.Failure<Pet>("Name can not be empty");
+            return Errors.General.Validation("Pet name");
         }
         if (birthOfDate.Date > DateTime.Now.Date)
         {
-            return Result.Failure<Pet>("Date is invalid");
+            return Errors.General.Validation("Birth Of Date");
         }
         if (string.IsNullOrWhiteSpace(description))
         {
-            return Result.Failure<Pet>("Description can not be empty");
+            return Errors.General.Validation("Description");
         }
         if (string.IsNullOrWhiteSpace(color))
         {
-            return Result.Failure<Pet>("Color can not be empty");
+            return Errors.General.Validation("Color");
         }
 
         if (string.IsNullOrWhiteSpace(healthInfo))
         {
-            return Result.Failure<Pet>("Health information can not be empty");
+            return Errors.General.Validation("Health info");
         }
 
         if (weight <= 0)
         {
-            return Result.Failure<Pet>("Weight must be greater than zero");
+            return Errors.General.Validation("Weight");
         }
 
         if (height <= 0)
         {
-            return Result.Failure<Pet>("Height must be greater than zero");
+            return Errors.General.Validation("Height");
+
         }
 
         
@@ -147,6 +149,6 @@ public class Pet : Shared.Entity<PetId>
             petPhotos,
             paymentDetails
         );
-        return Result.Success(pet);
+        return pet;
     }
 }

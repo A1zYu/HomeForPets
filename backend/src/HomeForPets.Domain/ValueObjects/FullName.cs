@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.ValueObjects;
 
@@ -18,18 +19,19 @@ public record FullName
         return $"{FirstName} {LastName} {MiddleName}";
     }
 
-    public static Result<FullName> Create(string firstName, string lastName, string? middleName)
+    public static Result<FullName,Error> Create(string firstName, string lastName, string? middleName)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            return Result.Failure<FullName>("firstName can not be empty");
+            return Errors.General.Validation("first Name");
+
         } 
         if (string.IsNullOrWhiteSpace(lastName))
         {
-            return Result.Failure<FullName>("lastName can not be empty");
+            return Errors.General.Validation("Last Name");
         } 
-
+        
         var fullName = new FullName(lastName, firstName, middleName);
-        return Result.Success(fullName);
+        return fullName;
     }
 }

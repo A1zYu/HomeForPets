@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Models.Volunteer;
+using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.ValueObjects;
 
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
@@ -12,18 +13,28 @@ public class CreateVolunteerHandler
     {
         _volunteersRepository = volunteersRepository;
     }
-    public async Task<Result<Guid>> Handle(CreateVolunteerRequest request,CancellationToken cancellationToken=default)
+    public async Task<Result<Guid,Error>> Handle(CreateVolunteerRequest request,CancellationToken cancellationToken=default)
     {
         var volunteerId = VolunteerId.NewId();
         var fullname = FullName.Create(request.FirstName, request.LastName, request.MiddleName);
         if (fullname.IsFailure)
         {
-            return Result.Failure<Guid>(fullname.Error);
+            return fullname.Error;
         }
-        var contact = Contact.Create(request.PhoneNumber);
+        var phoneNumber = PhoneNumber.Create(request.PhoneNumber);
+        if (phoneNumber.IsFailure)
+        {
+            return phoneNumber.Error;
+        }
+        var isPhoneNumber =await _volunteersRepository.GetByPhoneNumber(phoneNumber.Value);
+        if (isPhoneNumber.IsFailure)
+        {
+            return isPhoneNumber.Error;
+        }
+        var contact = Contact.Create(phoneNumber.Value);
         if (contact.IsFailure)
         {
-            return Result.Failure<Guid>(contact.Error);
+            return contact.Error;
         }
         
         
@@ -36,7 +47,7 @@ public class CreateVolunteerHandler
         );
         if (volunteer.IsFailure)
         {
-            return Result.Failure<Guid>(volunteer.Error);
+            return volunteer.Error;
         }
         
         return await _volunteersRepository.Add(volunteer.Value,cancellationToken);;
