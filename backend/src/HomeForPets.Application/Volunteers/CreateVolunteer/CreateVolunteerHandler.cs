@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using HomeForPets.Domain.Models.PetModel;
 using HomeForPets.Domain.Models.Volunteer;
 using HomeForPets.Domain.ValueObjects;
 
@@ -21,9 +20,7 @@ public class CreateVolunteerHandler
         {
             return Result.Failure<Guid>(fullname.Error);
         }
-        var socialNetworks = request.SocialNetworks.Select(x => SocialNetwork.Create(x.Name, x.Path).Value).ToList();
-        
-        var contact = Contact.Create(request.PhoneNumber, socialNetworks);
+        var contact = Contact.Create(request.PhoneNumber);
         
         
         var volunteer = Volunteer.Create(
@@ -31,9 +28,7 @@ public class CreateVolunteerHandler
             fullname.Value,
             request.Description,
             contact.Value,
-            request.WorkExperience,
-            request.Pets,
-            request.PaymentDetailsList
+            request.WorkExperience
         );
         if (volunteer.IsFailure)
         {

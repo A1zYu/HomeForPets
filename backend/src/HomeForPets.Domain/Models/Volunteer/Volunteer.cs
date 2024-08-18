@@ -19,16 +19,12 @@ public class Volunteer : Shared.Entity<VolunteerId>
         FullName fullName,
         string description,
         int yearsOfExperience,
-        Contact contact,
-        List<Pet> pets,
-        List<PaymentDetails> paymentDetails) : base(id)
+        Contact contact) : base(id)
     {
         FullName = fullName;
         Description = description;
         YearsOfExperience = yearsOfExperience;
         Contact = contact;
-        _pets = pets;
-        _paymentDetails = paymentDetails;
     }
 
     public FullName FullName { get; private set; }
@@ -50,7 +46,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
 
     public static Result<Volunteer> Create(VolunteerId id, FullName fullName,
         string description, Contact contact,
-        int yearsOfExperience, List<Pet> pets, List<PaymentDetails> paymentDetails)
+        int yearsOfExperience)
     {
         if (string.IsNullOrWhiteSpace(description) || description.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
             return Result.Failure<Volunteer>("Description is not correct");
@@ -60,9 +56,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
             fullName,
             description,
             yearsOfExperience,
-            contact,
-            pets,
-            paymentDetails);
+            contact);
         return Result.Success(volunteer);
     }
 }
