@@ -38,8 +38,7 @@ public class CreateVolunteerHandler
         {
             return Result.Failure<Guid>(volunteer.Error);
         }
-        await _volunteersRepository.Add(volunteer.Value,cancellationToken);
         
-        return volunteerId.Value;
+        return await _volunteersRepository.Add(volunteer.Value,cancellationToken);;
     }
 }
