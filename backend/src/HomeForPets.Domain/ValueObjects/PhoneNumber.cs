@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.ValueObjects;
 
@@ -14,13 +15,13 @@ public record PhoneNumber
     }
     public string Number { get; }
 
-    public static Result<PhoneNumber> Create(string number)
+    public static Result<PhoneNumber,Error> Create(string number)
     {
-        if (string.IsNullOrWhiteSpace(number) && !ValidationRegex.IsMatch(number))
+        if (string.IsNullOrWhiteSpace(number) && ValidationRegex.IsMatch(number))
         {
-            return Result.Failure<PhoneNumber>("Number is not correct");
+            return Errors.General.Validation("Phone number");
         }
         var phoneNumber = new PhoneNumber(number);
-        return Result.Success(phoneNumber);
+        return phoneNumber;
     }
 }

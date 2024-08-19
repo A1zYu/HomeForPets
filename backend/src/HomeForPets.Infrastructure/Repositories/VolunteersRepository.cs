@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Domain.Models.Volunteer;
+using HomeForPets.Domain.Shared;
+using HomeForPets.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeForPets.Infrastructure.Repositories;
@@ -20,7 +22,7 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Volunteer>> GetById(VolunteerId volunteerId)
+    public async Task<Result<Volunteer,Error>> GetById(VolunteerId volunteerId)
     {
         var volunteer = await _dbContext.Volunteers
             .Include(x=>x.PaymentDetailsList)
@@ -29,9 +31,16 @@ public class VolunteersRepository : IVolunteersRepository
             .FirstOrDefaultAsync(v => v.Id == volunteerId);
         if (volunteer is null)
         {
-            return Result.Failure<Volunteer>("Volunteer not found");
+            return Errors.General.NotFound();
         }
 
+        return volunteer;
+    }
+
+    public async Task<Volunteer?> GetByPhoneNumber(PhoneNumber phoneNumber)
+    {
+        var volunteer = await _dbContext.Volunteers
+            .FirstOrDefaultAsync(x => x.Contact != null && x.Contact.PhoneNumber == phoneNumber);
         return volunteer;
     }
 }

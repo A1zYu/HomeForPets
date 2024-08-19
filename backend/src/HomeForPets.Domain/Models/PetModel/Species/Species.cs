@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Models.PetModel.Breeds;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.Models.PetModel;
 
@@ -18,15 +19,14 @@ public class Species: Shared.Entity<SpeciesId>
     public IReadOnlyList<Breed> Breeds => _breeds;
     private void AddBreeds(List<Breed> breeds) => _breeds.AddRange(breeds);
 
-    public static Result<Species> Create(SpeciesId speciesId,string name, List<Breed> breeds)
+    public static Result<Species,Error> Create(SpeciesId speciesId,string name, List<Breed> breeds)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Result.Failure<Species>(
-                $"{name} cannot be null or have length more than {Constraints.Constraints.LOW_VALUE_LENGTH}");
+            return Errors.General.Validation("Species name");
         }
-
-        return Result.Success<Species>(new Species(speciesId,name, breeds ?? []));
+        
+        return new Species(speciesId,name,breeds);
     }
     
 }

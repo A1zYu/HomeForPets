@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.Models.PetModel.Breeds;
 
@@ -14,13 +15,13 @@ public class Breed: Shared.Entity<BreedId>
     public string Name { get; private set; }
     
     
-    public static Result<Breed> Create(BreedId breedId,string name)
+    public static Result<Breed,Error> Create(BreedId breedId,string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
-            return Result.Failure<Breed>($"{nameof(name)} cannot be null or length more than {Constraints.Constraints.LOW_VALUE_LENGTH}");
+            return Errors.General.Validation("Breed name");
 
         var breed = new Breed(breedId,name);
 
-        return Result.Success(breed);
+        return breed;
     }
 }
