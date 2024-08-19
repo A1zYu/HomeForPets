@@ -22,4 +22,12 @@ public static class Errors
             return Error.Validation("record.already.exist", "record already exist");
         }
     }
+
+    public static class PhoneNumber
+    {
+        public static Error Validation(string? number)
+        {
+            return Error.Validation("phone.number.not.invalid", $"phone number '{number}' not invalid");
+        }
+    }
 }
