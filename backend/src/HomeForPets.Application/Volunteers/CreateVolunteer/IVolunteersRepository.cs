@@ -1,7 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using HomeForPets.Domain.Models.Volunteer;
 using HomeForPets.Domain.Shared;
-using HomeForPets.Domain.ValueObjects;
+using HomeForPets.Domain.Shared.Ids;
+using HomeForPets.Domain.Shared.ValueObjects;
+using HomeForPets.Domain.Volunteers;
 
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
 

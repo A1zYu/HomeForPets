@@ -1,7 +1,8 @@
 ﻿using System.Text.Json;
 using HomeForPets.Domain.Constraints;
-using HomeForPets.Domain.Models.Volunteer;
-using HomeForPets.Domain.ValueObjects;
+using HomeForPets.Domain.Shared.Ids;
+using HomeForPets.Domain.Shared.ValueObjects;
+using HomeForPets.Domain.Volunteers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -19,27 +20,29 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 id => id.Value,
                 value => VolunteerId.Create(value)
                 );
-        builder.Property(v => v.Description)
-            .IsRequired()
-            .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
-        
-        builder.OwnsOne(v => v.Contact, cb =>
+        builder.ComplexProperty(v => v.Description, vb =>
         {
-            cb.ToJson();
-            cb.Property(x => x.PhoneNumber)
-                .HasConversion(
-                    phoneNumber => phoneNumber.Number,
-                    value => PhoneNumber.Create(value).Value);
-            cb.OwnsMany(d => d.SocialNetworks, sb =>
-            {
-                sb.Property(f => f.Name)
-                    .IsRequired()
-                    .HasColumnName("name")
-                    .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
-                sb.Property(f => f.Path)
-                    .IsRequired()
-                    .HasColumnName("path");
-            });
+            vb.Property(x => x.Text)
+                .HasColumnName("description")
+                .IsRequired();
+        });
+        builder.ComplexProperty(v => v.PhoneNumber, vb =>
+        {
+            vb.Property(x => x.Number)
+                .HasColumnName("phone_number")
+                .IsRequired();
+        });
+
+        builder.OwnsMany(x => x.SocialNetwork, sb =>
+        {
+            sb.ToJson("social_network");
+            sb.Property(p => p.Name)
+                .HasColumnName("social_network_name")
+                .IsRequired();
+            
+            sb.Property(p => p.Path)
+                .HasColumnName("social_network_path")
+                .IsRequired();
         });
         
         builder.ComplexProperty(x => x.FullName,

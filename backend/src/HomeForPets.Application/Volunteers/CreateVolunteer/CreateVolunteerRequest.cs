@@ -1,5 +1,4 @@
-﻿using HomeForPets.Domain.Models.PetModel;
-using HomeForPets.Domain.DTOs;
+﻿using HomeForPets.Application.Dtos;
 
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
 
@@ -10,5 +9,5 @@ public record CreateVolunteerRequest(
         string Description,
         int WorkExperience,
         string PhoneNumber,
-        List<SocialNetworkDto> SocialNetworks,
-        List<PaymentDetailsDto> PaymentDetailsList);
+        IEnumerable<SocialNetworkDto> SocialNetworks,
+        IEnumerable<PaymentDetailsDto> PaymentDetailsList);
