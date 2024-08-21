@@ -12,18 +12,15 @@ namespace HomeForPets.Api.Controllers;
 public class VolunteerController : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<Envelope>> Create(
+    public async Task<ActionResult> Create(
         [FromServices] CreateVolunteerHandler handler,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request, cancellationToken);
         if (result.IsFailure)
-        {
             return result.Error.ToResponse();
-        }
-
-        // return CreatedAtAction("", result.Value);
+        
         return Ok(result.Value);
     }
 }
