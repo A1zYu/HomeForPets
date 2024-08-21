@@ -84,7 +84,7 @@ namespace HomeForPets.Infrastructure.Migrations
                     phone_number = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     species_breed_breed_id = table.Column<Guid>(type: "uuid", nullable: false),
                     species_breed_species_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    payment_details_list = table.Column<string>(type: "jsonb", nullable: true)
+                    payment_details = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {

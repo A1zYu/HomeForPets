@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeForPets.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240821121556_Initial")]
+    [Migration("20240821135258_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -318,7 +318,7 @@ namespace HomeForPets.Infrastructure.Migrations
 
                             b1.ToTable("pets");
 
-                            b1.ToJson("payment_details_list");
+                            b1.ToJson("payment_details");
 
                             b1.WithOwner()
                                 .HasForeignKey("PetId")
@@ -358,7 +358,8 @@ namespace HomeForPets.Infrastructure.Migrations
                                 .HasColumnType("text")
                                 .HasColumnName("social_network_path");
 
-                            b1.HasKey("VolunteerId", "Id");
+                            b1.HasKey("VolunteerId", "Id")
+                                .HasName("pk_volunteers");
 
                             b1.ToTable("volunteers");
 
