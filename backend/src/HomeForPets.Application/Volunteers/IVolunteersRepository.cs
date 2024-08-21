@@ -3,7 +3,7 @@ using HomeForPets.Domain.Models.Volunteer;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.ValueObjects;
 
-namespace HomeForPets.Application.Volunteers.CreateVolunteer;
+namespace HomeForPets.Application.Volunteers;
 
 public interface IVolunteersRepository
 {
