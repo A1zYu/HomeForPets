@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
-using HomeForPets.Domain.Models.Volunteer;
 using HomeForPets.Domain.Shared;
-using HomeForPets.Domain.ValueObjects;
+using HomeForPets.Domain.Shared.Ids;
+using HomeForPets.Domain.Shared.ValueObjects;
+using HomeForPets.Domain.Volunteers;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeForPets.Infrastructure.Repositories;
@@ -40,7 +41,7 @@ public class VolunteersRepository : IVolunteersRepository
     public async Task<Volunteer?> GetByPhoneNumber(PhoneNumber phoneNumber)
     {
         var volunteer = await _dbContext.Volunteers
-            .FirstOrDefaultAsync(x => x.Contact != null && x.Contact.PhoneNumber == phoneNumber);
+            .FirstOrDefaultAsync(x =>   x.PhoneNumber == phoneNumber);
         return volunteer;
     }
 }

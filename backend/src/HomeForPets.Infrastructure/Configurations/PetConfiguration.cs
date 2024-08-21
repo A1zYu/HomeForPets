@@ -1,6 +1,6 @@
 ﻿using HomeForPets.Domain.Constraints;
-using HomeForPets.Domain.Models.PetModel;
-using HomeForPets.Domain.Models.PetModel.Breeds;
+using HomeForPets.Domain.Shared.Ids;
+using HomeForPets.Domain.Volunteers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,35 +23,41 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasColumnName("name")
             .IsRequired()
             .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
-        builder.Property(p => p.Description)
-            .IsRequired()
-            .HasColumnName("description")
-            .HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
-        
-        builder.Property(p => p.Color)
-            .HasColumnName("color")
-            .IsRequired()
-            .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
-        
-        builder.Property(p => p.Height)
-            .HasColumnName("height")
-            .IsRequired();
-        
-        builder.Property(p => p.Weight)
-            .HasColumnName("weight")
-            .IsRequired();
-       
-        builder.Property(p => p.HealthInfo)
-            .IsRequired()
-            .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
+        builder.ComplexProperty(p => p.Description, pb =>
+        {
+            pb.Property(x => x.Text)
+                .HasColumnName("description")
+                .IsRequired();
+        });
+        builder.ComplexProperty(p => p.PetDetails, pb =>
+        {
+            pb.Property(x => x.Color)
+                .HasColumnName("color")
+                .IsRequired();
+            pb.Property(x => x.Height)
+                .HasColumnName("height")
+                .IsRequired();
+            pb.Property(x => x.Weight)
+                .HasColumnName("weight")
+                .IsRequired();
+            pb.Property(x => x.HealthInfo)
+                .HasColumnName("help_info")
+                .IsRequired();
+            pb.Property(x => x.BirthOfDate)
+                .HasColumnName("birth_of_date")
+                .IsRequired();
+            pb.Property(x => x.IsVaccinated)
+                .HasColumnName("is_vaccinated")
+                .IsRequired();
+            pb.Property(x => x.IsVaccinated)
+                .HasColumnName("is_vaccinated")
+                .IsRequired();
+        });
 
         builder.ComplexProperty(p => p.SpeciesBreed, s =>
         {
             s.Property(x => x.BreedId)
-                .HasConversion(
-                    id => id.Value,
-                    value => BreedId.Create(value)
-                ).IsRequired();
+                .IsRequired();
             s.Property(x => x.SpeciesId)
                 .HasConversion(
                     id => id.Value,

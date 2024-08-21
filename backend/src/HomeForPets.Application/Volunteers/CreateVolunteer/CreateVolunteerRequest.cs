@@ -1,5 +1,4 @@
-﻿using HomeForPets.Domain.Models.PetModel;
-using HomeForPets.Domain.DTOs;
+﻿using HomeForPets.Application.Dtos;
 
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
 
