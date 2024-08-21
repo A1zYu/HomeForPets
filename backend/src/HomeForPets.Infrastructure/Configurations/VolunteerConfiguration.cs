@@ -35,7 +35,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.OwnsMany(x => x.SocialNetwork, sb =>
         {
-            sb.ToJson();
+            sb.ToJson("social_network");
             sb.Property(p => p.Name)
                 .HasColumnName("social_network_name")
                 .IsRequired();

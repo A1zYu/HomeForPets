@@ -8,9 +8,9 @@ public record Description
     {
         
     }
-    private Description(string description)
+    private Description(string text)
     {
-        Text = description;
+        Text = text;
     }
     public string Text { get; }
 

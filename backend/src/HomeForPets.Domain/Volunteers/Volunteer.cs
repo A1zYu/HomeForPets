@@ -36,7 +36,6 @@ public class Volunteer : Shared.Entity<VolunteerId>
 
     public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
     public IReadOnlyList<SocialNetwork> SocialNetwork => _socialNetwork;
-    // public Contact? Contact { get; private set; }
 
 
     public int? GetPetsHomeFoundCount() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);

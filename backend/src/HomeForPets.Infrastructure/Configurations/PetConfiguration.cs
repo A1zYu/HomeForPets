@@ -93,7 +93,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasConstraintName("pet_photos");
         builder.OwnsMany(x => x.PaymentDetailsList, p =>
         {
-            p.ToJson();
+            p.ToJson("payment_details");
             p.Property(y => y.Name)
                 .IsRequired()
                 .HasColumnName("payment_details_name");
