@@ -17,41 +17,23 @@ public class CreateVolunteerHandler
     public async Task<Result<Guid,Error>> Handle(CreateVolunteerRequest request,CancellationToken cancellationToken=default)
     {
         var volunteerId = VolunteerId.NewId();
-        var phoneNumber = PhoneNumber.Create(request.PhoneNumber);
-        if (phoneNumber.IsFailure)
-        {
-            return phoneNumber.Error;
-        }
-        var fullname = FullName.Create(request.FirstName, request.LastName, request.MiddleName);
-        if (fullname.IsFailure)
-        {
-            return fullname.Error;
-        }
-        var description = Description.Create(request.Description);
-        if (description.IsFailure)
-        {
-            return description.Error;
-        }
-        var existVolunteerByPhone =await _volunteersRepository.GetByPhoneNumber(phoneNumber.Value);
+        var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
+        var fullname = FullName.Create(request.FirstName, request.LastName, request.MiddleName).Value;
+        var description = Description.Create(request.Description).Value;
+        var existVolunteerByPhone =await _volunteersRepository.GetByPhoneNumber(phoneNumber);
         if (existVolunteerByPhone is not null)
-        {
             return Errors.Volunteer.AlreadyExist();
-        }
-        
-        
-        
         var volunteer = Volunteer.Create(
             volunteerId,
-            fullname.Value,
-            phoneNumber.Value,
-            description.Value,
+            fullname,
+            phoneNumber,
+            description,
             request.WorkExperience
         );
         if (volunteer.IsFailure)
         {
             return volunteer.Error;
         }
-        
         return await _volunteersRepository.Add(volunteer.Value,cancellationToken);;
     }
 }

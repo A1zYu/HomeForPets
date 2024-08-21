@@ -18,7 +18,7 @@ public record Address
 
     public static Result<Address> Create(string city, string district, int houseNumber, int flatNumber)
     {
-        if (string.IsNullOrWhiteSpace(city))
+        if (string.IsNullOrWhiteSpace(city) )
         {
             return Result.Failure<Address>("City can not be empty");
         }
@@ -26,11 +26,11 @@ public record Address
         {
             return Result.Failure<Address>("District can not be empty");
         }
-        if (houseNumber <= 0)
+        if (houseNumber < 0)
         {
             return Result.Failure<Address>("House number can not be empty");
         }
-        if (flatNumber <= 0)
+        if (flatNumber < 0)
         {
             return Result.Failure<Address>("Flat number must be greater than zero");
         }

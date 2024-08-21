@@ -23,12 +23,12 @@ public record FullName
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
-            return Errors.General.Validation("first Name");
+            return Errors.General.Validation("FullName");
 
         } 
         if (string.IsNullOrWhiteSpace(lastName))
         {
-            return Errors.General.Validation("Last Name");
+            return Errors.General.Validation("FullName");
         } 
         
         var fullName = new FullName(lastName, firstName, middleName);

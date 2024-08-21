@@ -12,7 +12,7 @@ public static class Errors
         public static Error NotFound(Guid? id = null)
         {
             var forId = id==null?"": $" for id: '{id}' ";
-            return Error.Validation("is.not.invalid", $"record not found {forId}");
+            return Error.NotFound("is.not.invalid", $"record not found {forId}");
         }
     }
     public static class Volunteer
