@@ -4,6 +4,10 @@ namespace HomeForPets.Domain.Shared.ValueObjects;
 
 public record Description
 {
+    private Description()
+    {
+        
+    }
     private Description(string description)
     {
         Text = description;
