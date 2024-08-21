@@ -52,7 +52,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         Description description,
         int yearsOfExperience)
     {
-        if (yearsOfExperience < 0)
+        if (yearsOfExperience is < 0 or > 80)
         {
             return Errors.General.Validation("Years of experience");
         }
