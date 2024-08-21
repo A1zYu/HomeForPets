@@ -1,5 +1,6 @@
 ﻿using HomeForPets.Domain.Constraints;
-using HomeForPets.Domain.Models.PetModel.Breeds;
+using HomeForPets.Domain.Shared.Ids;
+using HomeForPets.Domain.Species;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

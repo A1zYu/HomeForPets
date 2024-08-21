@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using FluentValidation;
-using HomeForPets.Domain.Models.Volunteer;
 using HomeForPets.Domain.Shared;
-using HomeForPets.Domain.ValueObjects;
+using HomeForPets.Domain.Shared.Ids;
+using HomeForPets.Domain.Shared.ValueObjects;
+using HomeForPets.Domain.Volunteers;
 
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
 
@@ -17,35 +17,34 @@ public class CreateVolunteerHandler
     public async Task<Result<Guid,Error>> Handle(CreateVolunteerRequest request,CancellationToken cancellationToken=default)
     {
         var volunteerId = VolunteerId.NewId();
-        var fullname = FullName.Create(request.FirstName, request.LastName, request.MiddleName);
-        if (fullname.IsFailure)
-        {
-            return fullname.Error;
-        }
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber);
         if (phoneNumber.IsFailure)
         {
             return phoneNumber.Error;
         }
-
+        var fullname = FullName.Create(request.FirstName, request.LastName, request.MiddleName);
+        if (fullname.IsFailure)
+        {
+            return fullname.Error;
+        }
+        var description = Description.Create(request.Description);
+        if (description.IsFailure)
+        {
+            return description.Error;
+        }
         var existVolunteerByPhone =await _volunteersRepository.GetByPhoneNumber(phoneNumber.Value);
         if (existVolunteerByPhone is not null)
         {
             return Errors.Volunteer.AlreadyExist();
         }
         
-        var contact = Contact.Create(phoneNumber.Value);
-        if (contact.IsFailure)
-        {
-            return contact.Error;
-        }
         
         
         var volunteer = Volunteer.Create(
             volunteerId,
             fullname.Value,
-            request.Description,
-            contact.Value,
+            phoneNumber.Value,
+            description.Value,
             request.WorkExperience
         );
         if (volunteer.IsFailure)
