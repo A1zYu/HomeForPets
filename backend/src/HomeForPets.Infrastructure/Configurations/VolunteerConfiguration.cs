@@ -32,19 +32,6 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("phone_number")
                 .IsRequired();
         });
-
-        builder.OwnsMany(x => x.SocialNetwork, sb =>
-        {
-            sb.ToJson("social_network");
-            sb.Property(p => p.Name)
-                .HasColumnName("social_network_name")
-                .IsRequired();
-            
-            sb.Property(p => p.Path)
-                .HasColumnName("social_network_path")
-                .IsRequired();
-        });
-        
         builder.ComplexProperty(x => x.FullName,
             f =>
             {
@@ -61,16 +48,33 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                     .HasColumnName("middle_name")
                     .IsRequired(false);
             });
-        
-        builder.OwnsMany(x => x.PaymentDetailsList, p =>
+        builder.OwnsOne(v => v.SocialNetworkList, sb =>
         {
-            p.ToJson();
-            p.Property(y => y.Name)
-                .IsRequired()
-                .HasColumnName("payment_details_name");
-            p.Property(y => y.Description)
-                .IsRequired()
-                .HasColumnName("payment_details_description");
+            sb.ToJson("social_network");
+            sb.OwnsMany(s => s.SocialNetworks, snB =>
+            {
+                snB.Property(p => p.Name)
+                    .HasColumnName("social_network_name")
+                    .IsRequired();
+            
+                snB.Property(p => p.Path)
+                    .HasColumnName("social_network_path")
+                    .IsRequired();
+            });
+        });
+        builder.OwnsOne(v => v.PaymentDetailsList, pb =>
+        {
+            pb.ToJson("payment_details");
+            pb.OwnsMany(p => p.PaymentDetails,sb =>
+            {
+                sb.Property(p => p.Name)
+                    .HasColumnName("payment_details_name")
+                    .IsRequired();
+            
+                sb.Property(p => p.Description)
+                    .HasColumnName("payment_details_description")
+                    .IsRequired();
+            });
         });
         builder.HasMany(x => x.Pets)
             .WithOne()

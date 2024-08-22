@@ -47,8 +47,9 @@ public class Pet : Shared.Entity<PetId>
     public PhoneNumber PhoneNumberOwner { get; private set; } = default!;
     public DateOnly CreatedDate { get; private set; }
 
-    
-    public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
+    public PaymentDetailsList PaymentDetailsList { get; private set; }
+
+    // public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
 
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
 

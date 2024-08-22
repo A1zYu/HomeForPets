@@ -2,8 +2,24 @@
 
 namespace HomeForPets.Domain.Shared.ValueObjects;
 
+public record PaymentDetailsList
+{
+    public PaymentDetailsList()
+    {
+        
+    }
+    private PaymentDetailsList(IEnumerable<PaymentDetails> paymentDetails)
+    {
+        PaymentDetails = paymentDetails.ToList();
+    }
+    public IReadOnlyList<PaymentDetails> PaymentDetails { get; }
+}
 public record PaymentDetails
 {
+    public PaymentDetails()
+    {
+        
+    }
     private PaymentDetails(string name, string description)
     {
         Name = name;
