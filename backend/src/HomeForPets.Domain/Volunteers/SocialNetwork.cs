@@ -3,8 +3,24 @@ using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.Volunteers;
 
+public record SocialNetworkList
+{
+    public SocialNetworkList()
+    {
+        
+    }
+    private SocialNetworkList(IEnumerable<SocialNetwork> socialNetworks)
+    {
+        socialNetworks = socialNetworks.ToList();
+    }
+    public IReadOnlyList<SocialNetwork> SocialNetworks { get; }
+}
 public record SocialNetwork
 {
+    public SocialNetwork()
+    {
+        
+    }
     private SocialNetwork(string name, string path)
     {
         Name = name;
