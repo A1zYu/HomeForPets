@@ -34,8 +34,8 @@ namespace HomeForPets.Infrastructure.Migrations
                     last_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     middle_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     phone_number = table.Column<string>(type: "text", nullable: false),
-                    payment_details_list = table.Column<string>(type: "jsonb", nullable: true),
-                    social_network = table.Column<string>(type: "jsonb", nullable: true)
+                    payment_details = table.Column<string>(type: "jsonb", nullable: false),
+                    social_network = table.Column<string>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,9 +82,9 @@ namespace HomeForPets.Infrastructure.Migrations
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     weight = table.Column<double>(type: "double precision", nullable: false),
                     phone_number = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    species_breed_breed_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    species_breed_species_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    payment_details = table.Column<string>(type: "jsonb", nullable: true)
+                    breed_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    species_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    payment_details = table.Column<string>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
                 {

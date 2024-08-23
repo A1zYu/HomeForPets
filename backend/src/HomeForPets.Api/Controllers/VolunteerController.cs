@@ -1,5 +1,8 @@
-﻿using HomeForPets.Api.Extensions;
+﻿using FluentValidation;
+using HomeForPets.Api.Extensions;
+using HomeForPets.Api.Response;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
+using HomeForPets.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers;
@@ -9,13 +12,15 @@ namespace HomeForPets.Api.Controllers;
 public class VolunteerController : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(
+    public async Task<ActionResult> Create(
         [FromServices] CreateVolunteerHandler handler,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request, cancellationToken);
-
-        return result.ToResponse();
+        if (result.IsFailure)
+            return result.Error.ToResponse();
+        
+        return Ok(result.Value);
     }
 }

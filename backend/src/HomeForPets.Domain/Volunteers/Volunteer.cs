@@ -8,9 +8,7 @@ namespace HomeForPets.Domain.Volunteers;
 
 public class Volunteer : Shared.Entity<VolunteerId>
 {
-    private readonly List<PaymentDetails> _paymentDetails = [];
     private readonly List<Pet> _pets = [];
-    private readonly IReadOnlyList<SocialNetwork> _socialNetwork = [];
 
     //ef core
     private Volunteer(VolunteerId id) : base(id)
@@ -32,17 +30,13 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public PhoneNumber PhoneNumber { get; private set; }
     public Description Description { get; private set; } = default!;
     public int? YearsOfExperience { get; private set; }
+    public PaymentDetailsList PaymentDetailsList { get; private set; }
+    public SocialNetworkList SocialNetworkList { get; private set; }
     public IReadOnlyList<Pet> Pets => _pets;
-
-    public IReadOnlyList<PaymentDetails> PaymentDetailsList => _paymentDetails;
-    public IReadOnlyList<SocialNetwork> SocialNetwork => _socialNetwork;
-
-
     public int? GetPetsHomeFoundCount() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);
     public int? GetPetsSearchForHomeCount() => _pets.Count(x => x.HelpStatus == HelpStatus.SearchHome);
     public int? GetPetsNeedForHelp() => _pets.Count(x => x.HelpStatus == HelpStatus.NeedForHelp);
     
-    public void AddPaymentDetails(IEnumerable<PaymentDetails> paymentDetails) => _paymentDetails.AddRange(paymentDetails);
     public void AddPets(IEnumerable<Pet> pets) => _pets.AddRange(pets);
 
     public static Result<Volunteer,Error> Create(
@@ -52,7 +46,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         Description description,
         int yearsOfExperience)
     {
-        if (yearsOfExperience < 0)
+        if (yearsOfExperience is < 0 or > 80)
         {
             return Errors.General.Validation("Years of experience");
         }

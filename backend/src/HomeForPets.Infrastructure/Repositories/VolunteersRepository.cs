@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Application.Volunteers;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;

@@ -57,8 +57,10 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.ComplexProperty(p => p.SpeciesBreed, s =>
         {
             s.Property(x => x.BreedId)
+                .HasColumnName("breed_id")
                 .IsRequired();
             s.Property(x => x.SpeciesId)
+                .HasColumnName("species_id")
                 .HasConversion(
                     id => id.Value,
                     value => SpeciesId.Create(value)
@@ -91,15 +93,19 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("pet_photos");
-        builder.OwnsMany(x => x.PaymentDetailsList, p =>
+        builder.OwnsOne(p => p.PaymentDetailsList, pb =>
         {
-            p.ToJson("payment_details");
-            p.Property(y => y.Name)
-                .IsRequired()
-                .HasColumnName("payment_details_name");
-            p.Property(y => y.Description)
-                .IsRequired()
-                .HasColumnName("payment_details_description");
+            pb.ToJson("payment_details");
+            pb.OwnsMany(p => p.PaymentDetails,sb =>
+            {
+                sb.Property(p => p.Name)
+                    .HasColumnName("payment_details_name")
+                    .IsRequired();
+            
+                sb.Property(p => p.Description)
+                    .HasColumnName("payment_details_description")
+                    .IsRequired();
+            });
         });
     }
 }

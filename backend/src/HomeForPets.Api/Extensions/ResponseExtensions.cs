@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+﻿using FluentValidation.Results;
 using HomeForPets.Api.Response;
 using HomeForPets.Domain.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -7,44 +7,43 @@ namespace HomeForPets.Api.Extensions;
 
 public static class ResponseExtensions
 {
-    public static ActionResult ToResponse(this UnitResult<Error> result)
+    public static ActionResult ToResponse(this Error error)
     {
-        if (result.IsSuccess)
-        {
-            return new OkResult();
-        }
-        var statusCode = result.Error.ErrorType switch
+        var statusCode = error.ErrorType switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
-            ErrorType.Failure => StatusCodes.Status500InternalServerError,
             ErrorType.Conflict => StatusCodes.Status409Conflict,
+            ErrorType.Failure => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError
         };
-        var envelope = Envelope.Error(result.Error);
+
+        var responseError = new ResponseError(error.Code, error.Message, null);
+
+        var envelope = Envelope.Error([responseError]);
+
         return new ObjectResult(envelope)
         {
             StatusCode = statusCode
         };
-    } 
-    public static ActionResult<T> ToResponse<T>(this Result<T,Error> result)
+    }
+
+    public static ActionResult ToValidationResponse(this ValidationResult result)
     {
-        if (result.IsSuccess)
+        if (result.IsValid)
         {
-            return new OkObjectResult(Envelope.Ok(result.Value));
+            throw new InvalidOperationException("Result can not be succeed");
         }
-        var statusCode = result.Error.ErrorType switch
-        {
-            ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.NotFound => StatusCodes.Status404NotFound,
-            ErrorType.Failure => StatusCodes.Status500InternalServerError,
-            ErrorType.Conflict => StatusCodes.Status409Conflict,
-            _ => StatusCodes.Status500InternalServerError
-        };
-        var envelope = Envelope.Error(result.Error);
+        var invalidErrors = result.Errors;
+        var responsesError = (from invalidError in invalidErrors 
+            let error = Error.Deserialize(invalidError.ErrorMessage) 
+            select new ResponseError(error.Code, error.Message, invalidError.PropertyName));
+
+        var envelope = Envelope.Error(responsesError);
+
         return new ObjectResult(envelope)
         {
-            StatusCode = statusCode
+            StatusCode = StatusCodes.Status400BadRequest
         };
-    } 
+    }
 }
