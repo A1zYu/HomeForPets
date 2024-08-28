@@ -4,7 +4,7 @@ namespace HomeForPets.Domain.Shared.ValueObjects;
 
 public record PaymentDetailsList
 {
-    public PaymentDetailsList()
+    private PaymentDetailsList()
     {
         
     }
@@ -16,7 +16,7 @@ public record PaymentDetailsList
 }
 public record PaymentDetails
 {
-    public PaymentDetails()
+    private PaymentDetails()
     {
         
     }

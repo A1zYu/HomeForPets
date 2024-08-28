@@ -222,10 +222,6 @@ namespace HomeForPets.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int?>("YearsOfExperience")
-                        .HasColumnType("integer")
-                        .HasColumnName("years_of_experience");
-
                     b.ComplexProperty<Dictionary<string, object>>("Description", "HomeForPets.Domain.Volunteers.Volunteer.Description#Description", b1 =>
                         {
                             b1.IsRequired();
@@ -266,6 +262,16 @@ namespace HomeForPets.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("phone_number");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("YearsOfExperience", "HomeForPets.Domain.Volunteers.Volunteer.YearsOfExperience#YearsOfExperience", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int?>("Value")
+                                .IsRequired()
+                                .HasColumnType("integer")
+                                .HasColumnName("years_of_experience");
                         });
 
                     b.HasKey("Id")
@@ -451,11 +457,9 @@ namespace HomeForPets.Infrastructure.Migrations
                             b1.Navigation("PaymentDetails");
                         });
 
-                    b.Navigation("PaymentDetailsList")
-                        .IsRequired();
+                    b.Navigation("PaymentDetailsList");
 
-                    b.Navigation("SocialNetworkList")
-                        .IsRequired();
+                    b.Navigation("SocialNetworkList");
                 });
 
             modelBuilder.Entity("HomeForPets.Domain.Species.Species", b =>

@@ -21,14 +21,14 @@ public record FullName
 
     public static Result<FullName,Error> Create(string firstName, string lastName, string? middleName)
     {
-        if (string.IsNullOrWhiteSpace(firstName))
+        if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("FullName");
+            return Errors.General.Validation("First name");
 
         } 
-        if (string.IsNullOrWhiteSpace(lastName))
+        if (string.IsNullOrWhiteSpace(lastName)|| lastName.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("FullName");
+            return Errors.General.Validation("Last name");
         } 
         
         var fullName = new FullName(lastName, firstName, middleName);

@@ -32,6 +32,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("phone_number")
                 .IsRequired();
         });
+        builder.ComplexProperty(v => v.YearsOfExperience, yb =>
+        {
+            yb.Property(x => x.Value)
+                .IsRequired(false)
+                .HasColumnName("years_of_experience")
+                .IsRequired();
+        });
         builder.ComplexProperty(x => x.FullName,
             f =>
             {

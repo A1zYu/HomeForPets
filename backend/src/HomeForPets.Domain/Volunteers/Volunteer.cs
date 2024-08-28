@@ -18,7 +18,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
         FullName fullName,
         PhoneNumber phoneNumber,
         Description description,
-        int yearsOfExperience) : base(id)
+        YearsOfExperience yearsOfExperience) : base(id)
     {
         FullName = fullName;
         Description = description;
@@ -29,9 +29,9 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public FullName FullName { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public Description Description { get; private set; } = default!;
-    public int? YearsOfExperience { get; private set; }
-    public PaymentDetailsList PaymentDetailsList { get; private set; }
-    public SocialNetworkList SocialNetworkList { get; private set; }
+    public YearsOfExperience YearsOfExperience { get; private set; }
+    public PaymentDetailsList? PaymentDetailsList { get; private set; } 
+    public SocialNetworkList? SocialNetworkList { get; private set; }
     public IReadOnlyList<Pet> Pets => _pets;
     public int? GetPetsHomeFoundCount() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);
     public int? GetPetsSearchForHomeCount() => _pets.Count(x => x.HelpStatus == HelpStatus.SearchHome);
@@ -44,13 +44,8 @@ public class Volunteer : Shared.Entity<VolunteerId>
         FullName fullName,
         PhoneNumber phoneNumber,
         Description description,
-        int yearsOfExperience)
+        YearsOfExperience yearsOfExperience)
     {
-        if (yearsOfExperience is < 0 or > 80)
-        {
-            return Errors.General.Validation("Years of experience");
-        }
-
         var volunteer = new Volunteer(
             id,
             fullName,

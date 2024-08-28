@@ -28,14 +28,14 @@ namespace HomeForPets.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    years_of_experience = table.Column<int>(type: "integer", nullable: true),
                     description = table.Column<string>(type: "text", nullable: false),
                     first_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     last_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     middle_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
                     phone_number = table.Column<string>(type: "text", nullable: false),
-                    payment_details = table.Column<string>(type: "jsonb", nullable: false),
-                    social_network = table.Column<string>(type: "jsonb", nullable: false)
+                    years_of_experience = table.Column<int>(type: "integer", nullable: false),
+                    payment_details = table.Column<string>(type: "jsonb", nullable: true),
+                    social_network = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
