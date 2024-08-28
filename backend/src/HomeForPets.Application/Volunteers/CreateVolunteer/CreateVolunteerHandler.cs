@@ -18,7 +18,7 @@ public class CreateVolunteerHandler
     {
         var volunteerId = VolunteerId.NewId();
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
-        var fullname = FullName.Create(request.FirstName, request.LastName, request.MiddleName).Value;
+        var fullname = FullName.Create(request.FullNameDto.FirstName, request.FullNameDto.LastName, request.FullNameDto.MiddleName).Value;
         var description = Description.Create(request.Description).Value;
         var yearsOfExperience = YearsOfExperience.Create(request.WorkExperience).Value;
         var existVolunteerByPhone =await _volunteersRepository.GetByPhoneNumber(phoneNumber);
