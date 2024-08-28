@@ -8,7 +8,7 @@ public record PhoneNumber
     private static readonly Regex ValidationRegex = new Regex(
         @"^\+?[78][-\(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$",
         RegexOptions.Singleline | RegexOptions.Compiled);
-    public PhoneNumber(string number)
+    private PhoneNumber(string number)
     {
         Number = number;
     }

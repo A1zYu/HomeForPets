@@ -20,6 +20,7 @@ public class CreateVolunteerHandler
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
         var fullname = FullName.Create(request.FirstName, request.LastName, request.MiddleName).Value;
         var description = Description.Create(request.Description).Value;
+        var yearsOfExperience = YearsOfExperience.Create(request.WorkExperience).Value;
         var existVolunteerByPhone =await _volunteersRepository.GetByPhoneNumber(phoneNumber);
         if (existVolunteerByPhone is not null)
             return Errors.Volunteer.AlreadyExist();
@@ -28,7 +29,7 @@ public class CreateVolunteerHandler
             fullname,
             phoneNumber,
             description,
-            request.WorkExperience
+            yearsOfExperience
         );
         if (volunteer.IsFailure)
         {
