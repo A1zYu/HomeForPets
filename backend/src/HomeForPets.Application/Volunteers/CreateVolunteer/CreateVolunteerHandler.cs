@@ -3,16 +3,19 @@ using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.Volunteers;
+using Microsoft.Extensions.Logging;
 
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
 
 public class CreateVolunteerHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
 
-    public CreateVolunteerHandler(IVolunteersRepository volunteersRepository)
+    public CreateVolunteerHandler(IVolunteersRepository volunteersRepository, ILogger<CreateVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
+        _logger = logger;
     }
     public async Task<Result<Guid,Error>> Handle(CreateVolunteerRequest request,CancellationToken cancellationToken=default)
     {
@@ -35,6 +38,7 @@ public class CreateVolunteerHandler
         {
             return volunteer.Error;
         }
+        _logger.LogInformation("Create volunteer : {volunterId} ",volunteerId.Value);
         return await _volunteersRepository.Add(volunteer.Value,cancellationToken);;
     }
 }
