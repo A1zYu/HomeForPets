@@ -3,9 +3,7 @@
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
 
 public record CreateVolunteerRequest(
-        string FirstName,
-        string LastName,
-        string? MiddleName,
+        FullNameDto FullNameDto,
         string Description,
         int WorkExperience,
         string PhoneNumber,
