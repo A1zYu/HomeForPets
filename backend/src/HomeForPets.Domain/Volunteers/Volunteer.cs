@@ -38,6 +38,17 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int? GetPetsNeedForHelp() => _pets.Count(x => x.HelpStatus == HelpStatus.NeedForHelp);
     
     public void AddPets(IEnumerable<Pet> pets) => _pets.AddRange(pets);
+    public void UpdateMainInfo(
+        FullName fullName,
+        Description description,
+        YearsOfExperience yearsOfExperience,
+        PhoneNumber phoneNumber)
+    {
+        FullName = fullName;
+        Description = description;
+        YearsOfExperience = yearsOfExperience;
+        PhoneNumber = phoneNumber;
+    }
 
     public static Result<Volunteer,Error> Create(
         VolunteerId id,

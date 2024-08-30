@@ -9,7 +9,6 @@ namespace HomeForPets.Domain.Volunteers;
 
 public class Pet : Shared.Entity<PetId>
 {
-    private readonly List<PaymentDetails> _paymentDetails = [];
     private readonly List<PetPhoto> _petPhotos = [];
 
     //ef core
@@ -50,7 +49,6 @@ public class Pet : Shared.Entity<PetId>
     public PaymentDetailsList PaymentDetailsList { get; private set; }
 
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
-    public void AddPaymentDetails(PaymentDetails paymentDetails) => _paymentDetails.Add(paymentDetails);
     public void AddPetPhotos(PetPhoto petPhotos) => _petPhotos.Add(petPhotos);
     
     public static Result<Pet, Error> Create(PetId id,
