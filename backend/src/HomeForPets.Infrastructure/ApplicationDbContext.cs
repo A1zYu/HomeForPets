@@ -16,6 +16,7 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
     {
         optionsBuilder.UseNpgsql(configuration.GetConnectionString(DATABASE))
             .UseLoggerFactory(CreateLoggerFactory)
+            .EnableSensitiveDataLogging()
             .UseSnakeCaseNamingConvention();
 
     }

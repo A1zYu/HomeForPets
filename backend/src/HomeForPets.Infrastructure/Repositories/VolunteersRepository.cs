@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Application.Volunteers;
-using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.Shared.ValueObjects;
@@ -27,7 +26,6 @@ public class VolunteersRepository : IVolunteersRepository
     public async Task<Result<Volunteer,Error>> GetById(VolunteerId id, CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext.Volunteers
-            .Include(x => x.Pets)
             .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
 
         if (volunteer is null)

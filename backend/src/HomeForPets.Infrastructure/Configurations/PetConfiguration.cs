@@ -93,6 +93,8 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade)
             .HasConstraintName("pet_photos");
+        builder.Navigation(p => p.PetPhotos).AutoInclude();
+        
         builder.OwnsOne(p => p.PaymentDetailsList, pb =>
         {
             pb.ToJson("payment_details");
