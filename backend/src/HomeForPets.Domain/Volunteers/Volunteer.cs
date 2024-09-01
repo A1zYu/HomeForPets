@@ -11,9 +11,7 @@ public class Volunteer : Shared.Entity<VolunteerId>
     private readonly List<Pet> _pets = [];
 
     //ef core
-    private Volunteer(VolunteerId id) : base(id)
-    {
-    }
+    private Volunteer(VolunteerId id) : base(id) { }
     private Volunteer(VolunteerId id,
         FullName fullName,
         PhoneNumber phoneNumber,

@@ -12,9 +12,7 @@ public class Pet : Shared.Entity<PetId>
     private readonly List<PetPhoto> _petPhotos = [];
 
     //ef core
-    private Pet(PetId id) : base(id)
-    {
-    }
+    private Pet(PetId id) : base(id) {}
 
     public Pet(PetId id,
         string name,

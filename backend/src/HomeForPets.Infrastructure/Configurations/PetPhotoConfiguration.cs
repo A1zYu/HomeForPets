@@ -10,6 +10,7 @@ public class PetPhotoConfiguration : IEntityTypeConfiguration<PetPhoto>
 {
     public void Configure(EntityTypeBuilder<PetPhoto> builder)
     {
+        builder.ToTable("pet_photos");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
             .HasConversion(

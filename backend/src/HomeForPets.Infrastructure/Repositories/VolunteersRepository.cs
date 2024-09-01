@@ -23,7 +23,9 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Volunteer,Error>> GetById(VolunteerId id, CancellationToken cancellationToken = default)
+    public async Task<Result<Volunteer,Error>> GetById(
+        VolunteerId id, 
+        CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext.Volunteers
             .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);

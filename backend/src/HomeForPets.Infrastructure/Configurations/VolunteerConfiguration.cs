@@ -14,12 +14,16 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
+        builder.ToTable("volunteers");
+        
         builder.HasKey(x => x.Id);
+        
         builder.Property(x => x.Id)
             .HasConversion(
                 id => id.Value,
                 value => VolunteerId.Create(value)
                 );
+        
         builder.ComplexProperty(v => v.Description, vb =>
         {
             vb.Property(x => x.Text)
@@ -83,10 +87,9 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                     .IsRequired();
             });
         });
-        builder.HasMany(x => x.Pets)
+        builder.HasMany(v => v.Pets)
             .WithOne()
-            .HasForeignKey("volunteer_id")
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey("volunteer_id");
         
         builder.Navigation(v => v.Pets).AutoInclude();
     }

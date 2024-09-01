@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeForPets.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240830170505_Initial")]
+    [Migration("20240901135532_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace HomeForPets.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -142,11 +142,15 @@ namespace HomeForPets.Infrastructure.Migrations
                             b1.Property<string>("HealthInfo")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("help_info");
+                                .HasColumnName("health_info");
 
                             b1.Property<double>("Height")
                                 .HasColumnType("double precision")
                                 .HasColumnName("height");
+
+                            b1.Property<bool>("IsNeutered")
+                                .HasColumnType("boolean")
+                                .HasColumnName("is_neutered");
 
                             b1.Property<bool>("IsVaccinated")
                                 .HasColumnType("boolean")
@@ -211,12 +215,12 @@ namespace HomeForPets.Infrastructure.Migrations
                         .HasColumnName("pet_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_pet_photo");
+                        .HasName("pk_pet_photos");
 
                     b.HasIndex("PetId")
-                        .HasDatabaseName("ix_pet_photo_pet_id");
+                        .HasDatabaseName("ix_pet_photos_pet_id");
 
-                    b.ToTable("pet_photo", (string)null);
+                    b.ToTable("pet_photos", (string)null);
                 });
 
             modelBuilder.Entity("HomeForPets.Domain.Volunteers.Volunteer", b =>
@@ -297,7 +301,6 @@ namespace HomeForPets.Infrastructure.Migrations
                     b.HasOne("HomeForPets.Domain.Volunteers.Volunteer", null)
                         .WithMany("Pets")
                         .HasForeignKey("volunteer_id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
 
                     b.OwnsOne("HomeForPets.Domain.Shared.ValueObjects.PaymentDetailsList", "PaymentDetailsList", b1 =>
@@ -359,7 +362,7 @@ namespace HomeForPets.Infrastructure.Migrations
                         .WithMany("PetPhotos")
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("pet_photos");
+                        .HasConstraintName("fk_pet_photos_pets_pet_id");
                 });
 
             modelBuilder.Entity("HomeForPets.Domain.Volunteers.Volunteer", b =>
