@@ -39,10 +39,14 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
     public void Delete()
     {
         _idDeleted = true;
+        foreach (var pet in _pets)
+            pet.Delete();
     }
     public void Restore()
     {
         _idDeleted = false;
+        foreach (var pet in _pets)
+            pet.Restore();
     }
     public void AddPets(IEnumerable<Pet> pets) => _pets.AddRange(pets);
     public void AddSocialNetworks(SocialNetworkList list) => SocialNetworkList = list;
