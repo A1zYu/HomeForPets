@@ -6,10 +6,11 @@ using HomeForPets.Domain.Shared.ValueObjects;
 
 namespace HomeForPets.Domain.Volunteers;
 
-public class Volunteer : Shared.Entity<VolunteerId>
+public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
 {
     private readonly List<Pet> _pets = [];
 
+    private bool _idDeleted = false;
     //ef core
     private Volunteer(VolunteerId id) : base(id) { }
     private Volunteer(VolunteerId id,
@@ -34,8 +35,18 @@ public class Volunteer : Shared.Entity<VolunteerId>
     public int? GetPetsHomeFoundCount() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);
     public int? GetPetsSearchForHomeCount() => _pets.Count(x => x.HelpStatus == HelpStatus.SearchHome);
     public int? GetPetsNeedForHelp() => _pets.Count(x => x.HelpStatus == HelpStatus.NeedForHelp);
-    
+
+    public void Delete()
+    {
+        _idDeleted = true;
+    }
+    public void Restore()
+    {
+        _idDeleted = false;
+    }
     public void AddPets(IEnumerable<Pet> pets) => _pets.AddRange(pets);
+    public void AddSocialNetworks(SocialNetworkList list) => SocialNetworkList = list;
+    public void AddPaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetailsList = paymentDetails;
     public void UpdateMainInfo(
         FullName fullName,
         Description description,

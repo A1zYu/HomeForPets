@@ -7,9 +7,10 @@ using HomeForPets.Domain.Species;
 
 namespace HomeForPets.Domain.Volunteers;
 
-public class Pet : Shared.Entity<PetId>
+public class Pet : Shared.Entity<PetId>, ISoftDeletable
 {
     private readonly List<PetPhoto> _petPhotos = [];
+    private bool _idDeleted;
 
     //ef core
     private Pet(PetId id) : base(id) {}
@@ -48,7 +49,14 @@ public class Pet : Shared.Entity<PetId>
 
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
     public void AddPetPhotos(PetPhoto petPhotos) => _petPhotos.Add(petPhotos);
-    
+    public void Delete()
+    {
+        _idDeleted = true;
+    }
+    public void Restore()
+    {
+        _idDeleted = false;
+    }
     public static Result<Pet, Error> Create(PetId id,
         string name,
         Description description,

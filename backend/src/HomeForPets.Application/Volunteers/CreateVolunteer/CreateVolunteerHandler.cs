@@ -17,14 +17,19 @@ public class CreateVolunteerHandler
         _volunteersRepository = volunteersRepository;
         _logger = logger;
     }
-    public async Task<Result<Guid,Error>> Handle(CreateVolunteerRequest request,CancellationToken cancellationToken=default)
+
+    public async Task<Result<Guid, Error>> Handle(CreateVolunteerRequest request,
+        CancellationToken cancellationToken = default)
     {
         var volunteerId = VolunteerId.NewId();
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
-        var fullname = FullName.Create(request.FullNameDto.FirstName, request.FullNameDto.LastName, request.FullNameDto.MiddleName).Value;
+        var fullname = FullName.Create(request.FullNameDto.FirstName, request.FullNameDto.LastName,
+            request.FullNameDto.MiddleName).Value;
         var description = Description.Create(request.Description).Value;
         var yearsOfExperience = YearsOfExperience.Create(request.WorkExperience).Value;
-        var existVolunteerByPhone =await _volunteersRepository.GetByPhoneNumber(phoneNumber);
+        
+        
+        var existVolunteerByPhone = await _volunteersRepository.GetByPhoneNumber(phoneNumber);
         if (existVolunteerByPhone is not null)
             return Errors.Volunteer.AlreadyExist();
         var volunteer = Volunteer.Create(
@@ -38,7 +43,22 @@ public class CreateVolunteerHandler
         {
             return volunteer.Error;
         }
-        _logger.LogInformation("Create volunteer : {volunterId} ",volunteerId.Value);
-        return await _volunteersRepository.Add(volunteer.Value,cancellationToken);;
+
+        if (request.SocialNetworks != null && request.SocialNetworks.Any())
+        {
+            var socialNetworks = SocialNetworkList.Create(request.SocialNetworks
+                .Select(x => SocialNetwork.Create(x.Name, x.Path).Value));
+            volunteer.Value.AddSocialNetworks(socialNetworks);
+        }
+
+        if (request.PaymentDetails != null && request.PaymentDetails.Any())
+        {
+            var paymentDetails = PaymentDetailsList.Create(request.PaymentDetails
+                .Select(x=>PaymentDetails.Create(x.Name,x.Description).Value));
+            volunteer.Value.AddPaymentDetails(paymentDetails);
+        }
+        _logger.LogInformation("Create volunteer : {volunteerId} ", volunteerId.Value);
+        return await _volunteersRepository.Add(volunteer.Value, cancellationToken);
+        ;
     }
 }
