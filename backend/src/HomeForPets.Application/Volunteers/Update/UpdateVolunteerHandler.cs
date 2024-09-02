@@ -29,11 +29,16 @@ public class UpdateVolunteerHandler
             request.Dto.FullNameDto.FirstName,
             request.Dto.FullNameDto.LastName,
             request.Dto.FullNameDto.MiddleName).Value;
+        
         var newDescription = Description.Create(request.Dto.Description).Value;
+        
         var newPhoneNumber = PhoneNumber.Create(request.Dto.PhoneNumber).Value;
+        
         var newWorkExperience = YearsOfExperience.Create(request.Dto.WorkExperience).Value;
         
-        volunteerResult.Value.UpdateMainInfo(newFullName,newDescription,newWorkExperience,newPhoneNumber);
+        volunteerResult.Value
+            .UpdateMainInfo(newFullName,newDescription,newWorkExperience,newPhoneNumber);
+        
         var result = await _volunteersRepository.Save(volunteerResult.Value, cancellationToken);
 
         _logger.LogInformation(

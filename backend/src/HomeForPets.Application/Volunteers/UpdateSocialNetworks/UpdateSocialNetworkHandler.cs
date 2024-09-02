@@ -8,10 +8,10 @@ namespace HomeForPets.Application.Volunteers.UpdateSocialNetworks;
 
 public class UpdateSocialNetworkHandler
 {
-    private readonly ILogger<DeleteVolunteerHandler> _logger;
+    private readonly ILogger<UpdateSocialNetworkHandler> _logger;
     private readonly IVolunteersRepository _volunteersRepository;
 
-    public UpdateSocialNetworkHandler(ILogger<DeleteVolunteerHandler> logger, IVolunteersRepository volunteersRepository)
+    public UpdateSocialNetworkHandler(ILogger<UpdateSocialNetworkHandler> logger, IVolunteersRepository volunteersRepository)
     {
         _logger = logger;
         _volunteersRepository = volunteersRepository;
@@ -26,7 +26,9 @@ public class UpdateSocialNetworkHandler
         
         var socialNetworks = SocialNetworkList.Create(request.SocialNetworksDto.SocialNetworks
             .Select(x => SocialNetwork.Create(x.Name, x.Path).Value));
+        
         volunteerResult.Value.AddSocialNetworks(socialNetworks);
+        
         var result =await _volunteersRepository.Save(volunteerResult.Value, cancellationToken);
         
         _logger.LogInformation(

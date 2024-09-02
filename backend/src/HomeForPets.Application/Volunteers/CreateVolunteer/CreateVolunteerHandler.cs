@@ -22,16 +22,20 @@ public class CreateVolunteerHandler
         CancellationToken cancellationToken = default)
     {
         var volunteerId = VolunteerId.NewId();
+        
         var phoneNumber = PhoneNumber.Create(request.PhoneNumber).Value;
+        
         var fullname = FullName.Create(request.FullNameDto.FirstName, request.FullNameDto.LastName,
             request.FullNameDto.MiddleName).Value;
-        var description = Description.Create(request.Description).Value;
-        var yearsOfExperience = YearsOfExperience.Create(request.WorkExperience).Value;
         
+        var description = Description.Create(request.Description).Value;
+        
+        var yearsOfExperience = YearsOfExperience.Create(request.WorkExperience).Value;
         
         var existVolunteerByPhone = await _volunteersRepository.GetByPhoneNumber(phoneNumber);
         if (existVolunteerByPhone is not null)
             return Errors.Volunteer.AlreadyExist();
+        
         var volunteer = Volunteer.Create(
             volunteerId,
             fullname,
@@ -44,14 +48,14 @@ public class CreateVolunteerHandler
             return volunteer.Error;
         }
 
-        if (request.SocialNetworks != null && request.SocialNetworks.Any())
+        if (request.SocialNetworks.Any())
         {
             var socialNetworks = SocialNetworkList.Create(request.SocialNetworks
                 .Select(x => SocialNetwork.Create(x.Name, x.Path).Value));
             volunteer.Value.AddSocialNetworks(socialNetworks);
         }
 
-        if (request.PaymentDetails != null && request.PaymentDetails.Any())
+        if (request.PaymentDetails.Any())
         {
             var paymentDetails = PaymentDetailsList.Create(request.PaymentDetails
                 .Select(x=>PaymentDetails.Create(x.Name,x.Description).Value));

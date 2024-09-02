@@ -105,11 +105,11 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         pb.OwnsMany(p => p.PaymentDetails, sb =>
         {
             sb.Property(p => p.Name)
-                .HasColumnName("payment_details_name")
+                .HasColumnName("name")
                 .IsRequired();
         
             sb.Property(p => p.Description)
-                .HasColumnName("payment_details_description")
+                .HasColumnName("description")
                 .IsRequired();
         });
     });

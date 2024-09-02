@@ -28,6 +28,7 @@ namespace HomeForPets.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
                     first_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     last_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
@@ -69,6 +70,7 @@ namespace HomeForPets.Infrastructure.Migrations
                     name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     help_status = table.Column<int>(type: "integer", nullable: false),
                     created_date = table.Column<DateOnly>(type: "date", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
                     city = table.Column<string>(type: "text", nullable: false),
                     district = table.Column<string>(type: "text", nullable: false),
@@ -94,7 +96,8 @@ namespace HomeForPets.Infrastructure.Migrations
                         name: "fk_pets_volunteers_volunteer_id",
                         column: x => x.volunteer_id,
                         principalTable: "volunteers",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
