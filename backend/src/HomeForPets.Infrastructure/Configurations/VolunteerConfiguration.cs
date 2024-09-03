@@ -1,12 +1,8 @@
-﻿using System.Text.Json;
-using HomeForPets.Domain.Constraints;
+﻿using HomeForPets.Domain.Constraints;
 using HomeForPets.Domain.Shared.Ids;
-using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.Volunteers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.VisualBasic;
 
 namespace HomeForPets.Infrastructure.Configurations;
 
@@ -14,12 +10,16 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
+        builder.ToTable("volunteers");
+        
         builder.HasKey(x => x.Id);
+        
         builder.Property(x => x.Id)
             .HasConversion(
                 id => id.Value,
                 value => VolunteerId.Create(value)
                 );
+        
         builder.ComplexProperty(v => v.Description, vb =>
         {
             vb.Property(x => x.Text)
@@ -61,11 +61,11 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             sb.OwnsMany(s => s.SocialNetworks, snB =>
             {
                 snB.Property(p => p.Name)
-                    .HasColumnName("social_network_name")
+                    .HasColumnName("name")
                     .IsRequired();
             
                 snB.Property(p => p.Path)
-                    .HasColumnName("social_network_path")
+                    .HasColumnName("path")
                     .IsRequired();
             });
         });
@@ -75,17 +75,23 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             pb.OwnsMany(p => p.PaymentDetails,sb =>
             {
                 sb.Property(p => p.Name)
-                    .HasColumnName("payment_details_name")
+                    .HasColumnName("name")
                     .IsRequired();
             
                 sb.Property(p => p.Description)
-                    .HasColumnName("payment_details_description")
+                    .HasColumnName("description")
                     .IsRequired();
             });
         });
-        builder.HasMany(x => x.Pets)
+        builder.HasMany(v => v.Pets)
             .WithOne()
+            .HasForeignKey("volunteer_id")
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Navigation(v => v.Pets).AutoInclude();
 
+        builder.Property("_idDeleted")
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .HasColumnName("is_deleted");
     }
 }

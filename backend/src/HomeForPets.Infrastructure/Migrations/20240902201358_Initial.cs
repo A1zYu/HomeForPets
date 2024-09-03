@@ -28,6 +28,7 @@ namespace HomeForPets.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
                     first_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     last_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
@@ -69,6 +70,7 @@ namespace HomeForPets.Infrastructure.Migrations
                     name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     help_status = table.Column<int>(type: "integer", nullable: false),
                     created_date = table.Column<DateOnly>(type: "date", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
                     city = table.Column<string>(type: "text", nullable: false),
                     district = table.Column<string>(type: "text", nullable: false),
@@ -77,8 +79,9 @@ namespace HomeForPets.Infrastructure.Migrations
                     description = table.Column<string>(type: "text", nullable: false),
                     birth_of_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     color = table.Column<string>(type: "text", nullable: false),
-                    help_info = table.Column<string>(type: "text", nullable: false),
+                    health_info = table.Column<string>(type: "text", nullable: false),
                     height = table.Column<double>(type: "double precision", nullable: false),
+                    is_neutered = table.Column<bool>(type: "boolean", nullable: false),
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     weight = table.Column<double>(type: "double precision", nullable: false),
                     phone_number = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
@@ -98,7 +101,7 @@ namespace HomeForPets.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "pet_photo",
+                name: "pet_photos",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -108,9 +111,9 @@ namespace HomeForPets.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pet_photo", x => x.id);
+                    table.PrimaryKey("pk_pet_photos", x => x.id);
                     table.ForeignKey(
-                        name: "pet_photos",
+                        name: "fk_pet_photos_pets_pet_id",
                         column: x => x.pet_id,
                         principalTable: "pets",
                         principalColumn: "id",
@@ -123,8 +126,8 @@ namespace HomeForPets.Infrastructure.Migrations
                 column: "species_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_pet_photo_pet_id",
-                table: "pet_photo",
+                name: "ix_pet_photos_pet_id",
+                table: "pet_photos",
                 column: "pet_id");
 
             migrationBuilder.CreateIndex(
@@ -140,7 +143,7 @@ namespace HomeForPets.Infrastructure.Migrations
                 name: "breed");
 
             migrationBuilder.DropTable(
-                name: "pet_photo");
+                name: "pet_photos");
 
             migrationBuilder.DropTable(
                 name: "species");

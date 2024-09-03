@@ -7,15 +7,13 @@ using HomeForPets.Domain.Species;
 
 namespace HomeForPets.Domain.Volunteers;
 
-public class Pet : Shared.Entity<PetId>
+public class Pet : Shared.Entity<PetId>, ISoftDeletable
 {
-    private readonly List<PaymentDetails> _paymentDetails = [];
     private readonly List<PetPhoto> _petPhotos = [];
+    private bool _idDeleted;
 
     //ef core
-    private Pet(PetId id) : base(id)
-    {
-    }
+    private Pet(PetId id) : base(id) {}
 
     public Pet(PetId id,
         string name,
@@ -50,9 +48,15 @@ public class Pet : Shared.Entity<PetId>
     public PaymentDetailsList PaymentDetailsList { get; private set; }
 
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
-    public void AddPaymentDetails(PaymentDetails paymentDetails) => _paymentDetails.Add(paymentDetails);
     public void AddPetPhotos(PetPhoto petPhotos) => _petPhotos.Add(petPhotos);
-    
+    public void Delete()
+    {
+        _idDeleted = true;
+    }
+    public void Restore()
+    {
+        _idDeleted = false;
+    }
     public static Result<Pet, Error> Create(PetId id,
         string name,
         Description description,

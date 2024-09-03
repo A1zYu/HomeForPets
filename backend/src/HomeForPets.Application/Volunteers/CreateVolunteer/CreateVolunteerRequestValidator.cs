@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Xml.Linq;
+using FluentValidation;
 using HomeForPets.Application.Dtos;
 using HomeForPets.Application.Validation;
 using HomeForPets.Domain.Shared.ValueObjects;
@@ -15,9 +16,10 @@ public class CreateVolunteerRequestValidator : AbstractValidator<CreateVolunteer
             .MustBeValueObject(x => 
                 FullName.Create(x.FirstName, x.LastName, x.MiddleName));
         RuleFor(x => x.Description).MustBeValueObject(Description.Create);
+        RuleForEach(x => x.PaymentDetails)
+            .MustBeValueObject(p => PaymentDetails.Create(p.Name, p.Description));
         RuleForEach(x => x.SocialNetworks)
-            .MustBeValueObject(x => SocialNetwork.Create(x.Name, x.Path));
-        RuleForEach(x => x.PaymentDetailsList)
-            .MustBeValueObject(x => SocialNetwork.Create(x.Name, x.Description));
+            .MustBeValueObject(p => SocialNetwork.Create(p.Name, p.Path));
+
     }
 }

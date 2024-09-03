@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Shared.Ids;
 
-namespace HomeForPets.Domain.Species;
+namespace HomeForPets.Domain.Volunteers;
 
 public record SpeciesBreed
 {

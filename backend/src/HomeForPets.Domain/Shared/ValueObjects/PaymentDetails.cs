@@ -1,25 +1,19 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Volunteers;
 
 namespace HomeForPets.Domain.Shared.ValueObjects;
 
 public record PaymentDetailsList
 {
-    private PaymentDetailsList()
-    {
-        
-    }
-    private PaymentDetailsList(IEnumerable<PaymentDetails> paymentDetails)
-    {
+    private PaymentDetailsList() { }
+    public PaymentDetailsList(IEnumerable<PaymentDetails> paymentDetails) =>
         PaymentDetails = paymentDetails.ToList();
-    }
     public IReadOnlyList<PaymentDetails> PaymentDetails { get; }
+    public static PaymentDetailsList Create(IEnumerable<PaymentDetails> list) => new(list);
 }
 public record PaymentDetails
 {
-    private PaymentDetails()
-    {
-        
-    }
+    private PaymentDetails() { }
     private PaymentDetails(string name, string description)
     {
         Name = name;
@@ -30,10 +24,10 @@ public record PaymentDetails
 
     public static Result<PaymentDetails,Error> Create(string name, string description)
     {
-        if (string.IsNullOrWhiteSpace(name) && name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
             return Errors.General.Validation("Payment detail name");
 
-        if (string.IsNullOrWhiteSpace(description) && description.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(description) || description.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
             return Errors.General.Validation("Payment detail description");
         var paymentDetails = new PaymentDetails(name, description);
         return paymentDetails;

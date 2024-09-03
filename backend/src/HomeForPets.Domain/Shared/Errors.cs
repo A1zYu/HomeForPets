@@ -14,6 +14,11 @@ public static class Errors
             var forId = id==null?"": $" for id: '{id}' ";
             return Error.NotFound("is.not.invalid", $"record not found {forId}");
         }
+        public static Error ValueIsRequired(string? name = null)
+        {
+            var label = name == null ? "" : " " + name + " ";
+            return Error.Validation("length.is.invalid", $"invalid{label}length)");
+        }
     }
     public static class Volunteer
     {

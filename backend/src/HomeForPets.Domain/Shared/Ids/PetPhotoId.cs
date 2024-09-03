@@ -1,10 +1,10 @@
 ﻿namespace HomeForPets.Domain.Shared.Ids;
 
-public class PetPhotoId
+public record PetPhotoId
 {
     public Guid Value { get; }
 
-    protected PetPhotoId(Guid id) => Value = id;
+    private PetPhotoId(Guid id) => Value = id;
     public static PetPhotoId NewId() => new (Guid.NewGuid());
     public static PetPhotoId Empty() => new (Guid.Empty);
 

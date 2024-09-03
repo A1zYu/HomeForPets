@@ -5,22 +5,14 @@ namespace HomeForPets.Domain.Volunteers;
 
 public record SocialNetworkList
 {
-    public SocialNetworkList()
-    {
-        
-    }
-    private SocialNetworkList(IEnumerable<SocialNetwork> socialNetworks)
-    {
-        socialNetworks = socialNetworks.ToList();
-    }
-    public IReadOnlyList<SocialNetwork> SocialNetworks { get; }
+    private SocialNetworkList() { }
+    private SocialNetworkList(IEnumerable<SocialNetwork> list) => SocialNetworks = list.ToList();
+    public IReadOnlyList<SocialNetwork> SocialNetworks { get; } = default!;
+    public static SocialNetworkList Create(IEnumerable<SocialNetwork> list) => new(list);
 }
 public record SocialNetwork
 {
-    public SocialNetwork()
-    {
-        
-    }
+    private SocialNetwork() { }
     private SocialNetwork(string name, string path)
     {
         Name = name;
@@ -31,14 +23,14 @@ public record SocialNetwork
 
     public static Result<SocialNetwork,Error> Create(string name, string path)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("Socail network name");
+            return Errors.General.Validation("Social network name");
         }
 
         if (string.IsNullOrWhiteSpace(path))
         {
-            return Errors.General.Validation("Payment detail path");
+            return Errors.General.Validation("Social network path");
         }
         var socialNetwork = new SocialNetwork(name, path);
         return socialNetwork;

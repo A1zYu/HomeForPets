@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HomeForPets.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240828221446_Initial")]
+    [Migration("20240902201358_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace HomeForPets.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -85,11 +85,16 @@ namespace HomeForPets.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)")
                         .HasColumnName("name");
 
-                    b.Property<Guid?>("VolunteerId")
+                    b.Property<bool>("_idDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<Guid?>("volunteer_id")
                         .HasColumnType("uuid")
                         .HasColumnName("volunteer_id");
 
@@ -122,6 +127,7 @@ namespace HomeForPets.Infrastructure.Migrations
 
                             b1.Property<string>("Text")
                                 .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("text")
                                 .HasColumnName("description");
                         });
@@ -142,11 +148,15 @@ namespace HomeForPets.Infrastructure.Migrations
                             b1.Property<string>("HealthInfo")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("help_info");
+                                .HasColumnName("health_info");
 
                             b1.Property<double>("Height")
                                 .HasColumnType("double precision")
                                 .HasColumnName("height");
+
+                            b1.Property<bool>("IsNeutered")
+                                .HasColumnType("boolean")
+                                .HasColumnName("is_neutered");
 
                             b1.Property<bool>("IsVaccinated")
                                 .HasColumnType("boolean")
@@ -184,7 +194,7 @@ namespace HomeForPets.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
-                    b.HasIndex("VolunteerId")
+                    b.HasIndex("volunteer_id")
                         .HasDatabaseName("ix_pets_volunteer_id");
 
                     b.ToTable("pets", (string)null);
@@ -211,12 +221,12 @@ namespace HomeForPets.Infrastructure.Migrations
                         .HasColumnName("pet_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_pet_photo");
+                        .HasName("pk_pet_photos");
 
                     b.HasIndex("PetId")
-                        .HasDatabaseName("ix_pet_photo_pet_id");
+                        .HasDatabaseName("ix_pet_photos_pet_id");
 
-                    b.ToTable("pet_photo", (string)null);
+                    b.ToTable("pet_photos", (string)null);
                 });
 
             modelBuilder.Entity("HomeForPets.Domain.Volunteers.Volunteer", b =>
@@ -225,12 +235,17 @@ namespace HomeForPets.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<bool>("_idDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.ComplexProperty<Dictionary<string, object>>("Description", "HomeForPets.Domain.Volunteers.Volunteer.Description#Description", b1 =>
                         {
                             b1.IsRequired();
 
                             b1.Property<string>("Text")
                                 .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
                                 .HasColumnType("text")
                                 .HasColumnName("description");
                         });
@@ -296,7 +311,7 @@ namespace HomeForPets.Infrastructure.Migrations
                 {
                     b.HasOne("HomeForPets.Domain.Volunteers.Volunteer", null)
                         .WithMany("Pets")
-                        .HasForeignKey("VolunteerId")
+                        .HasForeignKey("volunteer_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
 
@@ -327,13 +342,15 @@ namespace HomeForPets.Infrastructure.Migrations
 
                                     b2.Property<string>("Description")
                                         .IsRequired()
+                                        .ValueGeneratedOnUpdateSometimes()
                                         .HasColumnType("text")
-                                        .HasColumnName("payment_details_description");
+                                        .HasColumnName("description");
 
                                     b2.Property<string>("Name")
                                         .IsRequired()
+                                        .ValueGeneratedOnUpdateSometimes()
                                         .HasColumnType("text")
-                                        .HasColumnName("payment_details_name");
+                                        .HasColumnName("name");
 
                                     b2.HasKey("PaymentDetailsListPetId", "Id");
 
@@ -359,7 +376,7 @@ namespace HomeForPets.Infrastructure.Migrations
                         .WithMany("PetPhotos")
                         .HasForeignKey("PetId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("pet_photos");
+                        .HasConstraintName("fk_pet_photos_pets_pet_id");
                 });
 
             modelBuilder.Entity("HomeForPets.Domain.Volunteers.Volunteer", b =>
@@ -390,13 +407,14 @@ namespace HomeForPets.Infrastructure.Migrations
 
                                     b2.Property<string>("Name")
                                         .IsRequired()
+                                        .ValueGeneratedOnUpdateSometimes()
                                         .HasColumnType("text")
-                                        .HasColumnName("social_network_name");
+                                        .HasColumnName("name");
 
                                     b2.Property<string>("Path")
                                         .IsRequired()
                                         .HasColumnType("text")
-                                        .HasColumnName("social_network_path");
+                                        .HasColumnName("path");
 
                                     b2.HasKey("SocialNetworkListVolunteerId", "Id");
 
@@ -438,13 +456,15 @@ namespace HomeForPets.Infrastructure.Migrations
 
                                     b2.Property<string>("Description")
                                         .IsRequired()
+                                        .ValueGeneratedOnUpdateSometimes()
                                         .HasColumnType("text")
-                                        .HasColumnName("payment_details_description");
+                                        .HasColumnName("description");
 
                                     b2.Property<string>("Name")
                                         .IsRequired()
+                                        .ValueGeneratedOnUpdateSometimes()
                                         .HasColumnType("text")
-                                        .HasColumnName("payment_details_name");
+                                        .HasColumnName("name");
 
                                     b2.HasKey("PaymentDetailsListVolunteerId", "Id");
 

@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Application.Volunteers;
-using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.Shared.ValueObjects;
@@ -24,17 +23,15 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id;
     }
 
-    public async Task<Result<Volunteer,Error>> GetById(VolunteerId volunteerId)
+    public async Task<Result<Volunteer,Error>> GetById(
+        VolunteerId id, 
+        CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext.Volunteers
-            .Include(x=>x.PaymentDetailsList)
-            .Include(x=>x.Pets)
-            .ThenInclude(x=>x.PetPhotos)
-            .FirstOrDefaultAsync(v => v.Id == volunteerId);
+            .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
+
         if (volunteer is null)
-        {
             return Errors.General.NotFound();
-        }
 
         return volunteer;
     }
@@ -44,5 +41,20 @@ public class VolunteersRepository : IVolunteersRepository
         var volunteer = await _dbContext.Volunteers
             .FirstOrDefaultAsync(x =>   x.PhoneNumber == phoneNumber);
         return volunteer;
+    }
+
+    public async Task<Guid> Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Volunteers.Remove(volunteer);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return volunteer.Id;
+    }
+
+    public async Task<Guid> Save(Volunteer volunteer, CancellationToken cancellationToken)
+    {
+        _dbContext.Volunteers.Attach(volunteer);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return volunteer.Id.Value;
     }
 }
