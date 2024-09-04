@@ -1,4 +1,7 @@
 ﻿using FluentValidation;
+using HomeForPets.Application.File.Create;
+using HomeForPets.Application.File.Delete;
+using HomeForPets.Application.File.Get;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Application.Volunteers.Delete;
 using HomeForPets.Application.Volunteers.Update;
@@ -17,6 +20,9 @@ public static class Inject
         service.AddScoped<DeleteVolunteerHandler>();
         service.AddScoped<UpdateSocialNetworkHandler>();
         service.AddScoped<UpdatePaymentDetailsHandler>();
+        service.AddScoped<CreateFileHandler>();
+        service.AddScoped<GetFileHandler>();
+        service.AddScoped<DeleteFileHandler>();
         service.AddValidatorsFromAssembly(typeof(Inject).Assembly);
         return service;
     }
