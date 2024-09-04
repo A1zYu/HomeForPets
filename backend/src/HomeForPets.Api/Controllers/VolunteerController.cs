@@ -23,7 +23,7 @@ public class VolunteerController : ApplicationController
         if (result.IsFailure)
             return result.Error.ToResponse();
 
-        return Ok(result.Value);
+        return Ok(Envelope.Ok(result.Value));
     }
 
     [HttpPut("{id:guid}/main-info")]
@@ -48,7 +48,7 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(result.Value);
+        return Ok(Envelope.Ok(result.Value));
     }
 
     [HttpDelete("{id:guid}")]
@@ -71,7 +71,7 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(result.Value);
+        return Ok(Envelope.Ok(result.Value));
     }
 
     [HttpPut("{id:guid}/social-networks")]
@@ -96,7 +96,7 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(result.Value);
+        return Ok(Envelope.Ok(result.Value));
     }
 
     [HttpPut("{id:guid}/payment-details")]
@@ -121,6 +121,6 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(result.Value);
+        return Ok(Envelope.Ok(result.Value));
     }
 }
