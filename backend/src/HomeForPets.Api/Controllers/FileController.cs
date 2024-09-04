@@ -26,7 +26,8 @@ public class FileController : ApplicationController
         [FromServices] CreateFileHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var request = new CreateFileDto(file.OpenReadStream(),file.FileName);
+        await using var fileStream = file.OpenReadStream();
+        var request = new CreateFileDto(fileStream,file.FileName);
 
         var result = await handler.Handle(request, cancellationToken);
         if (result.IsFailure)

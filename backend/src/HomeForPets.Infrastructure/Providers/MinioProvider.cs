@@ -13,7 +13,7 @@ public class MinioProvider : IFileProvider
 {
     private readonly IMinioClient _minioClient;
     private readonly ILogger<MinioProvider> _logger;
-
+    private const int PresignedUrlExpiryInSeconds = 60 * 60 * 24;
     public MinioProvider(IMinioClient minioClient, ILogger<MinioProvider> logger)
     {
         _minioClient = minioClient;
@@ -92,7 +92,7 @@ public class MinioProvider : IFileProvider
             var presignedGetObjectArgs = new PresignedGetObjectArgs()
                 .WithBucket(fileData.BucketName)
                 .WithObject(fileData.FilePath.Path)
-                .WithExpiry(60 * 60 * 24);;
+                .WithExpiry(PresignedUrlExpiryInSeconds);;
             var result = await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs);;
             if (string.IsNullOrEmpty(result))
             {
