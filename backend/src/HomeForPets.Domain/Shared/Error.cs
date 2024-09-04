@@ -2,22 +2,25 @@
 
 public record Error
 {
-    public const string SEPARATOR = "||";
+    private const string SEPARATOR = "||";
+    public static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);
+    public static readonly Error NullValue = new("error.nullValue", "Null value was provided", ErrorType.Failure);
     public string Code { get; set; }
     public string Message { get; set; }
     public ErrorType ErrorType { get; set; }
 
-    public Error(string code, string message, ErrorType errorType)
+    private Error(string code, string message, ErrorType errorType)
     {
         Code = code;
         Message = message;
         ErrorType = errorType;
     }
 
-    public static Error Validation(string code, string message) => new Error(code, message, ErrorType.Validation);
-    public static Error NotFound(string code, string message) => new Error(code, message, ErrorType.NotFound);
-    public static Error Failure(string code, string message) => new Error(code, message, ErrorType.Failure);
-    public static Error Conflict(string code, string message) => new Error(code, message, ErrorType.Conflict);
+    public static Error Validation(string code, string message) => new(code, message, ErrorType.Validation);
+    public static Error NotFound(string code, string message) => new(code, message, ErrorType.NotFound);
+    public static Error Failure(string code, string message) => new(code, message, ErrorType.Failure);
+    public static Error Conflict(string code, string message) => new(code, message, ErrorType.Conflict);
+
     public string Serialize()
     {
         return string.Join(SEPARATOR, Code, Message, ErrorType);
@@ -37,7 +40,7 @@ public record Error
             throw new ArgumentException("Invalid serialized format");
         }
 
-        return new Error(parts[0], parts[1], type);  
+        return new Error(parts[0], parts[1], type);
     }
 }
 
