@@ -2,18 +2,24 @@
 
 namespace HomeForPets.Api.Response;
 
-public record ResponseError(string? ErrorCode, string? ErrorMessage, string? InvalidFile);
 public record Envelope
 {
-    public Envelope(object? result, IEnumerable<ResponseError>? errors)
+    public object? Result { get; }
+
+    public ErrorList? Errors { get; }
+
+    public DateTime TimeGenerated { get; }
+
+    private Envelope(object? result, ErrorList? errors)
     {
         Result = result;
-        ResponseErrors = errors.ToList();
+        Errors = errors;
+        TimeGenerated = DateTime.Now;
     }
-    public object? Result { get; }
-    public IReadOnlyList<ResponseError> ResponseErrors { get; }
-    public DateTime TimeGenerated  => DateTime.Now;
 
-    public static Envelope Ok(object? result=null) => new(result, []);
-    public static Envelope Error(IEnumerable<ResponseError> errors) => new(null, errors);
+    public static Envelope Ok(object? result = null) =>
+        new(result, null);
+
+    public static Envelope Error(ErrorList errors) =>
+        new(null, errors);
 }

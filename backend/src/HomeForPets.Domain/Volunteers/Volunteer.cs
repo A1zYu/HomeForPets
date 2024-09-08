@@ -49,8 +49,18 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
             pet.Restore();
     }
     public void AddPets(IEnumerable<Pet> pets) => _pets.AddRange(pets);
+    public void AddPet(Pet pet) => _pets.Add(pet);
     public void AddSocialNetworks(SocialNetworkList list) => SocialNetworkList = list;
     public void AddPaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetailsList = paymentDetails;
+    
+    public Result<Pet, Error> GetIssueById(PetId petId)
+    {
+        var pet = _pets.FirstOrDefault(i => i.Id == petId);
+        if (pet is null)
+            return Errors.General.NotFound(petId.Value);
+
+        return pet;
+    }
     public void UpdateMainInfo(
         FullName fullName,
         Description description,

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using HomeForPets.Api.Response;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Api.Middlewares;
 
@@ -24,8 +25,8 @@ public class ExceptionMiddleware
         {
             _logger.LogError(ex, ex.Message);
             
-            var responseError = new ResponseError("server.internal", ex.Message, null);
-            var envelope = Envelope.Error([responseError]);
+            var error = Error.Failure("server.internal", ex.Message);
+            var envelope = Envelope.Error(error);
             
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
@@ -36,7 +37,8 @@ public class ExceptionMiddleware
 
 public static class ExceptionMiddlewareExtensions
 {
-    public static IApplicationBuilder UseExceptionMiddleware(this IApplicationBuilder builder)
+    public static IApplicationBuilder UseExceptionMiddleware(
+        this IApplicationBuilder builder)
     {
         return builder.UseMiddleware<ExceptionMiddleware>();
     }

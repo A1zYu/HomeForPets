@@ -2,7 +2,7 @@
 
 namespace HomeForPets.Application.Volunteers.CreateVolunteer;
 
-public record CreateVolunteerRequest(
+public record CreateVolunteerCommand(
         FullNameDto FullNameDto,
         string Description,
         int WorkExperience,

@@ -3,7 +3,7 @@
 namespace HomeForPets.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class ApplicationController : ControllerBase
+public abstract class ApplicationController : ControllerBase
 {
     
 }

@@ -1,4 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
+using HomeForPets.Application.Database;
+using HomeForPets.Application.Extensions;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.Volunteers;
@@ -10,41 +13,53 @@ public class UpdateVolunteerHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly ILogger<UpdateVolunteerHandler> _logger;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateMainInfoCommand> _validator;
 
-    public UpdateVolunteerHandler(IVolunteersRepository volunteersRepository, ILogger<UpdateVolunteerHandler> logger)
+    public UpdateVolunteerHandler(IVolunteersRepository volunteersRepository, ILogger<UpdateVolunteerHandler> logger, IUnitOfWork unitOfWork, IValidator<UpdateMainInfoCommand> validator)
     {
         _volunteersRepository = volunteersRepository;
         _logger = logger;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
-    public async Task<Result<Guid, Error>> Handle(
-        UpdateMainInfoRequest request,
+    public async Task<Result<Guid, ErrorList>> Handle(
+        UpdateMainInfoCommand command,
         CancellationToken cancellationToken = default)
     {
-        var volunteerResult =await _volunteersRepository.GetById(request.VolunteerId,cancellationToken);
+        var validatorResult =await _validator.ValidateAsync(command,cancellationToken);
+        if (validatorResult.IsValid == false)
+        {
+           return validatorResult.ToErrorList();
+        }
+        
+        var volunteerResult =await _volunteersRepository.GetById(command.VolunteerId,cancellationToken);
         if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
         
         var newFullName = FullName.Create(
-            request.Dto.FullNameDto.FirstName,
-            request.Dto.FullNameDto.LastName,
-            request.Dto.FullNameDto.MiddleName).Value;
+            command.FullNameDto.FirstName,
+            command.FullNameDto.LastName,
+            command.FullNameDto.MiddleName).Value;
         
-        var newDescription = Description.Create(request.Dto.Description).Value;
+        var newDescription = Description.Create(command.Description).Value;
         
-        var newPhoneNumber = PhoneNumber.Create(request.Dto.PhoneNumber).Value;
+        var newPhoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
         
-        var newWorkExperience = YearsOfExperience.Create(request.Dto.WorkExperience).Value;
+        var newWorkExperience = YearsOfExperience.Create(command.WorkExperience).Value;
         
         volunteerResult.Value
             .UpdateMainInfo(newFullName,newDescription,newWorkExperience,newPhoneNumber);
         
-        var result = await _volunteersRepository.Save(volunteerResult.Value, cancellationToken);
+        _volunteersRepository.Save(volunteerResult.Value, cancellationToken);
+
+        await _unitOfWork.SaveChanges(cancellationToken);
 
         _logger.LogInformation(
             "Updated volunteer with id {volunteerId}",
-            request.VolunteerId);
+            command.VolunteerId);
         
-        return result;
+        return volunteerResult.Value.Id.Value;
     }
 }
