@@ -3,7 +3,6 @@ using FluentValidation;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Extensions;
 using HomeForPets.Application.FileProvider;
-using HomeForPets.Application.Providers;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.Shared.ValueObjects;
@@ -54,7 +53,7 @@ public class UploadFilesToPetPhotoHandler
 
         var petId = PetId.Create(command.PetId).Value;
 
-        var pet = volunteerResult.Value.GetIssueById(petId);
+        var pet = volunteerResult.Value.GetPetById(petId);
         if (pet.IsFailure)
         {
             pet.Error.ToErrorList();
@@ -70,9 +69,9 @@ public class UploadFilesToPetPhotoHandler
             if (filePath.IsFailure)
                 return filePath.Error.ToErrorList();
 
-            var fileContent = new FileData(file.Content, filePath.Value, BUCKET_NAME);
+            var fileData = new FileData(file.Content, filePath.Value, BUCKET_NAME);
 
-            filesData.Add(fileContent);
+            filesData.Add(fileData);
         }
 
         var uploadResult = await _fileProvider.UploadFiles(filesData, cancellationToken);
@@ -80,8 +79,9 @@ public class UploadFilesToPetPhotoHandler
             return uploadResult.Error.ToErrorList();
         
         var petPhotos = filesData
-            .Select(x => PetPhoto.Create(PetPhotoId.NewId(), x.FilePath.Path, false).Value).ToList();
-        if (petPhotos.Any())
+            .Select(x => PetPhoto.Create(PetPhotoId.NewId(), x.FilePath.Path, false).Value)
+            .ToList();
+        if (petPhotos.Count != 0)
         {
             pet.Value.AddPetPhotos(petPhotos);
         }

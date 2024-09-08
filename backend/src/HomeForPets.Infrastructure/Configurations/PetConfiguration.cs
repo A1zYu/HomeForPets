@@ -98,6 +98,10 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         .OnDelete(DeleteBehavior.Cascade);
     
     builder.Navigation(p => p.PetPhotos).AutoInclude();
+
+    builder.Property(p => p.CreatedDate)
+        .IsRequired()
+        .HasColumnName("create_date");
     
     builder.OwnsOne(p => p.PaymentDetailsList, pb =>
     {

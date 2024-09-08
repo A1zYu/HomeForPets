@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{64F6686C-8B15-448B-8663-0FA8D81D199D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{10C393BD-B371-481F-BCDB-6B94186A9743}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{10C393BD-B371-481F-BCDB-6B94186A9743}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeForPets.UnitTests", "test\HomeForPets.UnitTests\HomeForPets.UnitTests.csproj", "{3C8AF0B0-91CB-4E82-BC64-5B8CF31DFCF8}"
 EndProject

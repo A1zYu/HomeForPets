@@ -59,6 +59,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         _idDeleted = false;
     }
+    
     public static Result<Pet, Error> Create(PetId id,
         string name,
         Description description,

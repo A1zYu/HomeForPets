@@ -1,9 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
-using HomeForPets.Application.FileProvider;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
 
-namespace HomeForPets.Application.Providers;
+namespace HomeForPets.Application.FileProvider;
 
 public interface IFileProvider
 {

@@ -1,7 +1,6 @@
 ﻿using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using HomeForPets.Application.FileProvider;
-using HomeForPets.Application.Providers;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
 using Microsoft.Extensions.Logging;
@@ -41,6 +40,8 @@ public class MinioProvider : IFileProvider
                 return pathsResult.First().Error;
 
             var results = pathsResult.Select(p => p.Value).ToList();
+            
+            _logger.LogInformation("Uploaded files: {files}", results.Select(f => f.Path));
 
             return results;
         }

@@ -10,14 +10,14 @@ public class UpdateSocialNetworkCommandValidator : AbstractValidator<UpdateSocia
     public UpdateSocialNetworkCommandValidator()
     {
         RuleFor(d => d.VolunteerId).NotEmpty();
-        RuleFor(u => u.SocialNetworks).SetValidator(new UpdateSocialNetworksDtoValidator());
+        RuleForEach(u => u.SocialNetworks).SetValidator(new UpdateSocialNetworksDtoValidator());
     }
 }
-public class UpdateSocialNetworksDtoValidator : AbstractValidator<IEnumerable<SocialNetworkDto>>
+public class UpdateSocialNetworksDtoValidator : AbstractValidator<SocialNetworkDto>
 {
     public UpdateSocialNetworksDtoValidator()
     {
-        RuleForEach(u => u)
+        RuleFor(u => u)
             .MustBeValueObject(f => 
                 SocialNetwork.Create(f.Name, f.Path));
     }

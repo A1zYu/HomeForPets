@@ -35,10 +35,3 @@ public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
         RuleFor(p => p.VolunteerId).NotEmpty().WithError(Error.NullValue);
     }
 }
-public class CreateFileCommandValidator : AbstractValidator<CreateFileCommand>
-{
-    public CreateFileCommandValidator()
-    {
-        RuleFor(c => c.FileName).MustBeValueObject(FilePath.Create);
-    }
-}

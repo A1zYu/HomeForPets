@@ -12,15 +12,15 @@ public class UpdatePaymentDetailsCommandValidator : AbstractValidator<UpdatePaym
     public UpdatePaymentDetailsCommandValidator()
     {
         RuleFor(d => d.VolunteerId).NotEmpty();
-        RuleFor(u => u.PaymentDetailsDto).SetValidator(new PaymentDetailsCommandValidator());
+        RuleForEach(u => u.PaymentDetailsDto).SetValidator(new PaymentDetailsCommandValidator());
     }
 }
 
-public class PaymentDetailsCommandValidator : AbstractValidator<IEnumerable<PaymentDetailsDto>>
+public class PaymentDetailsCommandValidator : AbstractValidator<PaymentDetailsDto>
 {
     public PaymentDetailsCommandValidator()
     {
-        RuleForEach(u => u)
+        RuleFor(u => u)
             .MustBeValueObject(f =>
                 PaymentDetails.Create(f.Name, f.Description));
     }

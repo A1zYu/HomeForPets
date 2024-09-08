@@ -53,7 +53,7 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
     public void AddSocialNetworks(SocialNetworkList list) => SocialNetworkList = list;
     public void AddPaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetailsList = paymentDetails;
     
-    public Result<Pet, Error> GetIssueById(PetId petId)
+    public Result<Pet, Error> GetPetById(PetId petId)
     {
         var pet = _pets.FirstOrDefault(i => i.Id == petId);
         if (pet is null)
