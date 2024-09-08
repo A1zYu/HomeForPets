@@ -40,7 +40,7 @@ public class VolunteerController : ApplicationController
 
         if (result.IsFailure)
         {
-           return result.Error.ToResponse();
+            return result.Error.ToResponse();
         }
 
         return Ok(Envelope.Ok(result.Value));
@@ -119,7 +119,7 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken)
     {
         await using var fileProcessor = new FormFileProcessor();
-        
+
         var filesDto = fileProcessor.Process(files);
 
         var command = new UploadFilesToPetPhotoCommand(id, petId, filesDto);
@@ -129,6 +129,7 @@ public class VolunteerController : ApplicationController
         {
             result.Error.ToResponse();
         }
+
         return Ok(result.Value);
     }
 }
