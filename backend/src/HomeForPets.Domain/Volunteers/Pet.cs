@@ -45,10 +45,12 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     public PhoneNumber PhoneNumberOwner { get; private set; } = default!;
     public DateOnly CreatedDate { get; private set; }
 
-    public PaymentDetailsList PaymentDetailsList { get; private set; }
+    public PaymentDetailsList? PaymentDetailsList { get; private set; }
 
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
-    public void AddPetPhotos(PetPhoto petPhotos) => _petPhotos.Add(petPhotos);
+    public void AddPetPhotos(IEnumerable<PetPhoto> petPhotos) => _petPhotos.AddRange(petPhotos);
+    public void AddPaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetailsList = paymentDetails;
+
     public void Delete()
     {
         _idDeleted = true;
@@ -57,6 +59,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         _idDeleted = false;
     }
+    
     public static Result<Pet, Error> Create(PetId id,
         string name,
         Description description,

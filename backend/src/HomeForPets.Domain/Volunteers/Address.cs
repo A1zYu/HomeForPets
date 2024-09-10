@@ -1,40 +1,42 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.Volunteers;
 
 public record Address 
 {
-    private Address(string city, string district, int houseNumber, int flatNumber)
+    private Address(string city, string street, int houseNumber, int flatNumber)
     {
         City = city;
-        District = district;
+        Street = street;
         HouseNumber = houseNumber;
         FlatNumber = flatNumber;
     }
     public string City { get; }
-    public string District { get; }
+    public string Street { get; }
     public int HouseNumber { get; }
     public int FlatNumber { get; }
 
-    public static Result<Address> Create(string city, string district, int houseNumber, int flatNumber)
+    public static Result<Address,Error> Create(string city, string street, int houseNumber, int flatNumber)
     {
         if (string.IsNullOrWhiteSpace(city) )
         {
-            return Result.Failure<Address>("City can not be empty");
+            return Errors.General.Validation("City");
         }
         if (string.IsNullOrWhiteSpace(city))
         {
-            return Result.Failure<Address>("District can not be empty");
+            return Errors.General.Validation("City");
+
         }
         if (houseNumber < 0)
         {
-            return Result.Failure<Address>("House number can not be empty");
+            return Errors.General.Validation("City");
         }
         if (flatNumber < 0)
         {
-            return Result.Failure<Address>("Flat number must be greater than zero");
+            return Errors.General.Validation("City");
         }
-        var address = new Address(city, district, houseNumber, flatNumber);
-        return Result.Success(address);
+        var address = new Address(city, street, houseNumber, flatNumber);
+        return address;
     }
 }

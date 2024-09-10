@@ -1,4 +1,5 @@
-﻿using HomeForPets.Application.Providers;
+﻿using HomeForPets.Application.Database;
+using HomeForPets.Application.FileProvider;
 using HomeForPets.Application.Volunteers;
 using HomeForPets.Infrastructure.Options;
 using HomeForPets.Infrastructure.Providers;
@@ -17,6 +18,7 @@ public static class Inject
     {
         service.AddScoped<ApplicationDbContext>();
         service.AddScoped<IVolunteersRepository, VolunteersRepository>();
+        service.AddScoped<IUnitOfWork, UnitOfWork>();
         service.AddMinio(configuration);
         return service;
     }

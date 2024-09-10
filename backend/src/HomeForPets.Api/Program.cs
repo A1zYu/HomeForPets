@@ -1,11 +1,9 @@
 using HomeForPets.Api.Extensions;
 using HomeForPets.Api.Middlewares;
-using HomeForPets.Api.Validation;
 using HomeForPets.Application;
 using HomeForPets.Infrastructure;
 using Serilog;
 using Serilog.Events;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,10 +25,10 @@ builder.Services.AddSerilog();
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
-builder.Services.AddFluentValidationAutoValidation(configuration =>
-{
-        configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
-});
+// builder.Services.AddFluentValidationAutoValidation(configuration =>
+// {
+//         configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+// });
 var app = builder.Build();
 app.UseExceptionMiddleware();
 // Configure the HTTP request pipeline.

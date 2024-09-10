@@ -1,15 +1,18 @@
 ﻿using FluentValidation;
+using HomeForPets.Api.Controllers.Volunteers.Request;
 using HomeForPets.Api.Extensions;
+using HomeForPets.Api.Processor;
 using HomeForPets.Api.Response;
+using HomeForPets.Application.Volunteers.AddPet;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Application.Volunteers.Delete;
 using HomeForPets.Application.Volunteers.Update;
 using HomeForPets.Application.Volunteers.UpdatePaymentDetails;
 using HomeForPets.Application.Volunteers.UpdateSocialNetworks;
-using HomeForPets.Domain.Shared;
+using HomeForPets.Application.Volunteers.UploadFilesToPet;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HomeForPets.Api.Controllers;
+namespace HomeForPets.Api.Controllers.Volunteers;
 
 public class VolunteerController : ApplicationController
 {
@@ -19,7 +22,7 @@ public class VolunteerController : ApplicationController
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
 
@@ -29,23 +32,15 @@ public class VolunteerController : ApplicationController
     [HttpPut("{id:guid}/main-info")]
     public async Task<IActionResult> UpdateMainInfo(
         [FromRoute] Guid id,
-        [FromBody] UpdateMainInfoDto dto,
+        [FromBody] UpdateMainInfoRequest request,
         [FromServices] UpdateVolunteerHandler handler,
-        [FromServices] IValidator<UpdateMainInfoRequest> validator,
         CancellationToken ct)
     {
-        var request = new UpdateMainInfoRequest(id, dto);
-
-        var validationResult = await validator.ValidateAsync(request, ct);
-
-        if (validationResult.IsValid == false)
-            return validationResult.ToValidationResponse();
-
-        var result = await handler.Handle(request, ct);
+        var result = await handler.Handle(request.ToCommand(id), ct);
 
         if (result.IsFailure)
         {
-            result.Error.ToResponse();
+            return result.Error.ToResponse();
         }
 
         return Ok(Envelope.Ok(result.Value));
@@ -55,16 +50,9 @@ public class VolunteerController : ApplicationController
     public async Task<IActionResult> Delete(
         [FromRoute] Guid id,
         [FromServices] DeleteVolunteerHandler handler,
-        [FromServices] IValidator<DeleteVolunteerRequest> validator,
         CancellationToken ct)
     {
-        var request = new DeleteVolunteerRequest(id);
-
-        var validationResult = await validator.ValidateAsync(request, ct);
-
-        if (validationResult.IsValid == false)
-            return validationResult.ToValidationResponse();
-
+        var request = new DeleteVolunteerCommand(id);
         var result = await handler.Handle(request, ct);
         if (result.IsFailure)
         {
@@ -77,23 +65,14 @@ public class VolunteerController : ApplicationController
     [HttpPut("{id:guid}/social-networks")]
     public async Task<IActionResult> UpdateSocialNetworks(
         [FromRoute] Guid id,
-        [FromBody] UpdateSocialNetworksDto dto,
+        [FromBody] UpdateSocialNetworksRequest request,
         [FromServices] UpdateSocialNetworkHandler handler,
-        [FromServices] IValidator<UpdateSocialNetworkRequest> validator,
         CancellationToken ct)
     {
-        var request = new UpdateSocialNetworkRequest(id, dto);
-
-        var validatorResult = await validator.ValidateAsync(request, ct);
-        if (validatorResult.IsValid == false)
-        {
-            return validatorResult.ToValidationResponse();
-        }
-
-        var result = await handler.Handle(request, ct);
+        var result = await handler.Handle(request.ToCommand(id), ct);
         if (result.IsFailure)
         {
-            result.Error.ToResponse();
+            return result.Error.ToResponse();
         }
 
         return Ok(Envelope.Ok(result.Value));
@@ -102,25 +81,55 @@ public class VolunteerController : ApplicationController
     [HttpPut("{id:guid}/payment-details")]
     public async Task<IActionResult> UpdatePaymentDetails(
         [FromRoute] Guid id,
-        [FromBody] UpdatePaymentDetailsDto dto,
+        [FromBody] UpdatePaymentDetailsRequest request,
         [FromServices] UpdatePaymentDetailsHandler handler,
-        [FromServices] IValidator<UpdatePaymentDetailsRequest> validator,
         CancellationToken ct)
     {
-        var request = new UpdatePaymentDetailsRequest(id, dto);
-
-        var validatorResult = await validator.ValidateAsync(request, ct);
-        if (validatorResult.IsValid == false)
+        var result = await handler.Handle(request.ToCommand(id), ct);
+        if (result.IsFailure)
         {
-            return validatorResult.ToValidationResponse();
+            return result.Error.ToResponse();
         }
 
-        var result = await handler.Handle(request, ct);
+        return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpPost("{id:guid}/pet")]
+    public async Task<ActionResult> AddPet(
+        [FromRoute] Guid id,
+        [FromBody] AddPetRequest request,
+        [FromServices] AddPetHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(id), cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+
+        return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpPost("{id:guid}/pet/{petId:guid}/files")]
+    public async Task<IActionResult> AddPetPhotos(
+        [FromRoute] Guid id,
+        [FromRoute] Guid petId,
+        [FromForm] IFormFileCollection files,
+        [FromServices] UploadFilesToPetPhotoHandler handler,
+        CancellationToken cancellationToken)
+    {
+        await using var fileProcessor = new FormFileProcessor();
+
+        var filesDto = fileProcessor.Process(files);
+
+        var command = new UploadFilesToPetPhotoCommand(id, petId, filesDto);
+
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
         {
             result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 }

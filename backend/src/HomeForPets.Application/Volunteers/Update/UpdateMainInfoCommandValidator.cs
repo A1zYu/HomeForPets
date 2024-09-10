@@ -8,17 +8,11 @@ using HomeForPets.Domain.Volunteers;
 
 namespace HomeForPets.Application.Volunteers.Update;
 
-public class UpdateMainInfoRequestValidator : AbstractValidator<UpdateMainInfoRequest>
+public class UpdateMainInfoCommandValidator : AbstractValidator<UpdateMainInfoCommand>
 {
-    public UpdateMainInfoRequestValidator()
+    public UpdateMainInfoCommandValidator()
     {
         RuleFor(r => r.VolunteerId).NotEmpty().WithError(Errors.General.ValueIsRequired());
-    }
-}
-public class UpdateMainInfoDtoValidator : AbstractValidator<UpdateMainInfoDto>
-{
-    public UpdateMainInfoDtoValidator()
-    {
         RuleFor(x => x.FullNameDto)
             .MustBeValueObject(x => 
                 FullName.Create(x.FirstName, x.LastName, x.MiddleName));

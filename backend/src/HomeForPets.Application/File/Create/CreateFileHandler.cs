@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Application.Dtos;
 using HomeForPets.Application.FileProvider;
-using HomeForPets.Application.Providers;
+using HomeForPets.Application.Volunteers.AddPet;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
 using Microsoft.Extensions.Logging;
@@ -29,15 +30,12 @@ public class CreateFileHandler
         if (filePath.IsFailure)
             return filePath.Error;
         var fileContent = new FileData(file.Content, filePath.Value, BUCKET_NAME);
-        var uploadFile =await _provider.UploadFile(fileContent, cancellationToken);
-        if (uploadFile.IsFailure)
-        {
-            return uploadFile.Error;
-        }
-        _logger.LogInformation("File {file} saved",filePath.Value.Path);
+        // var uploadFile =await _provider.UploadFile(fileContent, cancellationToken);
+        // if (uploadFile.IsFailure)
+        // {
+        //     return uploadFile.Error;
+        // }
+        // _logger.LogInformation("File {file} saved",filePath.Value.Path);
         return filePath.Value.Path;
     }
 }
-public record AddFileCommand(
-    CreateFileDto Files);
-public record CreateFileDto(Stream Content, string FileName);

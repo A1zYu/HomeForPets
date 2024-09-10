@@ -15,17 +15,17 @@ public class PetPhoto  : Shared.Entity<PetPhotoId>
     {
     }
 
-    public PetPhoto(PetPhotoId id, string path, bool isMain) : base(id)
+    private PetPhoto(PetPhotoId id, string path, bool isMain) : base(id)
     {
         Path = path;
         IsMain = isMain;
     }
-    public static Result<PetPhoto,Error> Create(string path, bool isMain )
+    public static Result<PetPhoto,Error> Create(PetPhotoId petPhotoId,string path, bool isMain )
     {
         if (string.IsNullOrWhiteSpace(path))
             return Errors.General.Validation("path");
 
-        var petPhoto = new PetPhoto(PetPhotoId.Create(Guid.NewGuid()),path,isMain);
+        var petPhoto = new PetPhoto(petPhotoId,path,isMain);
         return petPhoto;
     }
 }

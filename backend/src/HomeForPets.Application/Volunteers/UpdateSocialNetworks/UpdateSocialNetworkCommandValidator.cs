@@ -1,21 +1,23 @@
 ﻿using FluentValidation;
+using HomeForPets.Application.Dtos;
 using HomeForPets.Application.Validation;
 using HomeForPets.Domain.Volunteers;
 
 namespace HomeForPets.Application.Volunteers.UpdateSocialNetworks;
 
-public class UpdateSocialNetworkRequestValidator : AbstractValidator<UpdateSocialNetworkRequest>
+public class UpdateSocialNetworkCommandValidator : AbstractValidator<UpdateSocialNetworkCommand>
 {
-    public UpdateSocialNetworkRequestValidator()
+    public UpdateSocialNetworkCommandValidator()
     {
         RuleFor(d => d.VolunteerId).NotEmpty();
+        RuleForEach(u => u.SocialNetworks).SetValidator(new UpdateSocialNetworksDtoValidator());
     }
 }
-public class UpdateSocialNetworksDtoValidator : AbstractValidator<UpdateSocialNetworksDto>
+public class UpdateSocialNetworksDtoValidator : AbstractValidator<SocialNetworkDto>
 {
     public UpdateSocialNetworksDtoValidator()
     {
-        RuleForEach(u => u.SocialNetworks)
+        RuleFor(u => u)
             .MustBeValueObject(f => 
                 SocialNetwork.Create(f.Name, f.Path));
     }

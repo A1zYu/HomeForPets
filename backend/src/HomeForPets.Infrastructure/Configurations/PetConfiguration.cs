@@ -74,14 +74,14 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         a.Property(x => x.City)
             .HasColumnName("city")
             .IsRequired();
-        a.Property(x => x.District)
-            .HasColumnName("district")
-            .IsRequired();
-        a.Property(x => x.FlatNumber)
-            .HasColumnName("flat_number")
+        a.Property(x => x.Street)
+            .HasColumnName("street")
             .IsRequired();
         a.Property(x => x.HouseNumber)
             .HasColumnName("house_number")
+            .IsRequired();
+        a.Property(x => x.FlatNumber)
+            .HasColumnName("flat_number")
             .IsRequired();
     });
     
@@ -98,6 +98,10 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         .OnDelete(DeleteBehavior.Cascade);
     
     builder.Navigation(p => p.PetPhotos).AutoInclude();
+
+    builder.Property(p => p.CreatedDate)
+        .IsRequired()
+        .HasColumnName("create_date");
     
     builder.OwnsOne(p => p.PaymentDetailsList, pb =>
     {
