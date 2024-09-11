@@ -112,14 +112,13 @@ public class AddPetToVolunteerTests
 
     private Volunteer CreateVolunteer()
     {
-        var name = "Test";
-
         var description = Description.Create("Test").Value;
-        
         var phoneNumber = PhoneNumber.Create("89999999999").Value;
-        var volunteer =
-            Volunteer.Create(VolunteerId.NewId(), FullName.Create("test", "test").Value, phoneNumber, description,
+
+        var volunteer = Volunteer
+            .Create(VolunteerId.NewId(), FullName.Create("test", "test").Value, phoneNumber, description,
                 YearsOfExperience.Create(1).Value).Value;
+        
         return volunteer;
     }
 
@@ -130,6 +129,7 @@ public class AddPetToVolunteerTests
         var petDetails = new PetDetailsDto("test", "test", 1, 2, false, false, DateTime.Now);
         var address = new AddressDto("test", "test", 1, 2);
         var phoneNumber = "89999999999";
+        
         var command = new AddPetCommand(volunteer.Id, petName, description, petDetails, address, phoneNumber,
             HelpStatus.NeedForHelp, []);
         return command;
