@@ -1,4 +1,4 @@
-﻿namespace HomeForPets.Domain.Enums;
+﻿namespace HomeForPets.Domain.VolunteersManagement.Enums;
 
 public enum HelpStatus
 {

@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Shared;
 
-namespace HomeForPets.Domain.Volunteers;
+namespace HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 public record YearsOfExperience
 {

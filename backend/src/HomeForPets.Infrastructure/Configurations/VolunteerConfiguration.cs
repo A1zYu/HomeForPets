@@ -1,6 +1,6 @@
 ﻿using HomeForPets.Domain.Constraints;
 using HomeForPets.Domain.Shared.Ids;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -43,15 +43,15 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             f =>
             {
                 f.Property(p => p.FirstName)
-                    .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
+                    .HasMaxLength(Constants.LOW_VALUE_LENGTH)
                     .HasColumnName("first_name")
                     .IsRequired();
                 f.Property(p => p.LastName)
-                    .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
+                    .HasMaxLength(Constants.LOW_VALUE_LENGTH)
                     .HasColumnName("last_name")
                     .IsRequired();
                 f.Property(p => p.MiddleName)
-                    .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
+                    .HasMaxLength(Constants.LOW_VALUE_LENGTH)
                     .HasColumnName("middle_name")
                     .IsRequired(false);
             });

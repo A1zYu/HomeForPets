@@ -1,8 +1,10 @@
 using FluentAssertions;
-using HomeForPets.Domain.Enums;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.Shared.ValueObjects;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement;
+using HomeForPets.Domain.VolunteersManagement.Entities;
+using HomeForPets.Domain.VolunteersManagement.Enums;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 namespace UnitTests;
 
@@ -185,6 +187,22 @@ public class VolunteerUnitTest
         fourthPet.Position.Value.Should().Be(3);
         fifthPet.Position.Value.Should().Be(5);
 
+    }
+
+    [Fact]
+    public async Task Create_File_Path_Should_Success()
+    {
+        //arrange
+        var fileName = Guid.NewGuid();
+        var extension = ".jpg";
+        
+        //act
+        var result = FilePath.Create(fileName, extension);
+
+        //assert
+        result.IsSuccess.Should().BeTrue();
+        var path = fileName + extension;
+        result.Value.Path.Should().Be(path);
     }
 
     private Volunteer CreateVolunteerWithPets(int petsCount)

@@ -1,5 +1,5 @@
 ﻿using HomeForPets.Domain.Species;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

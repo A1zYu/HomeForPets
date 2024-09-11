@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using HomeForPets.Domain.Enums;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
-using HomeForPets.Domain.Shared.ValueObjects;
+using HomeForPets.Domain.VolunteersManagement.Entities;
+using HomeForPets.Domain.VolunteersManagement.Enums;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
-namespace HomeForPets.Domain.Volunteers;
+namespace HomeForPets.Domain.VolunteersManagement;
 
 public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 {

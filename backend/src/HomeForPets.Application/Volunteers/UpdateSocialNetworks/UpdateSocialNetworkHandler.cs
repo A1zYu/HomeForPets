@@ -5,7 +5,7 @@ using HomeForPets.Application.Extensions;
 using HomeForPets.Application.Validation;
 using HomeForPets.Application.Volunteers.Delete;
 using HomeForPets.Domain.Shared;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace HomeForPets.Application.Volunteers.UpdateSocialNetworks;

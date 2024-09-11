@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using HomeForPets.Application.Dtos;
 using HomeForPets.Application.Validation;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 namespace HomeForPets.Application.Volunteers.UpdateSocialNetworks;
 

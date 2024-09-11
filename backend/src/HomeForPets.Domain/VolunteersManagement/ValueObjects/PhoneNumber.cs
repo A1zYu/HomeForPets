@@ -1,7 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Shared;
 
-namespace HomeForPets.Domain.Shared.ValueObjects;
+namespace HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 public record PhoneNumber
 {

@@ -1,11 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using HomeForPets.Domain.Enums;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
-using HomeForPets.Domain.Shared.ValueObjects;
-using HomeForPets.Domain.Species;
+using HomeForPets.Domain.VolunteersManagement.Enums;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
-namespace HomeForPets.Domain.Volunteers;
+namespace HomeForPets.Domain.VolunteersManagement.Entities;
 
 public class Pet : Shared.Entity<PetId>, ISoftDeletable
 {
@@ -97,7 +96,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         SpeciesBreed speciesBreed
     )
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constants.LOW_VALUE_LENGTH)
         {
             return Errors.General.ValueIsInvalid("Pet name");
         }

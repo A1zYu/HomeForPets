@@ -17,7 +17,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
                 Id => SpeciesId.Create(Id));
         builder.Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
+            .HasMaxLength(Constants.LOW_VALUE_LENGTH);
         builder.HasMany(x => x.Breeds)
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade);

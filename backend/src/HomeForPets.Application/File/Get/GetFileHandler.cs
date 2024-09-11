@@ -3,6 +3,7 @@ using HomeForPets.Application.File.Create;
 using HomeForPets.Application.FileProvider;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.Extensions.Logging;
 
 namespace HomeForPets.Application.File.Get;

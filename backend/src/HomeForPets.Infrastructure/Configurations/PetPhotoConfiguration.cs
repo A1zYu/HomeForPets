@@ -1,6 +1,6 @@
 ﻿using HomeForPets.Domain.Constraints;
 using HomeForPets.Domain.Shared.Ids;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -16,6 +16,6 @@ public class PetPhotoConfiguration : IEntityTypeConfiguration<PetPhoto>
             .HasConversion(
                 id => id.Value,
                 Id => PetPhotoId.Create(Id));
-        builder.Property(p => p.Path).IsRequired().HasMaxLength(Constraints.HIGH_VALUE_LENGTH);
+        builder.Property(p => p.Path).IsRequired().HasMaxLength(Constants.HIGH_VALUE_LENGTH);
     }
 }

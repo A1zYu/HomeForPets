@@ -1,5 +1,5 @@
 ﻿using HomeForPets.Application.Dtos;
-using HomeForPets.Domain.Enums;
+using HomeForPets.Domain.VolunteersManagement.Enums;
 
 namespace HomeForPets.Application.Volunteers.AddPet;
 

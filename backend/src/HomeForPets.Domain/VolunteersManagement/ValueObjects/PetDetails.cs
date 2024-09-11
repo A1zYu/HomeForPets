@@ -1,7 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Constraints;
 using HomeForPets.Domain.Shared;
 
-namespace HomeForPets.Domain.Volunteers;
+namespace HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 public class PetDetails : ValueObject
 {
@@ -45,12 +46,12 @@ public class PetDetails : ValueObject
         bool isNeutered,
         DateTime birthOfDate)
     {
-        if (string.IsNullOrWhiteSpace(color))
+        if (string.IsNullOrWhiteSpace(color) || color.Length > Constants.LOW_VALUE_LENGTH)
         {
             return Errors.General.ValueIsInvalid("Color");
         }
 
-        if (string.IsNullOrWhiteSpace(healthInfo))
+        if (string.IsNullOrWhiteSpace(healthInfo)|| Constants.HIGH_VALUE_LENGTH < healthInfo.Length)
         {
             return Errors.General.ValueIsInvalid("Health info");
         }

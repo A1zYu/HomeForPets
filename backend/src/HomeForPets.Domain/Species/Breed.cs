@@ -18,7 +18,7 @@ public class Breed: Shared.Entity<BreedId>
     
     public static Result<Breed,Error> Create(BreedId breedId,string name)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constants.LOW_VALUE_LENGTH)
             return Errors.General.ValueIsInvalid("Breed name");
 
         var breed = new Breed(breedId,name);
