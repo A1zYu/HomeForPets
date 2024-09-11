@@ -4,7 +4,7 @@ public static class Errors
 {
     public static class General
     {
-        public static Error Validation(string? name = null)
+        public static Error ValueIsInvalid(string? name = null)
         {
             var value = name ?? "value";
             return Error.Validation("is.not.invalid", $"{value} is not invalid");

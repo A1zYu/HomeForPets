@@ -18,7 +18,7 @@ public record PhoneNumber
     {
         if (string.IsNullOrWhiteSpace(number) || !ValidationRegex.IsMatch(number))
         {
-            return Errors.General.Validation("Phone number");
+            return Errors.General.ValueIsInvalid("Phone number");
         }
 
         if (!ValidationRegex.IsMatch(number))

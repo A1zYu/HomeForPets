@@ -13,7 +13,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     private bool _idDeleted;
 
     //ef core
-    private Pet(PetId id) : base(id) {}
+    private Pet(PetId id) : base(id)
+    {
+    }
 
     public Pet(PetId id,
         string name,
@@ -21,7 +23,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         Address address,
         PhoneNumber phoneNumberOwner,
         SpeciesBreed speciesBreed,
-        HelpStatus helpStatus, 
+        HelpStatus helpStatus,
         PetDetails petDetails) : base(id)
     {
         Name = name;
@@ -39,7 +41,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     public PetDetails PetDetails { get; private set; }
     public SpeciesBreed SpeciesBreed { get; private set; }
     public HelpStatus HelpStatus { get; private set; }
-
+    public Position Position { get; private set; }
     public Address Address { get; private set; } = default!;
 
     public PhoneNumber PhoneNumberOwner { get; private set; } = default!;
@@ -55,11 +57,36 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         _idDeleted = true;
     }
+
     public void Restore()
     {
         _idDeleted = false;
     }
-    
+
+    public void SetPosition(Position position) =>
+        Position = position;
+    public UnitResult<Error> MoveForward()
+    {
+        var newPosition = Position.Forward();
+        if(newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> MoveBack()
+    {
+        var newPosition = Position.Back();
+        if(newPosition.IsFailure)
+            return newPosition.Error;
+
+        Position = newPosition.Value;
+
+        return Result.Success<Error>();
+    }
+
     public static Result<Pet, Error> Create(PetId id,
         string name,
         Description description,
@@ -72,7 +99,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("Pet name");
+            return Errors.General.ValueIsInvalid("Pet name");
         }
 
         var pet = new Pet(

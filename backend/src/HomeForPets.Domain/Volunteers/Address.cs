@@ -21,20 +21,20 @@ public record Address
     {
         if (string.IsNullOrWhiteSpace(city) )
         {
-            return Errors.General.Validation("City");
+            return Errors.General.ValueIsInvalid("City");
         }
         if (string.IsNullOrWhiteSpace(city))
         {
-            return Errors.General.Validation("City");
+            return Errors.General.ValueIsInvalid("City");
 
         }
         if (houseNumber < 0)
         {
-            return Errors.General.Validation("City");
+            return Errors.General.ValueIsInvalid("City");
         }
         if (flatNumber < 0)
         {
-            return Errors.General.Validation("City");
+            return Errors.General.ValueIsInvalid("City");
         }
         var address = new Address(city, street, houseNumber, flatNumber);
         return address;

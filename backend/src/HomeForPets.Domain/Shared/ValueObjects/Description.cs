@@ -18,7 +18,7 @@ public record Description
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
         {
-            return Errors.General.Validation("Description");
+            return Errors.General.ValueIsInvalid("Description");
         }
         var description =new Description(text);
         return description;
