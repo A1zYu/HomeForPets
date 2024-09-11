@@ -1,6 +1,7 @@
 ﻿using HomeForPets.Domain.Constraints;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement.Entities;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -117,6 +118,14 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired();
         });
     });
+
+    builder.Property(x => x.Position)
+        .HasColumnName("position")
+        .HasConversion(
+            p => p.Value,
+            value => Position.Create(value).Value
+        );
+    
     builder.Property("_idDeleted")
         .UsePropertyAccessMode(PropertyAccessMode.Field)
         .HasColumnName("is_deleted");

@@ -24,9 +24,9 @@ public class UploadFilesToPetPhotoHandler
     public UploadFilesToPetPhotoHandler(
         IFileProvider fileProvider,
         IVolunteersRepository volunteersRepository,
-        ILogger<UploadFilesToPetPhotoHandler> logger,
         IUnitOfWork unitOfWork,
-        IValidator<UploadFilesToPetPhotoCommand> validator)
+        IValidator<UploadFilesToPetPhotoCommand> validator,
+        ILogger<UploadFilesToPetPhotoHandler> logger)
     {
         _fileProvider = fileProvider;
         _volunteersRepository = volunteersRepository;
