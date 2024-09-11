@@ -19,16 +19,16 @@ public record FullName
         return $"{FirstName} {LastName} {MiddleName}";
     }
 
-    public static Result<FullName,Error> Create(string firstName, string lastName, string? middleName)
+    public static Result<FullName,Error> Create(string firstName, string lastName, string? middleName = null)
     {
         if (string.IsNullOrWhiteSpace(firstName) || firstName.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("First name");
+            return Errors.General.ValueIsInvalid("First name");
 
         } 
         if (string.IsNullOrWhiteSpace(lastName)|| lastName.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("Last name");
+            return Errors.General.ValueIsInvalid("Last name");
         } 
         
         var fullName = new FullName(lastName, firstName, middleName);

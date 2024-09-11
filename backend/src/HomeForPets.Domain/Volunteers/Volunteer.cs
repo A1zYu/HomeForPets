@@ -6,13 +6,17 @@ using HomeForPets.Domain.Shared.ValueObjects;
 
 namespace HomeForPets.Domain.Volunteers;
 
-public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
+public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 {
     private readonly List<Pet> _pets = [];
 
     private bool _idDeleted = false;
+
     //ef core
-    private Volunteer(VolunteerId id) : base(id) { }
+    private Volunteer(VolunteerId id) : base(id)
+    {
+    }
+
     private Volunteer(VolunteerId id,
         FullName fullName,
         PhoneNumber phoneNumber,
@@ -29,7 +33,7 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
     public PhoneNumber PhoneNumber { get; private set; }
     public Description Description { get; private set; } = default!;
     public YearsOfExperience YearsOfExperience { get; private set; }
-    public PaymentDetailsList? PaymentDetailsList { get; private set; } 
+    public PaymentDetailsList? PaymentDetailsList { get; private set; }
     public SocialNetworkList? SocialNetworkList { get; private set; }
     public IReadOnlyList<Pet> Pets => _pets;
     public int? GetPetsHomeFoundCount() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);
@@ -42,17 +46,17 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
         foreach (var pet in _pets)
             pet.Delete();
     }
+
     public void Restore()
     {
         _idDeleted = false;
         foreach (var pet in _pets)
             pet.Restore();
     }
-    public void AddPets(IEnumerable<Pet> pets) => _pets.AddRange(pets);
-    public void AddPet(Pet pet) => _pets.Add(pet);
+
     public void AddSocialNetworks(SocialNetworkList list) => SocialNetworkList = list;
     public void AddPaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetailsList = paymentDetails;
-    
+
     public Result<Pet, Error> GetPetById(PetId petId)
     {
         var pet = _pets.FirstOrDefault(i => i.Id == petId);
@@ -61,6 +65,89 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
 
         return pet;
     }
+
+    public UnitResult<Error> AddPet(Pet pet)
+    {
+        var position = Position.Create(_pets.Count + 1);
+        if (position.IsFailure)
+        {
+            return position.Error;
+        }
+
+        pet.SetPosition(position.Value);
+
+        _pets.Add(pet);
+
+        return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> MovePet(Position newPosition, Pet pet)
+    {
+        var currentPosition = pet.Position;
+
+        if (currentPosition == newPosition)
+        {
+            return Result.Success<Error>();
+        }
+
+        var adjustedPositionResult = AdjustNewPositionOutOfRange(newPosition);
+        if (adjustedPositionResult.IsFailure)
+            return adjustedPositionResult.Error;
+        
+        newPosition = adjustedPositionResult.Value;
+        
+        var moveResult = MovePetsBetweenPositions(currentPosition, newPosition);
+        if (moveResult.IsFailure)
+            return moveResult.Error;
+        
+        pet.SetPosition(newPosition);
+        
+        return Result.Success<Error>();
+    }
+    private UnitResult<Error> MovePetsBetweenPositions(Position currentPosition, Position newPosition)
+    {
+        if (newPosition.Value < currentPosition.Value)
+        {
+            var petsToMove = _pets.Where(i => i.Position.Value >= newPosition.Value
+                                                  && i.Position.Value < currentPosition.Value);
+
+            foreach (var petToMove in petsToMove)
+            {
+                var result = petToMove.MoveForward();
+                if (result.IsFailure)
+                    return result.Error;
+            }
+        }
+        else if (newPosition.Value > currentPosition.Value)
+        {
+            var petsToMove = _pets.Where(i => i.Position.Value > currentPosition.Value
+                                                  && i.Position.Value <= newPosition.Value);
+
+            foreach (var petToMove in petsToMove)
+            {
+                var result = petToMove.MoveBack();
+                if (result.IsFailure)
+                    return result.Error;
+            }
+        }
+
+        return Result.Success<Error>();
+    }
+
+    private Result<Position, Error> AdjustNewPositionOutOfRange(Position newPosition)
+    {
+        if (newPosition.Value <= _pets.Count)
+        {
+            return newPosition;
+        }
+        var lastPosition = Position.Create(_pets.Count - 1);
+        if (lastPosition.IsFailure)
+            return lastPosition.Error;
+
+        return lastPosition.Value;
+        
+    }
+
     public void UpdateMainInfo(
         FullName fullName,
         Description description,
@@ -73,7 +160,7 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
         PhoneNumber = phoneNumber;
     }
 
-    public static Result<Volunteer,Error> Create(
+    public static Result<Volunteer, Error> Create(
         VolunteerId id,
         FullName fullName,
         PhoneNumber phoneNumber,
@@ -86,7 +173,7 @@ public class Volunteer : Shared.Entity<VolunteerId> , ISoftDeletable
             phoneNumber,
             description,
             yearsOfExperience);
-        
+
         return volunteer;
     }
 }

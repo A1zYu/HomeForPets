@@ -25,12 +25,12 @@ public record SocialNetwork
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("Social network name");
+            return Errors.General.ValueIsInvalid("Social network name");
         }
 
         if (string.IsNullOrWhiteSpace(path))
         {
-            return Errors.General.Validation("Social network path");
+            return Errors.General.ValueIsInvalid("Social network path");
         }
         var socialNetwork = new SocialNetwork(name, path);
         return socialNetwork;

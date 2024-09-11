@@ -3,12 +3,12 @@ using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.Volunteers;
 
-public record PetDetails
+public class PetDetails : ValueObject
 {
     public PetDetails()
     {
-        
     }
+
     private PetDetails(
         string color,
         string healthInfo,
@@ -26,14 +26,15 @@ public record PetDetails
         IsNeutered = isNeutered;
         BirthOfDate = birthOfDate;
     }
+
     public string Color { get; }
     public string HealthInfo { get; }
     public double Weight { get; }
     public double Height { get; }
     public bool IsVaccinated { get; }
     public bool IsNeutered { get; }
-    public DateTime BirthOfDate { get;}
-    
+    public DateTime BirthOfDate { get; }
+
 
     public static Result<PetDetails, Error> Create(
         string color,
@@ -44,33 +45,43 @@ public record PetDetails
         bool isNeutered,
         DateTime birthOfDate)
     {
-        
         if (string.IsNullOrWhiteSpace(color))
         {
-            return Errors.General.Validation("Color");
+            return Errors.General.ValueIsInvalid("Color");
         }
 
         if (string.IsNullOrWhiteSpace(healthInfo))
         {
-            return Errors.General.Validation("Health info");
+            return Errors.General.ValueIsInvalid("Health info");
         }
 
         if (weight <= 0)
         {
-            return Errors.General.Validation("Weight");
+            return Errors.General.ValueIsInvalid("Weight");
         }
 
         if (height <= 0)
         {
-            return Errors.General.Validation("Height");
-        }
-        if (birthOfDate.Date > DateTime.Now.Date)
-        {
-            return Errors.General.Validation("Birth Of Date");
+            return Errors.General.ValueIsInvalid("Height");
         }
 
-        var details = new PetDetails(color, healthInfo, weight, height, isVaccinated, isNeutered,birthOfDate);
+        if (birthOfDate.Date > DateTime.Now.Date)
+        {
+            return Errors.General.ValueIsInvalid("Birth Of Date");
+        }
+
+        var details = new PetDetails(color, healthInfo, weight, height, isVaccinated, isNeutered, birthOfDate);
         return details;
     }
-    
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Color;
+        yield return HealthInfo;
+        yield return Weight;
+        yield return Height;
+        yield return IsVaccinated;
+        yield return IsNeutered;
+        yield return BirthOfDate;
+    }
 }

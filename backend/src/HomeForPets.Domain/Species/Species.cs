@@ -23,7 +23,7 @@ public class Species: Shared.Entity<SpeciesId>
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
         {
-            return Errors.General.Validation("Species name");
+            return Errors.General.ValueIsInvalid("Species name");
         }
         
         return new Species(speciesId,name,breeds);

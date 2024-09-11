@@ -19,7 +19,7 @@ public record YearsOfExperience
     {
         if (value is < 0 or > 80)
         {
-            return Errors.General.Validation("Years of experience");
+            return Errors.General.ValueIsInvalid("Years of experience");
         }
         return new YearsOfExperience(value);
     }

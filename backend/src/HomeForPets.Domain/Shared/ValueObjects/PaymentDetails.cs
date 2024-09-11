@@ -25,10 +25,10 @@ public record PaymentDetails
     public static Result<PaymentDetails,Error> Create(string name, string description)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
-            return Errors.General.Validation("Payment detail name");
+            return Errors.General.ValueIsInvalid("Payment detail name");
 
         if (string.IsNullOrWhiteSpace(description) || description.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
-            return Errors.General.Validation("Payment detail description");
+            return Errors.General.ValueIsInvalid("Payment detail description");
         var paymentDetails = new PaymentDetails(name, description);
         return paymentDetails;
     }

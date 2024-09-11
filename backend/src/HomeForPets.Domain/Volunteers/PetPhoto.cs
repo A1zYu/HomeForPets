@@ -23,7 +23,7 @@ public class PetPhoto  : Shared.Entity<PetPhotoId>
     public static Result<PetPhoto,Error> Create(PetPhotoId petPhotoId,string path, bool isMain )
     {
         if (string.IsNullOrWhiteSpace(path))
-            return Errors.General.Validation("path");
+            return Errors.General.ValueIsInvalid("path");
 
         var petPhoto = new PetPhoto(petPhotoId,path,isMain);
         return petPhoto;
