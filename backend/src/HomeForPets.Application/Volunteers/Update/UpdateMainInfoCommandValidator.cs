@@ -4,7 +4,7 @@ using HomeForPets.Application.Validation;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 namespace HomeForPets.Application.Volunteers.Update;
 

@@ -21,7 +21,7 @@ public class Species: Shared.Entity<SpeciesId>
 
     public static Result<Species,Error> Create(SpeciesId speciesId,string name, List<Breed> breeds)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constants.LOW_VALUE_LENGTH)
         {
             return Errors.General.ValueIsInvalid("Species name");
         }

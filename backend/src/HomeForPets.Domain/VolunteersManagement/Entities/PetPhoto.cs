@@ -2,7 +2,7 @@
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 
-namespace HomeForPets.Domain.Volunteers;
+namespace HomeForPets.Domain.VolunteersManagement.Entities;
 
 public class PetPhoto  : Shared.Entity<PetPhotoId>
 {

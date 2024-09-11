@@ -1,6 +1,6 @@
 ﻿using HomeForPets.Domain.Constraints;
 using HomeForPets.Domain.Shared.Ids;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,7 +23,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
     builder.Property(p => p.Name)
         .HasColumnName("name")
         .IsRequired()
-        .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
+        .HasMaxLength(Constants.LOW_VALUE_LENGTH);
     
     builder.ComplexProperty(p => p.Description, pb =>
     {
@@ -89,7 +89,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
     {
         a.Property(x => x.Number)
             .IsRequired()
-            .HasMaxLength(Constraints.LOW_VALUE_LENGTH)
+            .HasMaxLength(Constants.LOW_VALUE_LENGTH)
             .HasColumnName("phone_number");
     });
 

@@ -3,7 +3,7 @@ using HomeForPets.Application.Dtos;
 using HomeForPets.Application.Validation;
 using HomeForPets.Application.Volunteers.UpdateSocialNetworks;
 using HomeForPets.Domain.Shared.ValueObjects;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 namespace HomeForPets.Application.Volunteers.UpdatePaymentDetails;
 

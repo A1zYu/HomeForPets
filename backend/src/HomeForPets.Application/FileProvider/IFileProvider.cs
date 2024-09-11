@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 namespace HomeForPets.Application.FileProvider;
 

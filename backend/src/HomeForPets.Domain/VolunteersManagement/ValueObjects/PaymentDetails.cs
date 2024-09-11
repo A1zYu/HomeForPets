@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.Shared;
 
-namespace HomeForPets.Domain.Shared.ValueObjects;
+namespace HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 public record PaymentDetailsList
 {
@@ -24,10 +24,10 @@ public record PaymentDetails
 
     public static Result<PaymentDetails,Error> Create(string name, string description)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constants.LOW_VALUE_LENGTH)
             return Errors.General.ValueIsInvalid("Payment detail name");
 
-        if (string.IsNullOrWhiteSpace(description) || description.Length > Constraints.Constraints.HIGH_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(description) || description.Length > Constraints.Constants.HIGH_VALUE_LENGTH)
             return Errors.General.ValueIsInvalid("Payment detail description");
         var paymentDetails = new PaymentDetails(name, description);
         return paymentDetails;

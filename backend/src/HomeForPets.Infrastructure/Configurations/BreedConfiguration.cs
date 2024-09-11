@@ -17,7 +17,7 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
                 Id => BreedId.Create(Id));
         builder.Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(Constraints.LOW_VALUE_LENGTH);
+            .HasMaxLength(Constants.LOW_VALUE_LENGTH);
 
     }
 }

@@ -3,7 +3,8 @@ using HomeForPets.Application.Volunteers;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.Shared.ValueObjects;
-using HomeForPets.Domain.Volunteers;
+using HomeForPets.Domain.VolunteersManagement;
+using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeForPets.Infrastructure.Repositories;

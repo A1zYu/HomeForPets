@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Domain.Shared;
 
-namespace HomeForPets.Domain.Volunteers;
+namespace HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
 public record SocialNetworkList
 {
@@ -23,7 +23,7 @@ public record SocialNetwork
 
     public static Result<SocialNetwork,Error> Create(string name, string path)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constraints.LOW_VALUE_LENGTH)
+        if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constants.LOW_VALUE_LENGTH)
         {
             return Errors.General.ValueIsInvalid("Social network name");
         }
