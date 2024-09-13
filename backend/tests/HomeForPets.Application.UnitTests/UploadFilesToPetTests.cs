@@ -4,7 +4,8 @@ using FluentValidation;
 using FluentValidation.Results;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos;
-using HomeForPets.Application.FileProvider;
+using HomeForPets.Application.Files;
+using HomeForPets.Application.Messaging;
 using HomeForPets.Application.Volunteers;
 using HomeForPets.Application.Volunteers.UploadFilesToPet;
 using HomeForPets.Domain.Shared;
@@ -15,6 +16,7 @@ using HomeForPets.Domain.VolunteersManagement.Enums;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
+using FileInfo = HomeForPets.Application.Files.FileInfo;
 
 namespace HomeForPets.Application.UnitTests;
 
@@ -25,6 +27,7 @@ public class UploadFilesToPetTests
     private readonly Mock<IValidator<UploadFilesToPetPhotoCommand>> _validatorMock = new();
     private readonly Mock<ILogger<UploadFilesToPetPhotoHandler>> _loggerMock = new();
     private readonly Mock<IFileProvider> _fileProviderMock = new();
+    public readonly Mock<IMessageQueue<IEnumerable<FileInfo>>> _messageQueue = new();
  
     [Fact]
     public async void Handle_Should_Upload_Files_To_Pets()
@@ -73,6 +76,7 @@ public class UploadFilesToPetTests
             _volunteerRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
+            _messageQueue.Object,
             _loggerMock.Object);
         
         //act
@@ -134,6 +138,7 @@ public class UploadFilesToPetTests
             _volunteerRepositoryMock.Object,
             _unitOfWorkMock.Object,
             _validatorMock.Object,
+            _messageQueue.Object,
             _loggerMock.Object);
         
         //act

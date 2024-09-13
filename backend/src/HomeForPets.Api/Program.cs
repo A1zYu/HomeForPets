@@ -21,10 +21,14 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddSerilog();
+
 builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
+
+
 // builder.Services.AddFluentValidationAutoValidation(configuration =>
 // {
 //         configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
