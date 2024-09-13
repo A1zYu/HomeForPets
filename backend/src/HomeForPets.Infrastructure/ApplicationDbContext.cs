@@ -1,9 +1,11 @@
-﻿using HomeForPets.Domain.Species;
+﻿using System.Data;
+using HomeForPets.Domain.Species;
 using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace HomeForPets.Infrastructure;
 
@@ -22,7 +24,6 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
 
         optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

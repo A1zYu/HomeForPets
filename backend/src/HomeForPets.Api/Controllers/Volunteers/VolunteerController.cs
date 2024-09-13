@@ -6,6 +6,7 @@ using HomeForPets.Api.Response;
 using HomeForPets.Application.Volunteers.AddPet;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Application.Volunteers.Delete;
+using HomeForPets.Application.Volunteers.GetAllVolunteers;
 using HomeForPets.Application.Volunteers.Update;
 using HomeForPets.Application.Volunteers.UpdatePaymentDetails;
 using HomeForPets.Application.Volunteers.UpdateSocialNetworks;
@@ -130,6 +131,31 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(result.Value);
+        return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllVolunteers(
+        [FromServices] GetAllVolunteersHandler handler,
+        [FromQuery] int page,
+        [FromQuery] int pageSize,
+        CancellationToken cancellationToken = default)
+
+    {
+        if (pageSize <= 0)
+        {
+            page = 1;
+        }
+
+        if (pageSize <= 0)
+        {
+            pageSize = 10;
+        }
+        var result = await handler.Handle(page, pageSize, cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        return Ok(Envelope.Ok(result.Value));
     }
 }

@@ -5,6 +5,7 @@ using HomeForPets.Application.File.Get;
 using HomeForPets.Application.Volunteers.AddPet;
 using HomeForPets.Application.Volunteers.CreateVolunteer;
 using HomeForPets.Application.Volunteers.Delete;
+using HomeForPets.Application.Volunteers.GetAllVolunteers;
 using HomeForPets.Application.Volunteers.Update;
 using HomeForPets.Application.Volunteers.UpdatePaymentDetails;
 using HomeForPets.Application.Volunteers.UpdateSocialNetworks;
@@ -27,6 +28,7 @@ public static class Inject
         service.AddScoped<DeleteFileHandler>();
         service.AddScoped<AddPetHandler>();
         service.AddScoped<UploadFilesToPetPhotoHandler>();
+        service.AddScoped<GetAllVolunteersHandler>();
         service.AddValidatorsFromAssembly(typeof(Inject).Assembly);
         return service;
     }
