@@ -65,11 +65,12 @@ public class AddPetToVolunteerTests
         //assert
 
         result.IsSuccess.Should().BeTrue();
+        volunteer.Pets.First(x=>x.Name==command.Name).Name.Should().Be("test");
     }
 
 
     [Fact]
-    public async void Handle_Should_Add_Pet_To_Volunteer_When_Command_Is_Not_Valid()
+    public async void Handle_Should_Return_Errror_When_Pet_Command_Is_Not_Valid()
     {
         //arrange
         var ct = new CancellationTokenSource().Token;
@@ -84,12 +85,12 @@ public class AddPetToVolunteerTests
         var phoneNumber = "89999999a99";
         var command = new AddPetCommand(volunteer.Id, petName, description, petDetails, address, phoneNumber,
             HelpStatus.NeedForHelp, []);
-        var errorsValidate = Errors.PhoneNumber.Validation("PhoneNumber").Serialize();
         
         _volunteerRepositoryMock
             .Setup(v => v.GetById(volunteer.Id, ct))
             .ReturnsAsync(Result.Success<Volunteer, Error>(volunteer));
         
+        var errorsValidate = Errors.PhoneNumber.Validation("PhoneNumber").Serialize();
         
         var validationFailures = new List<ValidationFailure>
         {
@@ -108,6 +109,7 @@ public class AddPetToVolunteerTests
         //assert
 
         result.IsFailure.Should().BeTrue();
+        result.Error.First().InvalidField.Should().Be("PhoneNumber");
     }
 
     private Volunteer CreateVolunteer()

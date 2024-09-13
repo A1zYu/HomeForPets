@@ -25,16 +25,16 @@ public record Address
         }
         if (string.IsNullOrWhiteSpace(city))
         {
-            return Errors.General.ValueIsInvalid("City");
+            return Errors.General.ValueIsInvalid("street");
 
         }
         if (houseNumber < 0)
         {
-            return Errors.General.ValueIsInvalid("City");
+            return Errors.General.ValueIsInvalid("houseNumber");
         }
         if (flatNumber < 0)
         {
-            return Errors.General.ValueIsInvalid("City");
+            return Errors.General.ValueIsInvalid("flatNumber");
         }
         var address = new Address(city, street, houseNumber, flatNumber);
         return address;
