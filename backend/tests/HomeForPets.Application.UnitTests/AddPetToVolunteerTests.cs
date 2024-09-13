@@ -18,16 +18,9 @@ namespace HomeForPets.Application.UnitTests;
 
 public class AddPetToVolunteerTests
 {
-    private readonly Mock<IVolunteersRepository> _volunteerRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-    private readonly Mock<IValidator<AddPetCommand>> _validatorMock;
-
-    public AddPetToVolunteerTests()
-    {
-        _validatorMock = new Mock<IValidator<AddPetCommand>>();
-        _volunteerRepositoryMock = new Mock<IVolunteersRepository>();
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
-    }
+    private readonly Mock<IVolunteersRepository> _volunteerRepositoryMock = new();
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+    private readonly Mock<IValidator<AddPetCommand>> _validatorMock = new();
 
     [Fact]
     public async void Handle_Should_Add_Pet_To_Volunteer_When_Command_Is_Valid()
