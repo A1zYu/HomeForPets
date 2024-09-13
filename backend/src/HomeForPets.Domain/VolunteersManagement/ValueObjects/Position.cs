@@ -3,7 +3,7 @@ using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
-public record Position
+public class Position : ValueObject
 {
     public static Position First => new(1);
     public int Value { get; }
@@ -24,5 +24,10 @@ public record Position
         }
 
         return new Position(value);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
     }
 }

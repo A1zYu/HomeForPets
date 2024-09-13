@@ -51,7 +51,7 @@ public class VolunteerUnitTest
     {
         var petsCount = 5;
 
-        var volunteer = CreateVolunteerWithPets(petsCount);
+        var volunteer = CreateVolunteerWithPets(5);
 
         var newPosition = Position.Create(3).Value;
         
@@ -109,7 +109,7 @@ public class VolunteerUnitTest
     {
         var petsCount = 5;
 
-        var volunteer = CreateVolunteerWithPets(petsCount);
+        var volunteer = CreateVolunteerWithPets(5);
 
         var newPosition = Position.Create(2).Value;
         
@@ -137,7 +137,7 @@ public class VolunteerUnitTest
     {
         var petsCount = 5;
 
-        var volunteer = CreateVolunteerWithPets(petsCount);
+        var volunteer = CreateVolunteerWithPets(5);
 
         var newPosition = Position.Create(2).Value;
         
@@ -165,7 +165,7 @@ public class VolunteerUnitTest
     {
         var petsCount = 5;
 
-        var volunteer = CreateVolunteerWithPets(petsCount);
+        var volunteer = CreateVolunteerWithPets(5);
 
         var newPosition = Position.Create(4).Value;
         
