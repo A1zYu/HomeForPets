@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Application.File.Get;
-using HomeForPets.Application.FileProvider;
+using HomeForPets.Application.Files;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.Extensions.Logging;
+using FileInfo = HomeForPets.Application.Files.FileInfo;
 
 namespace HomeForPets.Application.File.Delete;
 
@@ -26,7 +27,7 @@ public class DeleteFileHandler
     {
         var filePath = FilePath.Create(request.FullPath);
         
-        var fileContent = new FileData(null!, filePath.Value, BUCKET_NAME);
+        var fileContent = new FileData(null!, new FileInfo(filePath.Value, BUCKET_NAME));
         
         var result = await _provider.DeleteFile(fileContent, cancellationToken);
         if (result.IsFailure)

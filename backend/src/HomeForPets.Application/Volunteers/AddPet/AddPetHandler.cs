@@ -2,7 +2,6 @@
 using FluentValidation;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Extensions;
-using HomeForPets.Application.FileProvider;
 using HomeForPets.Application.Validation;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;

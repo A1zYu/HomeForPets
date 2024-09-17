@@ -1,11 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Application.Dtos;
-using HomeForPets.Application.FileProvider;
+using HomeForPets.Application.Files;
 using HomeForPets.Application.Volunteers.AddPet;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.Extensions.Logging;
+using FileInfo = HomeForPets.Application.Files.FileInfo;
 
 namespace HomeForPets.Application.File.Create;
 
@@ -30,7 +31,7 @@ public class CreateFileHandler
         var filePath = FilePath.Create(Guid.NewGuid(), extension);
         if (filePath.IsFailure)
             return filePath.Error;
-        var fileContent = new FileData(file.Content, filePath.Value, BUCKET_NAME);
+        var fileContent = new FileData(file.Content,new FileInfo(filePath.Value, BUCKET_NAME));
         // var uploadFile =await _provider.UploadFile(fileContent, cancellationToken);
         // if (uploadFile.IsFailure)
         // {
