@@ -4,7 +4,6 @@ using HomeForPets.Application.Dtos;
 using HomeForPets.Application.File.Create;
 using HomeForPets.Application.File.Delete;
 using HomeForPets.Application.File.Get;
-using HomeForPets.Application.Volunteers.AddPet;
 using HomeForPets.Infrastructure.Options;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

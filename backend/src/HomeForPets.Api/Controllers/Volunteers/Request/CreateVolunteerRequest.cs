@@ -1,5 +1,5 @@
 ﻿using HomeForPets.Application.Dtos;
-using HomeForPets.Application.Volunteers.CreateVolunteer;
+using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 
 namespace HomeForPets.Api.Controllers.Volunteers.Request;
 

@@ -1,5 +1,5 @@
 ﻿using HomeForPets.Application.Dtos;
-using HomeForPets.Application.Volunteers.UpdateSocialNetworks;
+using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
 
 namespace HomeForPets.Api.Controllers.Volunteers.Request;
 

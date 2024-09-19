@@ -10,6 +10,8 @@ namespace HomeForPets.Domain.VolunteersManagement;
 public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 {
     private readonly List<Pet> _pets = [];
+    private List<PaymentDetails> _paymentDetails;
+    private List<SocialNetwork> _socialNetworks;
 
     private bool _idDeleted = false;
 
@@ -22,20 +24,24 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         FullName fullName,
         PhoneNumber phoneNumber,
         Description description,
-        YearsOfExperience yearsOfExperience) : base(id)
+        YearsOfExperience yearsOfExperience,
+        List<PaymentDetails> paymentDetails,
+        List<SocialNetwork> socialNetworks) : base(id)
     {
         FullName = fullName;
         Description = description;
         YearsOfExperience = yearsOfExperience;
         PhoneNumber = phoneNumber;
+        _paymentDetails = paymentDetails ?? new List<PaymentDetails>();
+        _socialNetworks = socialNetworks ?? new List<SocialNetwork>();
     }
 
     public FullName FullName { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public Description Description { get; private set; } = default!;
     public YearsOfExperience YearsOfExperience { get; private set; }
-    public PaymentDetailsList? PaymentDetailsList { get; private set; }
-    public SocialNetworkList? SocialNetworkList { get; private set; }
+    public IReadOnlyList<PaymentDetails> PaymentDetails => _paymentDetails;
+    public IReadOnlyList<SocialNetwork> SocialNetworks => _socialNetworks;
     public IReadOnlyList<Pet> Pets => _pets;
     public int? GetPetsHomeFoundCount() => _pets.Count(x => x.HelpStatus == HelpStatus.FoundHome);
     public int? GetPetsSearchForHomeCount() => _pets.Count(x => x.HelpStatus == HelpStatus.SearchHome);
@@ -55,8 +61,8 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
             pet.Restore();
     }
 
-    public void AddSocialNetworks(SocialNetworkList list) => SocialNetworkList = list;
-    public void AddPaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetailsList = paymentDetails;
+    public void AddSocialNetworks(IEnumerable<SocialNetwork> socialNetworks) =>  _socialNetworks.AddRange(socialNetworks);
+    public void AddPaymentDetails(IEnumerable<PaymentDetails> paymentDetails)=> _paymentDetails.AddRange(paymentDetails);
 
     public Result<Pet, Error> GetPetById(PetId petId)
     {
@@ -166,14 +172,18 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         FullName fullName,
         PhoneNumber phoneNumber,
         Description description,
-        YearsOfExperience yearsOfExperience)
+        YearsOfExperience yearsOfExperience,
+        IEnumerable<PaymentDetails> paymentDetails,
+        IEnumerable<SocialNetwork> socialNetworks)
     {
         var volunteer = new Volunteer(
             id,
             fullName,
             phoneNumber,
             description,
-            yearsOfExperience);
+            yearsOfExperience,
+            paymentDetails.ToList(),
+            socialNetworks.ToList());
 
         return volunteer;
     }
