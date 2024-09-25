@@ -1,8 +1,9 @@
 ﻿using HomeForPets.Application.Database;
 using HomeForPets.Application.Files;
 using HomeForPets.Application.Messaging;
-using HomeForPets.Application.Volunteers;
+using HomeForPets.Application.VolunteersManagement;
 using HomeForPets.Infrastructure.BackgroundServices;
+using HomeForPets.Infrastructure.DbContexts;
 using HomeForPets.Infrastructure.Files;
 using HomeForPets.Infrastructure.MessageQueues;
 using HomeForPets.Infrastructure.Options;
@@ -21,20 +22,58 @@ public static class Inject
         this IServiceCollection service,
         IConfiguration configuration)
     {
-        service.AddScoped<ApplicationDbContext>();
-        service.AddScoped<IVolunteersRepository, VolunteersRepository>();
-        service.AddScoped<IUnitOfWork, UnitOfWork>();
-        service.AddScoped<IFilesCleanerService, FilesCleanerService>();
-
-        service.AddMinio(configuration);
-        
-        service.AddHostedService<FilesCleanerBackgroundService>();
-
-        service.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>,InMemoryMessageQueue<IEnumerable<FileInfo>>>();
+        service
+            .AddDbContexts()
+            .AddMinio(configuration)
+            .AddRepositories()
+            .AddDatabase()
+            .AddHostedServices()
+            .AddFilesCleanerServices()
+            .AddMessageQueues();
 
         return service;
     }
-
+    private static IServiceCollection AddMessageQueues(this IServiceCollection service)
+    {
+        service.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>,InMemoryMessageQueue<IEnumerable<FileInfo>>>();
+        
+        return service;
+    }
+    private static IServiceCollection AddFilesCleanerServices(this IServiceCollection service)
+    {
+        service.AddScoped<IFilesCleanerService, FilesCleanerService>();
+        return service;
+    }
+    private static IServiceCollection AddHostedServices(this IServiceCollection service)
+    {
+        service.AddHostedService<FilesCleanerBackgroundService>();
+        
+        return service;
+    }
+    
+    private static IServiceCollection AddDatabase(this IServiceCollection service)
+    {
+        service.AddScoped<IUnitOfWork, UnitOfWork>();
+        service.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+        
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+        
+        return service;
+    }
+    private static IServiceCollection AddRepositories(this IServiceCollection service)
+    {
+        service.AddScoped<IVolunteersRepository, VolunteersRepository>();
+        
+        return service;
+    }
+    private static IServiceCollection AddDbContexts(this IServiceCollection service)
+    {
+        service.AddScoped<WriteDbContext>();
+        service.AddScoped<IReadDbContext, ReadDbContext>();
+        
+        return service;
+    }
+    
     private static IServiceCollection AddMinio(this IServiceCollection service, IConfiguration configuration)
     {
         service.Configure<MinioOptions>(configuration.GetSection(MinioOptions.MINIO));

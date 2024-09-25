@@ -1,27 +1,34 @@
-﻿using CSharpFunctionalExtensions;
-using HomeForPets.Application.Volunteers;
+﻿using System.Data;
+using CSharpFunctionalExtensions;
+using Dapper;
+using HomeForPets.Application.VolunteersManagement;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
+using HomeForPets.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace HomeForPets.Infrastructure.Repositories;
 
 public class VolunteersRepository : IVolunteersRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-    public VolunteersRepository(ApplicationDbContext dbContext)
+    private readonly WriteDbContext _dbContext;
+
+    public VolunteersRepository(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task<Guid> Add(Volunteer volunteer, CancellationToken ct=default)
+    public async Task<Guid> Add(Volunteer volunteer, CancellationToken ct = default)
     {
-        await _dbContext.Volunteers.AddAsync(volunteer,ct);
+        await _dbContext.Volunteers.AddAsync(volunteer, ct);
         return volunteer.Id;
     }
+
     public Guid Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _dbContext.Volunteers.Remove(volunteer);
@@ -34,12 +41,12 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id.Value;
     }
 
-    public async Task<Result<Volunteer,Error>> GetById(
-        VolunteerId id, 
+    public async Task<Result<Volunteer, Error>> GetById(
+        VolunteerId id,
         CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext.Volunteers
-            .FirstOrDefaultAsync(x => x.Id == id,cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         if (volunteer is null)
             return Errors.General.NotFound();
@@ -50,7 +57,7 @@ public class VolunteersRepository : IVolunteersRepository
     public async Task<Volunteer?> GetByPhoneNumber(PhoneNumber phoneNumber)
     {
         var volunteer = await _dbContext.Volunteers
-            .FirstOrDefaultAsync(x =>   x.PhoneNumber == phoneNumber);
+            .FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber);
         return volunteer;
     }
 }

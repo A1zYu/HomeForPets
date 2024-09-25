@@ -4,8 +4,9 @@ using FluentValidation;
 using FluentValidation.Results;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos;
-using HomeForPets.Application.Volunteers;
-using HomeForPets.Application.Volunteers.AddPet;
+using HomeForPets.Application.Dtos.Volunteers;
+using HomeForPets.Application.VolunteersManagement;
+using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement;
@@ -112,7 +113,7 @@ public class AddPetToVolunteerTests
 
         var volunteer = Volunteer
             .Create(VolunteerId.NewId(), FullName.Create("test", "test").Value, phoneNumber, description,
-                YearsOfExperience.Create(1).Value).Value;
+                YearsOfExperience.Create(1).Value,null,null).Value;
         
         return volunteer;
     }

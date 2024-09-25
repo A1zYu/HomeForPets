@@ -1,5 +1,6 @@
 ﻿using HomeForPets.Application.Dtos;
-using HomeForPets.Application.Volunteers.Update;
+using HomeForPets.Application.Dtos.Volunteers;
+using HomeForPets.Application.VolunteersManagement.Commands.Update;
 
 namespace HomeForPets.Api.Controllers.Volunteers.Request;
 

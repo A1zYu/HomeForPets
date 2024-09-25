@@ -11,7 +11,7 @@ public record PaymentDetailsList
     public IReadOnlyList<PaymentDetails> PaymentDetails { get; }
     public static PaymentDetailsList Create(IEnumerable<PaymentDetails> list) => new(list);
 }
-public record PaymentDetails
+public class PaymentDetails
 {
     private PaymentDetails() { }
     private PaymentDetails(string name, string description)

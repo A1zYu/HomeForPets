@@ -1,14 +1,15 @@
 ﻿using System.Data;
 using HomeForPets.Application.Database;
+using HomeForPets.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace HomeForPets.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
 
-    public UnitOfWork(ApplicationDbContext dbContext)
+    public UnitOfWork(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
     }

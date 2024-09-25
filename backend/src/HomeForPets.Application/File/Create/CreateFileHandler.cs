@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.FilesDto;
 using HomeForPets.Application.Files;
-using HomeForPets.Application.Volunteers.AddPet;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;

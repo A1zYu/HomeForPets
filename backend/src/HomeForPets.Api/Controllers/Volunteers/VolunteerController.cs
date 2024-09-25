@@ -3,13 +3,14 @@ using HomeForPets.Api.Controllers.Volunteers.Request;
 using HomeForPets.Api.Extensions;
 using HomeForPets.Api.Processor;
 using HomeForPets.Api.Response;
-using HomeForPets.Application.Volunteers.AddPet;
-using HomeForPets.Application.Volunteers.CreateVolunteer;
-using HomeForPets.Application.Volunteers.Delete;
-using HomeForPets.Application.Volunteers.Update;
-using HomeForPets.Application.Volunteers.UpdatePaymentDetails;
-using HomeForPets.Application.Volunteers.UpdateSocialNetworks;
-using HomeForPets.Application.Volunteers.UploadFilesToPet;
+using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
+using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
+using HomeForPets.Application.VolunteersManagement.Commands.Delete;
+using HomeForPets.Application.VolunteersManagement.Commands.Update;
+using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
+using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
+using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
+using HomeForPets.Application.VolunteersManagement.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers.Volunteers;
@@ -130,6 +131,18 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(result.Value);
+        return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get(
+        [FromQuery] GetVolunteersWithPaginationRequest request,
+        [FromServices] GetVolunteersWithPaginationHandler handler,
+        CancellationToken cancellationToken = default)
+
+    {
+        var result = await handler.Handle(request.ToQuery(), cancellationToken);
+        
+        return Ok(result);
     }
 }

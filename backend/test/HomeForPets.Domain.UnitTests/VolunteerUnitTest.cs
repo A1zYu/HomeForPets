@@ -27,7 +27,7 @@ public class VolunteerUnitTest
         
         var volunteer = 
             Volunteer.Create(VolunteerId.NewId(), FullName.Create("test", "test").Value, phoneNumber, description, 
-                YearsOfExperience.Create(1).Value).Value;
+                YearsOfExperience.Create(1).Value,null!,null!).Value;
 
         var petId = PetId.NewId();
         
@@ -219,7 +219,7 @@ public class VolunteerUnitTest
         var phoneNumber = PhoneNumber.Create("89999999999").Value;
         var volunteer = 
             Volunteer.Create(VolunteerId.NewId(), FullName.Create("test", "test").Value, phoneNumber, description, 
-                YearsOfExperience.Create(1).Value).Value;
+                YearsOfExperience.Create(1).Value,null!,null!).Value;
         var speciesBreed = SpeciesBreed.Create(SpeciesId.Create(Guid.Empty), Guid.Empty).Value;
         for (int i = 0; i < petsCount; i++)
         {
