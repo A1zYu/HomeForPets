@@ -1,6 +1,4 @@
-﻿using HomeForPets.Domain.VolunteersManagement.ValueObjects;
-
-namespace HomeForPets.Application.Dtos;
+﻿namespace HomeForPets.Application.Dtos.Volunteers;
 
 public class VolunteerDto
 {

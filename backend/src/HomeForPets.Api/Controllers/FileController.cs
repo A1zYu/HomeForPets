@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.HighPerformance.Helpers;
 using HomeForPets.Api.Extensions;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.FilesDto;
 using HomeForPets.Application.File.Create;
 using HomeForPets.Application.File.Delete;
 using HomeForPets.Application.File.Get;

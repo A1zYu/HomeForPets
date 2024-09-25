@@ -1,4 +1,5 @@
 ﻿using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.FilesDto;
 using HomeForPets.Application.File.Create;
 
 namespace HomeForPets.Api.Processor;

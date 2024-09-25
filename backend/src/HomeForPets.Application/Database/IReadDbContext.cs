@@ -1,4 +1,5 @@
 ﻿using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.Volunteers;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeForPets.Application.Database;

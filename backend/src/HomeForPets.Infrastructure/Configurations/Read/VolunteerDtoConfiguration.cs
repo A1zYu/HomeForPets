@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

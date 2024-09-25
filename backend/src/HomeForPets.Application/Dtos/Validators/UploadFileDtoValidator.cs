@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using HomeForPets.Application.Dtos.FilesDto;
 using HomeForPets.Application.Validation;
 using HomeForPets.Domain.Shared;
 using Microsoft.VisualBasic;

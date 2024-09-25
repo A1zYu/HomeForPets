@@ -15,5 +15,5 @@ public class SqlConnectionFactory : ISqlConnectionFactory
     }
 
     public IDbConnection CreateConnection()=>
-    new NpgsqlConnection(_configuration.GetConnectionString("localDb"));
+    new NpgsqlConnection(_configuration.GetConnectionString(Constants.DATABASE));
 }

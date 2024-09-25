@@ -2,6 +2,7 @@
 using HomeForPets.Application.Abstaction;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Application.Extensions;
 using Microsoft.EntityFrameworkCore;
 

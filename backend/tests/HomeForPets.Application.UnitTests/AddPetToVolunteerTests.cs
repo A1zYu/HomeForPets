@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Application.VolunteersManagement;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Domain.Shared;

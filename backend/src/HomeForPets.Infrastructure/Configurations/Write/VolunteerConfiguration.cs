@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;

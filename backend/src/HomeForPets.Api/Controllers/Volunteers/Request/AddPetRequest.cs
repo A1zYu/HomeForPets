@@ -1,4 +1,5 @@
 ﻿using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Domain.VolunteersManagement.Enums;
 

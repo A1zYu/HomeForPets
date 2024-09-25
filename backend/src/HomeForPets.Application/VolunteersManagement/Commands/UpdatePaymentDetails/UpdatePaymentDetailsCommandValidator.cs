@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Application.Validation;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 

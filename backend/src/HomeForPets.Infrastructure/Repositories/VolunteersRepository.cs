@@ -17,13 +17,10 @@ namespace HomeForPets.Infrastructure.Repositories;
 public class VolunteersRepository : IVolunteersRepository
 {
     private readonly WriteDbContext _dbContext;
-    private readonly IDbConnection _dbConnection;
 
-    public VolunteersRepository(WriteDbContext dbContext, IConfiguration configuration)
+    public VolunteersRepository(WriteDbContext dbContext)
     {
         _dbContext = dbContext;
-        _dbConnection = dbContext.Database.GetDbConnection();
-        _dbConnection.ConnectionString = configuration.GetConnectionString("localDb");
     }
 
     public async Task<Guid> Add(Volunteer volunteer, CancellationToken ct = default)
