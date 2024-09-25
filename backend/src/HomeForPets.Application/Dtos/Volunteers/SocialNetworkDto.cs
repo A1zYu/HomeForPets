@@ -1,3 +1,7 @@
 ﻿namespace HomeForPets.Application.Dtos.Volunteers;
 
-public record SocialNetworkDto(string Name, string Path);
+public class SocialNetworkDto
+{
+    public string Name { get; set; }
+    public string Path {get; set;}
+};

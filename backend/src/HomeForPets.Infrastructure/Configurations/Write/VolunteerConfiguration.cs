@@ -4,6 +4,7 @@ using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
+using HomeForPets.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -61,30 +62,16 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             });
         
         builder.Property(v => v.PaymentDetails)
-            .HasConversion(
-                details => JsonSerializer.Serialize(details, JsonSerializerOptions.Default),
-                json => JsonSerializer.Deserialize<List<PaymentDetailsDto>>(json,
-                        JsonSerializerOptions.Default)!
-                    .Select(dto => PaymentDetails.Create(dto.Name, dto.Description).Value)
-                    .ToList(),
-                new ValueComparer<IReadOnlyList<PaymentDetails>>(
-                    (c1,c2)=> c1!.SequenceEqual(c2!),
-                    c=> c.Aggregate(0,(a,v)=>HashCode.Combine(a,v.GetHashCode())),
-                    c => (IReadOnlyList<PaymentDetails>)c.ToList())
-            ).HasColumnName("payment_details");
+            .ValueObjectCollectionJsonConversion(
+                details => new PaymentDetailsDto{Description = details.Description,Name = details.Name},
+                dto => PaymentDetails.Create(dto.Description, dto.Name).Value)
+            .HasColumnName("payment_details");
         
         builder.Property(v => v.SocialNetworks)
-            .HasConversion(
-                socialNetwork => JsonSerializer.Serialize(socialNetwork, JsonSerializerOptions.Default),
-                json => JsonSerializer.Deserialize<List<SocialNetworkDto>>(json,
-                        JsonSerializerOptions.Default)!
-                    .Select(dto => SocialNetwork.Create(dto.Name, dto.Path).Value)
-                    .ToList(),
-                new ValueComparer<IReadOnlyList<SocialNetwork>>(
-                    (c1,c2)=> c1!.SequenceEqual(c2!),
-                    c=> c.Aggregate(0,(a,v)=>HashCode.Combine(a,v.GetHashCode())),
-                    c => (IReadOnlyList<SocialNetwork>)c.ToList())
-            ).HasColumnName("social_networks");
+            .ValueObjectCollectionJsonConversion(
+                network=> new SocialNetworkDto{Name = network.Name,Path = network.Path},
+                dto=> SocialNetwork.Create(dto.Name, dto.Path).Value)
+            .HasColumnName("social_networks");
        
         builder.HasMany(v => v.Pets)
             .WithOne()
