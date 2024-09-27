@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using HomeForPets.Application.Model;
 using HomeForPets.Application.VolunteersManagement;
 using Microsoft.EntityFrameworkCore;
 

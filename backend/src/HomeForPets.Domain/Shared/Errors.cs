@@ -12,12 +12,17 @@ public static class Errors
         public static Error NotFound(Guid? id = null)
         {
             var forId = id==null?"": $" for id: '{id}' ";
-            return Error.NotFound("is.not.invalid", $"record not found {forId}");
+            return Error.NotFound("record.not.found", $"record not found {forId}");
         }
         public static Error ValueIsRequired(string? name = null)
         {
             var label = name == null ? "" : " " + name + " ";
             return Error.Validation("length.is.invalid", $"invalid{label}length)");
+            
+        }
+        public static Error AlreadyExist()
+        {
+            return Error.Validation("record.already.exist", "record already exist");
         }
     }
     public static class Volunteer
@@ -25,6 +30,16 @@ public static class Errors
         public static Error AlreadyExist()
         {
             return Error.Validation("record.already.exist", "record already exist");
+        }
+    }
+
+    public static class Pet
+    {
+        public static Error SpeciesExistsInPet(Guid id)
+        {
+            return Error
+                .Validation("species.exists.in.record",
+                    $"species exists in record to pet: '{id}'");
         }
     }
 

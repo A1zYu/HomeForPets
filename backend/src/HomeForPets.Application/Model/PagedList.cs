@@ -1,4 +1,4 @@
-﻿namespace HomeForPets.Application.VolunteersManagement;
+﻿namespace HomeForPets.Application.Model;
 
 public class PagedList<T>
 {

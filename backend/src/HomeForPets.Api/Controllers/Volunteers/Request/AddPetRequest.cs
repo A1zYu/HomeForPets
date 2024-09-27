@@ -12,9 +12,21 @@ public record AddPetRequest(
     IEnumerable<PaymentDetailsDto> PaymentDetailsDto,
     AddressDto AddressDto,
     string PhoneNumber,
+    Guid SpecialId,
+    Guid BreedId,
     HelpStatus HelpStatus
 )
 {
     public AddPetCommand ToCommand(Guid volunteerId) => 
-        new(volunteerId,Name,Description,PetDetailsDto,AddressDto,PhoneNumber,HelpStatus,PaymentDetailsDto);
+        new(
+            volunteerId,
+            Name,
+            Description,
+            PetDetailsDto,
+            AddressDto,
+            PhoneNumber,
+            HelpStatus,
+            SpecialId,
+            BreedId,
+            PaymentDetailsDto);
 };

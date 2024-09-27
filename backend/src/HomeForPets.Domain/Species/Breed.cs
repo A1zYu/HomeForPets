@@ -6,8 +6,7 @@ namespace HomeForPets.Domain.Species;
 
 public class Breed: Shared.Entity<BreedId>
 {
-    private Breed(BreedId id) : base(id)
-    {}
+    private Breed(BreedId id) : base(id) {}
     private Breed(BreedId breedId, string name) : base(breedId)
     {
         Name = name;

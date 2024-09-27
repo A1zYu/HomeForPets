@@ -1,5 +1,6 @@
 ﻿using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos;
+using HomeForPets.Application.Dtos.SpeciesDto;
 using HomeForPets.Application.Dtos.Volunteers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,8 @@ public class ReadDbContext(IConfiguration configuration) : DbContext, IReadDbCon
 {
     public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
     public IQueryable<PetDto> Pets => Set<PetDto>();
+    public IQueryable<SpeciesDto> Species => Set<SpeciesDto>();
+    public IQueryable<BreedDto> Breeds => Set<BreedDto>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

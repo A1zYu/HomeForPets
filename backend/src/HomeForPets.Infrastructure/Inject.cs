@@ -1,6 +1,7 @@
 ﻿using HomeForPets.Application.Database;
 using HomeForPets.Application.Files;
 using HomeForPets.Application.Messaging;
+using HomeForPets.Application.SpeciesManagement;
 using HomeForPets.Application.VolunteersManagement;
 using HomeForPets.Infrastructure.BackgroundServices;
 using HomeForPets.Infrastructure.DbContexts;
@@ -63,6 +64,7 @@ public static class Inject
     private static IServiceCollection AddRepositories(this IServiceCollection service)
     {
         service.AddScoped<IVolunteersRepository, VolunteersRepository>();
+        service.AddScoped<ISpeciesRepository, SpeciesRepository>();
         
         return service;
     }
