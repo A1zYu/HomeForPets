@@ -11,6 +11,8 @@ using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
 using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
 using HomeForPets.Application.VolunteersManagement.Queries;
+using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteerById;
+using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers.Volunteers;
@@ -142,7 +144,18 @@ public class VolunteerController : ApplicationController
 
     {
         var result = await handler.Handle(request.ToQuery(), cancellationToken);
-        
+
         return Ok(result);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(
+        [FromRoute] Guid id,
+        [FromServices] GetVolunteerByIdHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new GetVolunteerByIdCommand{ Id = id };
+        var result = await handler.Handle(command, cancellationToken);
+        return Ok(result.Value);
     }
 }
