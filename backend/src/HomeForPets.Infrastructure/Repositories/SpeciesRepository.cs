@@ -1,4 +1,5 @@
 ﻿using System.Reactive;
+using CommunityToolkit.HighPerformance.Helpers;
 using CSharpFunctionalExtensions;
 using HomeForPets.Application.SpeciesManagement;
 using HomeForPets.Domain.Shared;
@@ -39,6 +40,23 @@ public class SpeciesRepository : ISpeciesRepository
     public async Task<UnitResult<Error>> Delete(Species species, CancellationToken ct)
     {
         _writeDbContext.Species.Remove(species);
+
+        return UnitResult.Success<Error>();
+    }
+    public async Task<UnitResult<Error>> DeleteBreed(SpeciesId speciesId,BreedId breedId, CancellationToken ct)
+    {
+        var speciesRecord = await _writeDbContext.Species
+            .FirstOrDefaultAsync(x=>x.Id==speciesId,ct);
+        if (speciesRecord is null)
+        {
+            return Errors.General.NotFound(speciesId);
+        }
+        var breedRecord = speciesRecord.Breeds.FirstOrDefault(x=>x.Id==breedId);
+        if (breedRecord is null)
+        {
+            return Errors.General.NotFound(breedId);
+        }
+        _writeDbContext.Remove(breedRecord);
 
         return UnitResult.Success<Error>();
     }

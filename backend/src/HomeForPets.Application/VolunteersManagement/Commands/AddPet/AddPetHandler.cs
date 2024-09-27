@@ -67,12 +67,9 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
             command.AddressDto.FlatNumber).Value;
 
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
-
-        var paymentDetails = PaymentDetailsList
-            .Create(command.PaymentDetailsDto
-                .Select(x => PaymentDetails.Create(x.Name, x.Description).Value));
-
+        
         var speciesId = SpeciesId.Create(command.SpecialId).Value;
+        
         var breedId = BreedId.Create(command.BreedId).Value;
 
         var speciesBreed = SpeciesBreed.Create(speciesId, breedId).Value;
@@ -90,13 +87,14 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
         {
             return pet.Error.ToErrorList();
         }
-
+        
         if (command.PaymentDetailsDto.Any())
         {
+            var paymentDetails = command.PaymentDetailsDto
+                    .Select(x => PaymentDetails.Create(x.Name, x.Description).Value);
             pet.Value.AddPaymentDetails(paymentDetails);
         }
-
-
+        
         volunteerResult.Value.AddPet(pet.Value);
 
         await _unitOfWork.SaveChanges(cancellationToken);

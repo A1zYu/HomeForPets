@@ -10,8 +10,8 @@ namespace HomeForPets.Domain.VolunteersManagement;
 public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 {
     private readonly List<Pet> _pets = [];
-    private List<PaymentDetails> _paymentDetails;
-    private List<SocialNetwork> _socialNetworks;
+    private List<PaymentDetails> _paymentDetails=[];
+    private List<SocialNetwork> _socialNetworks=[];
 
     private bool _idDeleted = false;
 
@@ -24,16 +24,12 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         FullName fullName,
         PhoneNumber phoneNumber,
         Description description,
-        YearsOfExperience yearsOfExperience,
-        List<PaymentDetails> paymentDetails,
-        List<SocialNetwork> socialNetworks) : base(id)
+        YearsOfExperience yearsOfExperience) : base(id)
     {
         FullName = fullName;
         Description = description;
         YearsOfExperience = yearsOfExperience;
         PhoneNumber = phoneNumber;
-        _paymentDetails = paymentDetails ?? new List<PaymentDetails>();
-        _socialNetworks = socialNetworks ?? new List<SocialNetwork>();
     }
 
     public FullName FullName { get; private set; }
@@ -62,7 +58,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
     }
 
     public void AddSocialNetworks(IEnumerable<SocialNetwork> socialNetworks) =>  _socialNetworks.AddRange(socialNetworks);
-    public void AddPaymentDetails(IEnumerable<PaymentDetails> paymentDetails)=> _paymentDetails.AddRange(paymentDetails);
+    public void AddPaymentDetails(IEnumerable<PaymentDetails> paymentDetails)=> _paymentDetails.AddRange(paymentDetails.ToList());
 
     public Result<Pet, Error> GetPetById(PetId petId)
     {
@@ -86,6 +82,23 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         _pets.Add(pet);
 
         return Result.Success<Error>();
+    }
+
+    public UnitResult<Error> UpdateMainInfoForPet(Pet updatedPet)
+    {
+        var pet = _pets.FirstOrDefault(i => i.Id == updatedPet.Id);
+        if (pet is null)
+        {
+            return Errors.General.NotFound(updatedPet.Id);
+        }
+
+        var result = pet.UpdateInfo(updatedPet);
+        if (result.IsFailure)
+        {
+            return Errors.General.ValueIsInvalid("pet");
+        }
+        
+        return UnitResult.Success<Error>();
     }
 
     public UnitResult<Error> MovePet(Position newPosition, Pet pet)
@@ -155,6 +168,21 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         
     }
 
+    public UnitResult<Error> DeletePhotoToPet(PetId petId,PetPhotoId petPhotoId)
+    {
+        var pet = _pets.FirstOrDefault(i => i.Id == petId);
+        if (pet is null)
+        {
+            return Errors.General.NotFound(petId.Value);
+        }
+        var result = pet.DeletePhoto(petPhotoId);
+        if (result.IsFailure)
+        {
+            return result.Error;
+        }
+        return UnitResult.Success<Error>();
+    }
+
     public void UpdateMainInfo(
         FullName fullName,
         Description description,
@@ -172,18 +200,14 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         FullName fullName,
         PhoneNumber phoneNumber,
         Description description,
-        YearsOfExperience yearsOfExperience,
-        IEnumerable<PaymentDetails> paymentDetails,
-        IEnumerable<SocialNetwork> socialNetworks)
+        YearsOfExperience yearsOfExperience)
     {
         var volunteer = new Volunteer(
             id,
             fullName,
             phoneNumber,
             description,
-            yearsOfExperience,
-            paymentDetails.ToList(),
-            socialNetworks.ToList());
+            yearsOfExperience);
 
         return volunteer;
     }

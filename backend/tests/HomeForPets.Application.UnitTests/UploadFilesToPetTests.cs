@@ -164,7 +164,7 @@ public class UploadFilesToPetTests
         var phoneNumber = PhoneNumber.Create("89999999999").Value;
         var volunteer = 
             Volunteer.Create(VolunteerId.NewId(), FullName.Create("test", "test").Value, phoneNumber, description, 
-                YearsOfExperience.Create(1).Value,null,null).Value;
+                YearsOfExperience.Create(1).Value).Value;
         var speciesBreed = SpeciesBreed.Create(SpeciesId.Create(Guid.Empty), Guid.Empty).Value;
         var pet = Pet.Create(PetId.NewId(), name, description, petDetails, address, phoneNumber,
             HelpStatus.NeedForHelp, speciesBreed);

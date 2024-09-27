@@ -52,6 +52,8 @@ public class DeleteBreedToSpeciesHandler : ICommandHandler<DeleteBreedToSpeciesC
             return Errors.General.NotFound(breed?.Id.Value).ToErrorList();
         }
         
+        
+        await _speciesRepository.DeleteBreed(command.SpeciesId,command.BreedId,ct);
         species.Value.RemoveBreed(breed);
 
         await _unitOfWork.SaveChanges(ct);

@@ -1,6 +1,8 @@
-﻿using HomeForPets.Domain.Shared.Ids;
+﻿using HomeForPets.Application.Dtos.Volunteers;
+using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement.Entities;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
+using HomeForPets.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -103,20 +105,11 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         .IsRequired()
         .HasColumnName("create_date");
     
-    builder.OwnsOne(p => p.PaymentDetailsList, pb =>
-    {
-        pb.ToJson("payment_details");
-        pb.OwnsMany(p => p.PaymentDetails, sb =>
-        {
-            sb.Property(p => p.Name)
-                .HasColumnName("name")
-                .IsRequired();
-        
-            sb.Property(p => p.Description)
-                .HasColumnName("description")
-                .IsRequired();
-        });
-    });
+    builder.Property(x=>x.PaymentDetails)
+        .ValueObjectCollectionJsonConversion(
+            details => new PaymentDetailsDto{Description = details.Description, Name = details.Name},
+            dto => PaymentDetails.Create(dto.Name, dto.Description).Value)
+        .HasColumnName("payment_details");
 
     builder.Property(x => x.Position)
         .HasColumnName("position")

@@ -7,6 +7,7 @@ using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 using HomeForPets.Application.VolunteersManagement.Commands.Delete;
 using HomeForPets.Application.VolunteersManagement.Commands.Update;
+using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
 using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
@@ -145,7 +146,7 @@ public class VolunteerController : ApplicationController
     {
         var result = await handler.Handle(request.ToQuery(), cancellationToken);
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpGet("{id:guid}")]
@@ -157,5 +158,33 @@ public class VolunteerController : ApplicationController
         var command = new GetVolunteerByIdCommand{ Id = id };
         var result = await handler.Handle(command, cancellationToken);
         return Ok(result.Value);
+    }
+
+    [HttpPut("{volunteerId:guid}/main-info-pet")]
+    public async Task<IActionResult> UpdateMainInfoForPet(
+        [FromRoute] Guid volunteerId,
+        [FromBody] UpdateMainInfoPetRequst request,
+        [FromServices] UpdateMainInfoForPetHandler handler,
+        CancellationToken cancellationToken = default
+        )
+    {
+        var result =await handler.Handle(request.ToCommand(volunteerId),cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.Value);
+    }
+
+    [HttpDelete("{volunteerId:guid}/delete-file-pet")]
+    public async Task<IActionResult> DeleteFilePet(
+        [FromRoute] Guid volunteerId,
+        CancellationToken cancellationToken = default)
+    {
+        var result = 0;
+        
+        return Ok();
     }
 }

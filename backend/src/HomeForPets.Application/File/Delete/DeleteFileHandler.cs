@@ -27,7 +27,7 @@ public class DeleteFileHandler
     {
         var filePath = FilePath.Create(request.FullPath);
         
-        var fileContent = new FileData(null!, new FileInfo(filePath.Value, BUCKET_NAME));
+        var fileContent =  new FileInfo(filePath.Value, BUCKET_NAME);
         
         var result = await _provider.DeleteFile(fileContent, cancellationToken);
         if (result.IsFailure)
