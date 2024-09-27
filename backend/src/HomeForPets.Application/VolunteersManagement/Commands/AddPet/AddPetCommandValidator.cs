@@ -28,7 +28,6 @@ public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
                     pD.IsVaccinated,
                     pD.IsNeutered,
                     pD.BirthOfDate));
-        RuleFor(p => p.HelpStatus).NotEmpty().WithError(Error.None);
         RuleFor(p => p.PhoneNumber).MustBeValueObject(PhoneNumber.Create);
         RuleFor(p => p.VolunteerId).NotEmpty().WithError(Error.NullValue);
     }
