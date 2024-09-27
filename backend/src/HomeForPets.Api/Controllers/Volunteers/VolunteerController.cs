@@ -6,6 +6,7 @@ using HomeForPets.Api.Response;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 using HomeForPets.Application.VolunteersManagement.Commands.Delete;
+using HomeForPets.Application.VolunteersManagement.Commands.DeleteFileFromPet;
 using HomeForPets.Application.VolunteersManagement.Commands.Update;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
@@ -30,7 +31,7 @@ public class VolunteerController : ApplicationController
         if (result.IsFailure)
             return result.Error.ToResponse();
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPut("{id:guid}/main-info")]
@@ -47,7 +48,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpDelete("{id:guid}")]
@@ -63,7 +64,7 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPut("{id:guid}/social-networks")]
@@ -79,7 +80,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPut("{id:guid}/payment-details")]
@@ -95,7 +96,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPost("{id:guid}/pet")]
@@ -111,7 +112,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPost("{id:guid}/pet/{petId:guid}/files")]
@@ -134,7 +135,7 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpGet]
@@ -181,10 +182,16 @@ public class VolunteerController : ApplicationController
     [HttpDelete("{volunteerId:guid}/delete-file-pet")]
     public async Task<IActionResult> DeleteFilePet(
         [FromRoute] Guid volunteerId,
+        [FromBody] DeleteFileForPetRequest request,
+        [FromServices] DeleteFileFromPetHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var result = 0;
+        var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
         
-        return Ok();
+        return Ok(result.Value);
     }
 }

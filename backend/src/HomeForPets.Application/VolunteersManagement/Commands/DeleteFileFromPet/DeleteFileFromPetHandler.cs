@@ -6,6 +6,7 @@ using HomeForPets.Application.Extensions;
 using HomeForPets.Application.Files;
 using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoFromPet;
 using HomeForPets.Domain.Shared;
+using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.Extensions.Logging;
 using FileInfo = HomeForPets.Application.Files.FileInfo;
@@ -32,29 +33,51 @@ public class DeleteFileFromPetHandler : ICommandHandler<bool, DeleteFileFromPetC
 
     public async Task<Result<bool, ErrorList>> Handle(DeleteFileFromPetCommand command, CancellationToken ct)
     {
-        var validationResult = await _validator.ValidateAsync(command,ct);
-        if (!validationResult.IsValid)
+        using var transaction = await _unitOfWork.BeginTransaction(ct);
+        try
         {
-            return validationResult.ToErrorList();
+            var validationResult = await _validator.ValidateAsync(command,ct);
+            if (!validationResult.IsValid)
+            {
+                return validationResult.ToErrorList();
+            }
+            var volunteer = await _volunteersRepository.GetById(command.VolunteerId,ct);
+            if (volunteer.IsFailure)
+            {
+                return volunteer.Error.ToErrorList();
+            }
+            var pet = volunteer.Value.Pets.FirstOrDefault(x=>x.Id.Value == command.PetId);
+            if (pet is null)
+            {
+                return Errors.General.NotFound(command.PetId).ToErrorList();
+            }
+            var photo = pet.PetPhotos.FirstOrDefault(x=>x.Id.Value == command.PhotoId);
+            if (photo is null)
+            {
+                return Errors.General.NotFound(command.PhotoId).ToErrorList();
+            }
+
+            await _fileProvider.DeleteFile(new FileInfo(FilePath.Create(photo.Path).Value, BUCKET_NAME),ct);
+            
+            var result = volunteer.Value.DeletePhotoToPet(command.PetId, command.PhotoId);
+
+            if (result.IsFailure)
+            {
+                return result.Error.ToErrorList();
+            }
+
+            await _unitOfWork.SaveChanges(ct);
+            
+            transaction.Commit();
+
+            return result.IsSuccess;
         }
-        var volunteer = await _volunteersRepository.GetById(command.VolunteerId,ct);
-        if (volunteer.IsFailure)
+        catch (Exception e)
         {
-            return volunteer.Error.ToErrorList();
+            _logger.LogError(e, e.Message);
+            transaction.Rollback();
+            return Errors.General.ValueIsInvalid().ToErrorList();
         }
-        var pet = volunteer.Value.Pets.FirstOrDefault(x=>x.Id.Value == command.PetId);
-        var photo = pet?.PetPhotos?.FirstOrDefault(x=>x.Id.Value == command.PhotoId);
         
-        await _fileProvider.DeleteFile(new FileInfo(FilePath.Create(photo.Path).Value, BUCKET_NAME),ct);
-        var result = volunteer.Value.DeletePhotoToPet(command.PetId, command.PhotoId);
-
-        if (result.IsFailure)
-        {
-            return result.Error.ToErrorList();
-        }
-
-        await _unitOfWork.SaveChanges(ct);
-
-        return result.IsSuccess;
     }
 }
