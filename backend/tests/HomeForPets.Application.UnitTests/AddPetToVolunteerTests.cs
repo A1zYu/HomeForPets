@@ -78,7 +78,7 @@ public class AddPetToVolunteerTests
         var address = new AddressDto("test", "test", 1, 2);
         var phoneNumber = "89999999a99";
         var command = new AddPetCommand(volunteer.Id, petName, description, petDetails, address, phoneNumber,
-            HelpStatus.NeedForHelp, []);
+            HelpStatus.NeedForHelp, SpeciesId.NewId,BreedId.NewId,[]);
         
         _volunteerRepositoryMock
             .Setup(v => v.GetById(volunteer.Id, ct))
@@ -127,7 +127,7 @@ public class AddPetToVolunteerTests
         var phoneNumber = "89999999999";
         
         var command = new AddPetCommand(volunteer.Id, petName, description, petDetails, address, phoneNumber,
-            HelpStatus.NeedForHelp, []);
+            HelpStatus.NeedForHelp, SpeciesId.NewId,BreedId.NewId,[]);
         return command;
     }
 }

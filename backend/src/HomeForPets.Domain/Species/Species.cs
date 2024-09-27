@@ -4,29 +4,44 @@ using HomeForPets.Domain.Shared.Ids;
 
 namespace HomeForPets.Domain.Species;
 
-public class Species: Shared.Entity<SpeciesId>
+public class Species : Shared.Entity<SpeciesId>
 {
     private readonly List<Breed> _breeds = [];
-    private Species(SpeciesId id) : base(id) {}
-    private Species(SpeciesId speciesId,string name, List<Breed> breeds)
+
+    private Species(SpeciesId id) : base(id)
+    {
+    }
+
+    private Species(SpeciesId speciesId, string name)
         : base(speciesId)
     {
         Name = name;
-        AddBreeds(breeds);
     }
-    
+
     public string Name { get; private set; }
     public IReadOnlyList<Breed> Breeds => _breeds;
-    private void AddBreeds(List<Breed> breeds) => _breeds.AddRange(breeds);
 
-    public static Result<Species,Error> Create(SpeciesId speciesId,string name, List<Breed> breeds)
+    public UnitResult<ErrorList> AddBreed(Breed breed)
+    {
+        var breedExits = _breeds.Any(x => x.Name == breed.Name);
+        if (breedExits)
+        {
+            return UnitResult.Failure(Errors.General.AlreadyExist().ToErrorList());
+        }
+
+        _breeds.Add(breed);
+        return UnitResult.Success<ErrorList>();
+    }
+
+    public void RemoveBreed(Breed breed) => _breeds.Remove(breed);
+
+    public static Result<Species, Error> Create(SpeciesId speciesId, string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length > Constraints.Constants.LOW_VALUE_LENGTH)
         {
             return Errors.General.ValueIsInvalid("Species name");
         }
-        
-        return new Species(speciesId,name,breeds);
+
+        return new Species(speciesId, name);
     }
-    
 }

@@ -72,8 +72,8 @@ public class AddPetHandler : ICommandHandler<Guid,AddPetCommand>
             .Create(command.PaymentDetailsDto
                 .Select(x => PaymentDetails.Create(x.Name, x.Description).Value));
 
-        var speciesId = SpeciesId.NewId;
-        var breedId = Guid.NewGuid();
+        var speciesId = SpeciesId.Create(command.SpecialId).Value;
+        var breedId = BreedId.Create(command.BreedId).Value;
 
         var speciesBreed = SpeciesBreed.Create(speciesId, breedId).Value;
 

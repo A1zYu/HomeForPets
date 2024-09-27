@@ -1,6 +1,9 @@
-﻿namespace HomeForPets.Application.Abstaction;
+﻿using CSharpFunctionalExtensions;
+using HomeForPets.Domain.Shared;
 
-public interface IQueryHandler<TResponse,in TQuery> where TQuery : IQuery
+namespace HomeForPets.Application.Abstaction;
+
+public interface IQueryHandler<TResponse, in TQuery> where TQuery : IQuery
 {
-    public Task<TResponse> Handle(TQuery query, CancellationToken ct);
+    public Task<Result<TResponse,ErrorList>> Handle(TQuery query, CancellationToken ct);
 }

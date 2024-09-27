@@ -1,7 +1,10 @@
-﻿using Dapper;
+﻿using CSharpFunctionalExtensions;
+using Dapper;
 using HomeForPets.Application.Abstaction;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos.Volunteers;
+using HomeForPets.Application.Model;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
 
@@ -15,7 +18,7 @@ public class GetVolunteersWithPaginationHandlerDapper
         _sqlConnectionFactory = sqlConnectionFactory;
     }
 
-    public async Task<PagedList<VolunteerDto>> Handle(GetVolunteerWithPaginationQuery query,
+    public async Task<Result<PagedList<VolunteerDto>,ErrorList>> Handle(GetVolunteerWithPaginationQuery query,
         CancellationToken cancellationToken)
     {
         var connection = _sqlConnectionFactory.CreateConnection();

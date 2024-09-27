@@ -1,7 +1,10 @@
-﻿using HomeForPets.Application.Abstaction;
+﻿using CSharpFunctionalExtensions;
+using HomeForPets.Application.Abstaction;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Application.Extensions;
+using HomeForPets.Application.Model;
+using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
 
@@ -15,7 +18,7 @@ public class GetVolunteersWithPaginationHandler
         _readDbContext = readDbContext;
     }
 
-    public async Task<PagedList<VolunteerDto>> Handle(GetVolunteerWithPaginationQuery query,
+    public async Task<Result<PagedList<VolunteerDto>,ErrorList>> Handle(GetVolunteerWithPaginationQuery query,
         CancellationToken cancellationToken)
     {
         var volunteersQuery = _readDbContext.Volunteers;

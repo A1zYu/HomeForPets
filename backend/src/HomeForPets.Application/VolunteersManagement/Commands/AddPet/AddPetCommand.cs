@@ -13,4 +13,6 @@ public record AddPetCommand(
     AddressDto AddressDto,
     string PhoneNumber,
     HelpStatus HelpStatus,
+    Guid SpecialId,
+    Guid BreedId,
     IEnumerable<PaymentDetailsDto> PaymentDetailsDto) : ICommand;
