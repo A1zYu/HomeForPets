@@ -163,7 +163,7 @@ public class VolunteerController : ApplicationController
         return Ok(result.Value);
     }
 
-    [HttpPut("{volunteerId:guid}/update-pet")]
+    [HttpPut("{volunteerId:guid}/pet")]
     public async Task<IActionResult> UpdatePet(
         [FromRoute] Guid volunteerId,
         [FromBody] UpdateMainInfoPetRequst request,
@@ -181,7 +181,7 @@ public class VolunteerController : ApplicationController
         return Ok(result.Value);
     }
 
-    [HttpDelete("{volunteerId:guid}/delete-file-pet")]
+    [HttpDelete("{volunteerId:guid}/file-pet")]
     public async Task<IActionResult> DeletePhoto(
         [FromRoute] Guid volunteerId,
         [FromBody] DeleteFileForPetRequest request,
@@ -197,7 +197,7 @@ public class VolunteerController : ApplicationController
         return Ok(result.IsSuccess);
     }
 
-    [HttpPost("{volunteerId:guid}/change-status-pet")]
+    [HttpPut("{volunteerId:guid}/status-pet")]
     public async Task<IActionResult> ChangeStatusPet(
         [FromRoute] Guid volunteerId,
         [FromBody] ChangeStatusPetRequest request,
@@ -213,7 +213,7 @@ public class VolunteerController : ApplicationController
         return Ok(result.IsSuccess);
     }
 
-    [HttpDelete("{volunteerId:guid}/delete-pet/{petId:guid}")]
+    [HttpDelete("{volunteerId:guid}/pet/{petId:guid}")]
     public async Task<IActionResult> DeletePetById(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
