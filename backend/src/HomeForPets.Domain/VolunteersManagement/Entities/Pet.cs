@@ -10,7 +10,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 {
     private readonly List<PetPhoto> _petPhotos = [];
     private List<PaymentDetails> _paymentDetails = [];
-    private bool _idDeleted;
+    private bool _isDeleted;
 
     //ef core
     private Pet(PetId id) : base(id)
@@ -56,12 +56,12 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public void Delete()
     {
-        _idDeleted = true;
+        _isDeleted = true;
     }
 
     public void Restore()
     {
-        _idDeleted = false;
+        _isDeleted = false;
     }
 
     public void SetPosition(Position position) =>

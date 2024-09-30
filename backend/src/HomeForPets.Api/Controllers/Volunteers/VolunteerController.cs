@@ -7,6 +7,7 @@ using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Application.VolunteersManagement.Commands.ChangePetStatus;
 using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 using HomeForPets.Application.VolunteersManagement.Commands.Delete;
+using HomeForPets.Application.VolunteersManagement.Commands.DeletePet;
 using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
 using HomeForPets.Application.VolunteersManagement.Commands.Update;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet;
@@ -204,6 +205,24 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.IsSuccess);
+    }
+
+    [HttpDelete("{volunteerId:guid}/delete-pet/{petId:guid}")]
+    public async Task<IActionResult> DeletePetById(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] DeletePetHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new DeletePetCommand(volunteerId, petId);
+
+        var result = await handler.Handle(command, cancellationToken);
         if (result.IsFailure)
         {
             return result.Error.ToResponse();
