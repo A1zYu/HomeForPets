@@ -23,7 +23,7 @@ public class GetPetByIdHandler : IQueryHandler<PetDto,GetPetByIdQuery>
         {
             return Errors.General.NotFound(query.PetId).ToErrorList();
         }
-
+        
         return petQuery;
     }
 }

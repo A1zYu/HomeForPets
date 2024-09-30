@@ -53,6 +53,9 @@ public class GetFilteredPetsWithPaginationHandler : IQueryHandler<PagedList<PetD
             query.PositionFrom != null,
             i => i.Position >= query.PositionFrom!.Value);
         
+        petsQuery = petsQuery
+            .OrderByDescending(p => p.PetPhotos.Any(photo => photo.IsMain));
+        
         return await petsQuery.ToPagedList(query.PageNumber, query.PageSize, ct);
     }
 }
