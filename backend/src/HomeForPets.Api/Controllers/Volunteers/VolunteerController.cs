@@ -14,6 +14,7 @@ using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
 using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
 using HomeForPets.Application.VolunteersManagement.Queries;
+using HomeForPets.Application.VolunteersManagement.Queries.GetPetsWithPagination;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteerById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
 using Microsoft.AspNetCore.Mvc;
@@ -211,4 +212,49 @@ public class VolunteerController : ApplicationController
         
         return Ok(result.IsSuccess);
     }
+
+    [HttpGet("pets")]
+    public async Task<IActionResult> GetPets(
+        [FromRoute] Guid volunteerId,
+        [FromQuery] GetPetsWithPaginationRequest request,
+        [FromServices] GetFilteredPetsWithPaginationHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var result =await handler.Handle(request.ToQuery(), cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.Value);
+    }
+}
+
+public record GetPetsWithPaginationRequest(
+    int PageNumber,
+    int PageSize,
+    Guid? VolunteerId,
+    string? Color,
+    Guid? BreedId,
+    Guid? SpeciesId,
+    string? Name,
+    string? City,
+    int? PositionFrom,
+    int? PositionTo,
+    string? SortBy,
+    string? SortDirection)
+{
+    public GetFilteredPetsWithPaginationQuery ToQuery()=>new(
+        PageNumber,
+        PageSize,
+        VolunteerId,
+        Color,
+        BreedId,
+        SpeciesId,
+        Name,
+        City,
+        PositionFrom,
+        PositionTo,
+        SortBy,
+        SortDirection);
 }
