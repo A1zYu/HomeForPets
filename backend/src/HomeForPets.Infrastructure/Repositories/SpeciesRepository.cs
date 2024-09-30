@@ -44,23 +44,4 @@ public class SpeciesRepository : ISpeciesRepository
         return UnitResult.Success<Error>();
     }
     
-    public async Task<UnitResult<Error>> DeleteBreed(SpeciesId speciesId, BreedId breedId, CancellationToken ct)
-    {
-        var species = await _writeDbContext.Species
-            .Include(s => s.Breeds)
-            .FirstOrDefaultAsync(x => x.Id == speciesId, ct);
-        if (species is null)
-        {
-            return Errors.General.NotFound(speciesId);
-        }
-
-        var result = species.RemoveBreed(breedId);
-       
-        if (result.IsFailure)
-        {
-            return result;
-        }
-        
-        return UnitResult.Success<Error>();
-    }
 }

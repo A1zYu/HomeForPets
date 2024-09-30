@@ -42,6 +42,7 @@ public class Species : Shared.Entity<SpeciesId>
         }
 
         _breeds.Remove(breed);
+        
         return UnitResult.Success<Error>();
     }
 
