@@ -223,7 +223,7 @@ public class VolunteerUnitTest
         updatePet.Value.AddPaymentDetails([PaymentDetails.Create("test1","test1").Value]);
         
 
-        var result = volunteer.UpdateMainInfoForPet(updatePet.Value);
+        var result = volunteer.UpdateInfoPet(updatePet.Value);
         
         result.IsSuccess.Should().BeTrue();
         volunteer.Pets[0].Id.Should().Be(updatePet.Value.Id);

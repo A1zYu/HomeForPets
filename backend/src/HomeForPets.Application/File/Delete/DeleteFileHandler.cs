@@ -20,7 +20,7 @@ public class DeleteFileHandler
         _logger = logger;
         _provider = provider;
     }
-    public async Task<Result<string, Error>> Handle(
+    public async Task<Result<bool, Error>> Handle(
         DeleteFileRequest request,
         CancellationToken cancellationToken
     )
@@ -37,7 +37,7 @@ public class DeleteFileHandler
         
         _logger.LogInformation("File:{path} deleted",filePath.Value);
         
-        return result.Value;
+        return result.IsSuccess;
     }
 }
 public record DeleteFileRequest(string FullPath);

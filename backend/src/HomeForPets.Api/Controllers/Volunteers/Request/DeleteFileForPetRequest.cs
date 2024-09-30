@@ -1,8 +1,8 @@
-﻿using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoFromPet;
+﻿using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
 
 namespace HomeForPets.Api.Controllers.Volunteers.Request;
 
 public record DeleteFileForPetRequest(Guid PetId, Guid PhotoId)
 {
-    public DeleteFileFromPetCommand ToCommand(Guid volunteerId) => new(volunteerId, PetId, PhotoId);
+    public DeletePhotoPetCommand ToCommand(Guid volunteerId) => new(volunteerId, PetId, PhotoId);
 }

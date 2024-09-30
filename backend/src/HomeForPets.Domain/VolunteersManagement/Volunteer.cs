@@ -84,7 +84,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         return Result.Success<Error>();
     }
 
-    public UnitResult<Error> UpdateMainInfoForPet(Pet updatedPet)
+    public UnitResult<Error> UpdateInfoPet(Pet updatedPet)
     {
         var pet = _pets.FirstOrDefault(i => i.Id == updatedPet.Id);
         if (pet is null)
@@ -92,11 +92,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
             return Errors.General.NotFound(updatedPet.Id);
         }
 
-        var result = pet.UpdateInfo(updatedPet);
-        if (result.IsFailure)
-        {
-            return Errors.General.ValueIsInvalid("pet");
-        }
+        pet.UpdateInfo(updatedPet);
         
         return UnitResult.Success<Error>();
     }
@@ -168,7 +164,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         
     }
 
-    public UnitResult<Error> DeletePhotoToPet(PetId petId,PetPhotoId petPhotoId)
+    public UnitResult<Error> DeletePetPhoto(PetId petId,PetPhotoId petPhotoId)
     {
         var pet = _pets.FirstOrDefault(i => i.Id == petId);
         if (pet is null)

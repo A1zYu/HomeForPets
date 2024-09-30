@@ -4,25 +4,23 @@ using HomeForPets.Application.Abstaction;
 using HomeForPets.Application.Database;
 using HomeForPets.Application.Extensions;
 using HomeForPets.Application.Files;
-using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoFromPet;
 using HomeForPets.Domain.Shared;
-using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 using Microsoft.Extensions.Logging;
 using FileInfo = HomeForPets.Application.Files.FileInfo;
 
-namespace HomeForPets.Application.VolunteersManagement.Commands.DeleteFileFromPet;
+namespace HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
 
-public class DeleteFileFromPetHandler : ICommandHandler<bool, DeleteFileFromPetCommand>
+public class DeletePetPhotoHandler : ICommandHandler<DeletePhotoPetCommand>
 {
     private const string BUCKET_NAME = "pet-photos";
     private readonly IUnitOfWork _unitOfWork;
     private readonly IVolunteersRepository _volunteersRepository;
-    private readonly ILogger<DeleteFileFromPetHandler> _logger;
-    private readonly IValidator<DeleteFileFromPetCommand> _validator;
+    private readonly ILogger<DeletePetPhotoHandler> _logger;
+    private readonly IValidator<DeletePhotoPetCommand> _validator;
     private readonly IFileProvider _fileProvider;
 
-    public DeleteFileFromPetHandler(IUnitOfWork unitOfWork, IVolunteersRepository volunteersRepository, ILogger<DeleteFileFromPetHandler> logger, IValidator<DeleteFileFromPetCommand> validator, IFileProvider fileProvider)
+    public DeletePetPhotoHandler(IUnitOfWork unitOfWork, IVolunteersRepository volunteersRepository, ILogger<DeletePetPhotoHandler> logger, IValidator<DeletePhotoPetCommand> validator, IFileProvider fileProvider)
     {
         _unitOfWork = unitOfWork;
         _volunteersRepository = volunteersRepository;
@@ -31,7 +29,7 @@ public class DeleteFileFromPetHandler : ICommandHandler<bool, DeleteFileFromPetC
         _fileProvider = fileProvider;
     }
 
-    public async Task<Result<bool, ErrorList>> Handle(DeleteFileFromPetCommand command, CancellationToken ct)
+    public async Task<UnitResult<ErrorList>> Handle(DeletePhotoPetCommand command, CancellationToken ct)
     {
         using var transaction = await _unitOfWork.BeginTransaction(ct);
         try
@@ -57,9 +55,12 @@ public class DeleteFileFromPetHandler : ICommandHandler<bool, DeleteFileFromPetC
                 return Errors.General.NotFound(command.PhotoId).ToErrorList();
             }
 
-            await _fileProvider.DeleteFile(new FileInfo(FilePath.Create(photo.Path).Value, BUCKET_NAME),ct);
-            
-            var result = volunteer.Value.DeletePhotoToPet(command.PetId, command.PhotoId);
+            var resultDelete = await _fileProvider.DeleteFile(new FileInfo(FilePath.Create(photo.Path).Value, BUCKET_NAME),ct);
+            if (resultDelete.IsFailure)
+            {
+                return resultDelete.Error.ToErrorList();
+            }
+            var result = volunteer.Value.DeletePetPhoto(command.PetId, command.PhotoId);
 
             if (result.IsFailure)
             {
@@ -70,7 +71,7 @@ public class DeleteFileFromPetHandler : ICommandHandler<bool, DeleteFileFromPetC
             
             transaction.Commit();
 
-            return result.IsSuccess;
+            return UnitResult.Success<ErrorList>();
         }
         catch (Exception e)
         {
