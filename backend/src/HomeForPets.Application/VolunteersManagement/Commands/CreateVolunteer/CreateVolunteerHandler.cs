@@ -51,25 +51,31 @@ public class CreateVolunteerHandler : ICommandHandler<Guid,CreateVolunteerComman
         if (existVolunteerByPhone is not null)
             return Errors.Volunteer.AlreadyExist().ToErrorList();
         
-        var paymentDetails = command.PaymentDetails
-            .Select(x=>PaymentDetails
-                .Create(x.Name, x.Description).Value);
-        
-        var socialNetwork = command.SocialNetworks
-            .Select(x=>SocialNetwork.Create(x.Name, x.Path).Value);
-        
         var volunteer = Volunteer.Create(
             volunteerId,
             fullname,
             phoneNumber,
             description,
-            yearsOfExperience,
-            paymentDetails,
-            socialNetwork
-        );
+            yearsOfExperience);
+        
         if (volunteer.IsFailure)
         {
             return volunteer.Error.ToErrorList();
+        }
+
+        if (command.PaymentDetails.Any())
+        {
+            var paymentDetails = command.PaymentDetails
+                .Select(x=>PaymentDetails
+                    .Create(x.Name, x.Description).Value).ToList();
+            volunteer.Value.AddPaymentDetails(paymentDetails);
+        }
+
+        if (command.SocialNetworks.Any())
+        {
+            var socialNetwork = command.SocialNetworks
+                .Select(x=>SocialNetwork.Create(x.Name, x.Path).Value);
+            volunteer.Value.AddSocialNetworks(socialNetwork);
         }
         
         await _volunteersRepository.Add(volunteer.Value, cancellationToken);

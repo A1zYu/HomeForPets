@@ -2,16 +2,7 @@
 using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Domain.VolunteersManagement.ValueObjects;
-
-public record PaymentDetailsList
-{
-    private PaymentDetailsList() { }
-    public PaymentDetailsList(IEnumerable<PaymentDetails> paymentDetails) =>
-        PaymentDetails = paymentDetails.ToList();
-    public IReadOnlyList<PaymentDetails> PaymentDetails { get; }
-    public static PaymentDetailsList Create(IEnumerable<PaymentDetails> list) => new(list);
-}
-public class PaymentDetails
+public record PaymentDetails
 {
     private PaymentDetails() { }
     private PaymentDetails(string name, string description)

@@ -52,7 +52,11 @@ public class DeleteBreedToSpeciesHandler : ICommandHandler<DeleteBreedToSpeciesC
             return Errors.General.NotFound(breed?.Id.Value).ToErrorList();
         }
         
-        species.Value.RemoveBreed(breed);
+        var deleteBreed = species.Value.RemoveBreed(breed.Id);
+        if (deleteBreed.IsFailure)
+        {
+            return deleteBreed.Error.ToErrorList();
+        }
 
         await _unitOfWork.SaveChanges(ct);
         

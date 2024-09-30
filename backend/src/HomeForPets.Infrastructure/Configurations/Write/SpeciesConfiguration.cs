@@ -20,6 +20,6 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
         builder.HasMany(x => x.Breeds)
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade);
-
+        builder.Navigation(x => x.Breeds).AutoInclude();
     }
 }

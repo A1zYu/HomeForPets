@@ -6,7 +6,9 @@ using HomeForPets.Api.Response;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 using HomeForPets.Application.VolunteersManagement.Commands.Delete;
+using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
 using HomeForPets.Application.VolunteersManagement.Commands.Update;
+using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
 using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
@@ -29,7 +31,7 @@ public class VolunteerController : ApplicationController
         if (result.IsFailure)
             return result.Error.ToResponse();
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPut("{id:guid}/main-info")]
@@ -46,7 +48,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpDelete("{id:guid}")]
@@ -62,7 +64,7 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPut("{id:guid}/social-networks")]
@@ -78,7 +80,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPut("{id:guid}/payment-details")]
@@ -94,7 +96,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPost("{id:guid}/pet")]
@@ -110,7 +112,7 @@ public class VolunteerController : ApplicationController
             return result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpPost("{id:guid}/pet/{petId:guid}/files")]
@@ -133,7 +135,7 @@ public class VolunteerController : ApplicationController
             result.Error.ToResponse();
         }
 
-        return Ok(Envelope.Ok(result.Value));
+        return Ok(result.Value);
     }
 
     [HttpGet]
@@ -145,7 +147,7 @@ public class VolunteerController : ApplicationController
     {
         var result = await handler.Handle(request.ToQuery(), cancellationToken);
 
-        return Ok(result);
+        return Ok(result.Value);
     }
 
     [HttpGet("{id:guid}")]
@@ -157,5 +159,39 @@ public class VolunteerController : ApplicationController
         var command = new GetVolunteerByIdCommand{ Id = id };
         var result = await handler.Handle(command, cancellationToken);
         return Ok(result.Value);
+    }
+
+    [HttpPut("{volunteerId:guid}/update-pet")]
+    public async Task<IActionResult> UpdatePet(
+        [FromRoute] Guid volunteerId,
+        [FromBody] UpdateMainInfoPetRequst request,
+        [FromServices] UpdateMainInfoForPetHandler handler,
+        CancellationToken cancellationToken = default
+        )
+    {
+        var result =await handler.Handle(request.ToCommand(volunteerId),cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.Value);
+    }
+
+    [HttpDelete("{volunteerId:guid}/delete-file-pet")]
+    public async Task<IActionResult> DeletePhoto(
+        [FromRoute] Guid volunteerId,
+        [FromBody] DeleteFileForPetRequest request,
+        [FromServices] DeletePetPhotoHandler photoHandler,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await photoHandler.Handle(request.ToCommand(volunteerId), cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.IsSuccess);
     }
 }

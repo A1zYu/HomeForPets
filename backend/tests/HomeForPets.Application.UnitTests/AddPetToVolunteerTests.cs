@@ -113,7 +113,7 @@ public class AddPetToVolunteerTests
 
         var volunteer = Volunteer
             .Create(VolunteerId.NewId(), FullName.Create("test", "test").Value, phoneNumber, description,
-                YearsOfExperience.Create(1).Value,null,null).Value;
+                YearsOfExperience.Create(1).Value).Value;
         
         return volunteer;
     }

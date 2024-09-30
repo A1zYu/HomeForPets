@@ -9,6 +9,7 @@ namespace HomeForPets.Domain.VolunteersManagement.Entities;
 public class Pet : Shared.Entity<PetId>, ISoftDeletable
 {
     private readonly List<PetPhoto> _petPhotos = [];
+    private List<PaymentDetails> _paymentDetails = [];
     private bool _idDeleted;
 
     //ef core
@@ -46,11 +47,12 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     public PhoneNumber PhoneNumberOwner { get; private set; } = default!;
     public DateOnly CreatedDate { get; private set; }
 
-    public PaymentDetailsList? PaymentDetailsList { get; private set; }
+    // public PaymentDetailsList? PaymentDetailsList { get; private set; }
 
+    public IReadOnlyList<PaymentDetails> PaymentDetails => _paymentDetails;
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos;
     public void AddPetPhotos(IEnumerable<PetPhoto> petPhotos) => _petPhotos.AddRange(petPhotos);
-    public void AddPaymentDetails(PaymentDetailsList paymentDetails) => PaymentDetailsList = paymentDetails;
+    public void AddPaymentDetails(IEnumerable<PaymentDetails> paymentDetails) => _paymentDetails.AddRange(paymentDetails);
 
     public void Delete()
     {
@@ -64,6 +66,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
 
     public void SetPosition(Position position) =>
         Position = position;
+    
     public UnitResult<Error> MoveForward()
     {
         var newPosition = Position.Forward();
@@ -112,5 +115,28 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
             petDetails
         );
         return pet;
+    }
+
+    internal void UpdateInfo(Pet updatedPet)
+    {
+        Name = updatedPet.Name;
+        Description = updatedPet.Description;
+        Address = updatedPet.Address;
+        PhoneNumberOwner = updatedPet.PhoneNumberOwner;
+        SpeciesBreed = updatedPet.SpeciesBreed;
+        HelpStatus = updatedPet.HelpStatus;
+        PetDetails = updatedPet.PetDetails;
+        _paymentDetails = updatedPet.PaymentDetails.ToList();
+    }
+
+    internal UnitResult<Error> DeletePhoto(PetPhotoId petPhotoId)
+    {
+        var photo = _petPhotos.FirstOrDefault(p => p.Id == petPhotoId);
+        if (photo is null)
+        {
+            return Errors.General.NotFound(petPhotoId.Value);
+        }
+        _petPhotos.Remove(photo);
+        return UnitResult.Success<Error>();
     }
 }

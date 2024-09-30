@@ -33,7 +33,18 @@ public class Species : Shared.Entity<SpeciesId>
         return UnitResult.Success<ErrorList>();
     }
 
-    public void RemoveBreed(Breed breed) => _breeds.Remove(breed);
+    public UnitResult<Error> RemoveBreed(BreedId breedId)
+    {
+        var breed = Breeds.FirstOrDefault(x => x.Id == breedId);
+        if (breed is null)
+        {
+            return Errors.General.NotFound(breedId);
+        }
+
+        _breeds.Remove(breed);
+        
+        return UnitResult.Success<Error>();
+    }
 
     public static Result<Species, Error> Create(SpeciesId speciesId, string name)
     {

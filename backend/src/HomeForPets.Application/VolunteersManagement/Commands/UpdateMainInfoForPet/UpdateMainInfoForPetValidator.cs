@@ -3,12 +3,14 @@ using HomeForPets.Application.Validation;
 using HomeForPets.Domain.Shared;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
 
-namespace HomeForPets.Application.VolunteersManagement.Commands.AddPet;
+namespace HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet;
 
-public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
+public class UpdateMainInfoForPetValidator : AbstractValidator<UpdateMainInfoForPetCommand>
 {
-    public AddPetCommandValidator()
+    public UpdateMainInfoForPetValidator()
     {
+        RuleFor(p => p.PetId).NotNull().WithError(Error.NullValue);
+        RuleFor(p => p.BreedId).NotNull().WithError(Error.NullValue);
         RuleFor(p => p.Name)
             .NotEmpty()
             .WithError(Error.NullValue);
@@ -28,6 +30,7 @@ public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
                     pD.IsVaccinated,
                     pD.IsNeutered,
                     pD.BirthOfDate));
+        RuleFor(p => p.HelpStatus).NotEmpty().WithError(Error.None);
         RuleFor(p => p.PhoneNumber).MustBeValueObject(PhoneNumber.Create);
         RuleFor(p => p.VolunteerId).NotEmpty().WithError(Error.NullValue);
     }

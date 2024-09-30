@@ -14,7 +14,7 @@ public record CreateVolunteerRequest(
     IEnumerable<PaymentDetailsDto> PaymentDetails,
     IEnumerable<SocialNetworkDto> SocialNetworks)
 {
-    public CreateVolunteerCommand ToCommand()=>new CreateVolunteerCommand(
+    public CreateVolunteerCommand ToCommand()=>new (
         new FullNameDto(FirstName,LastName,MiddleName),
         Description,
         WorkExperience,

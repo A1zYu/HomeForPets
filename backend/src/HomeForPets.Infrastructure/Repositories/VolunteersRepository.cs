@@ -47,7 +47,7 @@ public class VolunteersRepository : IVolunteersRepository
     {
         var volunteer = await _dbContext.Volunteers
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
+        
         if (volunteer is null)
             return Errors.General.NotFound();
 

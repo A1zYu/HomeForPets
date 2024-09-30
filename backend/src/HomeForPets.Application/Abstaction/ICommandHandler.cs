@@ -4,7 +4,7 @@ using HomeForPets.Domain.Shared;
 
 namespace HomeForPets.Application.Abstaction;
 
-public interface ICommandHandler<TResponse,in TCommand> where TCommand : ICommand
+public interface ICommandHandler<TResponse,in TCommand>
 {
     public Task<Result<TResponse,ErrorList>> Handle(TCommand command, CancellationToken ct);
 }

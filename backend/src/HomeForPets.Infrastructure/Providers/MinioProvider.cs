@@ -59,20 +59,20 @@ public class MinioProvider : IFileProvider
         }
     }
 
-    public async Task<Result<string, Error>> DeleteFile(FileData fileData,
+    public async Task<UnitResult<Error>> DeleteFile(FileInfo fileData,
         CancellationToken cancellationToken = default)
     {
         try
         {
-            await IfBucketsNotExistCreateBucket([fileData.Info.BucketName], cancellationToken);
+            await IfBucketsNotExistCreateBucket([fileData.BucketName], cancellationToken);
 
             var removeObject = new RemoveObjectArgs()
-                .WithBucket("pet-photos")
-                .WithObject(fileData.Info.FilePath.Path);
+                .WithBucket(fileData.BucketName)
+                .WithObject(fileData.FilePath.Path);
 
             await _minioClient.RemoveObjectAsync(removeObject, cancellationToken);
 
-            return fileData.Info.FilePath.Path;
+            return UnitResult.Success<Error>();
         }
         catch (Exception e)
         {
