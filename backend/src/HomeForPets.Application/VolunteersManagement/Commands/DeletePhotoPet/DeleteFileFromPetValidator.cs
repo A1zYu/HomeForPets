@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
 using HomeForPets.Application.Validation;
-using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoFromPet;
 using HomeForPets.Domain.Shared;
 
-namespace HomeForPets.Application.VolunteersManagement.Commands.DeleteFileFromPet;
+namespace HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
 
-public class DeleteFileFromPetValidator : AbstractValidator<DeleteFileFromPetCommand>
+public class DeleteFileFromPetValidator : AbstractValidator<DeletePhotoPetCommand>
 {
     public DeleteFileFromPetValidator()
     {

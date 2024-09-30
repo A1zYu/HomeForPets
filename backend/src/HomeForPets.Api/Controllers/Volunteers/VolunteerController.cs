@@ -6,7 +6,7 @@ using HomeForPets.Api.Response;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 using HomeForPets.Application.VolunteersManagement.Commands.Delete;
-using HomeForPets.Application.VolunteersManagement.Commands.DeleteFileFromPet;
+using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
 using HomeForPets.Application.VolunteersManagement.Commands.Update;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
@@ -161,8 +161,8 @@ public class VolunteerController : ApplicationController
         return Ok(result.Value);
     }
 
-    [HttpPut("{volunteerId:guid}/main-info-pet")]
-    public async Task<IActionResult> UpdateMainInfoForPet(
+    [HttpPut("{volunteerId:guid}/update-pet")]
+    public async Task<IActionResult> UpdatePet(
         [FromRoute] Guid volunteerId,
         [FromBody] UpdateMainInfoPetRequst request,
         [FromServices] UpdateMainInfoForPetHandler handler,
@@ -180,18 +180,18 @@ public class VolunteerController : ApplicationController
     }
 
     [HttpDelete("{volunteerId:guid}/delete-file-pet")]
-    public async Task<IActionResult> DeleteFilePet(
+    public async Task<IActionResult> DeletePhoto(
         [FromRoute] Guid volunteerId,
         [FromBody] DeleteFileForPetRequest request,
-        [FromServices] DeleteFileFromPetHandler handler,
+        [FromServices] DeletePetPhotoHandler photoHandler,
         CancellationToken cancellationToken = default)
     {
-        var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+        var result = await photoHandler.Handle(request.ToCommand(volunteerId), cancellationToken);
         if (result.IsFailure)
         {
             return result.Error.ToResponse();
         }
         
-        return Ok(result.Value);
+        return Ok(result.IsSuccess);
     }
 }

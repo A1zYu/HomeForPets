@@ -117,7 +117,7 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         return pet;
     }
 
-    public UnitResult<Error> UpdateInfo(Pet updatedPet)
+    internal void UpdateInfo(Pet updatedPet)
     {
         Name = updatedPet.Name;
         Description = updatedPet.Description;
@@ -127,11 +127,9 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         HelpStatus = updatedPet.HelpStatus;
         PetDetails = updatedPet.PetDetails;
         _paymentDetails = updatedPet.PaymentDetails.ToList();
-        
-        return UnitResult.Success<Error>();
     }
 
-    public UnitResult<Error> DeletePhoto(PetPhotoId petPhotoId)
+    internal UnitResult<Error> DeletePhoto(PetPhotoId petPhotoId)
     {
         var photo = _petPhotos.FirstOrDefault(p => p.Id == petPhotoId);
         if (photo is null)

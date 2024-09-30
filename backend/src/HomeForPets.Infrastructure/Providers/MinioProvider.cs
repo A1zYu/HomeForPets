@@ -59,7 +59,7 @@ public class MinioProvider : IFileProvider
         }
     }
 
-    public async Task<Result<string, Error>> DeleteFile(FileInfo fileData,
+    public async Task<UnitResult<Error>> DeleteFile(FileInfo fileData,
         CancellationToken cancellationToken = default)
     {
         try
@@ -72,7 +72,7 @@ public class MinioProvider : IFileProvider
 
             await _minioClient.RemoveObjectAsync(removeObject, cancellationToken);
 
-            return fileData.FilePath.Path;
+            return UnitResult.Success<Error>();
         }
         catch (Exception e)
         {

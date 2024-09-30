@@ -96,7 +96,7 @@ public class UpdateMainInfoForPetHandler : ICommandHandler<Guid, UpdateMainInfoF
             updatePet.Value.AddPaymentDetails(paymentsDetails);
         }
 
-        var result = volunteer.Value.UpdateMainInfoForPet(updatePet.Value);
+        var result = volunteer.Value.UpdateInfoPet(updatePet.Value);
         if (result.IsFailure)
         {
             return result.Error.ToErrorList();
