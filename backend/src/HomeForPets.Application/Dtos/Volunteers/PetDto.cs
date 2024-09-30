@@ -9,7 +9,7 @@ public class PetDto
     public int Position { get; init; }
     public HelpStatus helpStatus { get; init; }
     
-    public string PhineNumber { get; init; }
+    public string PhoneNumber { get; init; }
     
     public string Name { get; init; }
     public string Color { get; init; }
@@ -21,5 +21,5 @@ public class PetDto
     public Guid BreedId { get; init; }
 
     // public string BreedName { get; init; }
-    public PetsPhoto[] PetPhotos { get; init; }
+    public IReadOnlyList<PetsPhotoDto> PetPhotos { get; init; }
 }

@@ -1,6 +1,6 @@
 ﻿namespace HomeForPets.Application.Dtos.Volunteers;
 
-public class PetsPhoto
+public class PetsPhotoDto
 {
     public Guid Id { get; init; }
     public Guid PetId { get; init; }
