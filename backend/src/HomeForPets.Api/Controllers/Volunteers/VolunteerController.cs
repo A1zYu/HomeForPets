@@ -4,6 +4,7 @@ using HomeForPets.Api.Extensions;
 using HomeForPets.Api.Processor;
 using HomeForPets.Api.Response;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
+using HomeForPets.Application.VolunteersManagement.Commands.ChangePetStatus;
 using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 using HomeForPets.Application.VolunteersManagement.Commands.Delete;
 using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
@@ -187,6 +188,22 @@ public class VolunteerController : ApplicationController
         CancellationToken cancellationToken = default)
     {
         var result = await photoHandler.Handle(request.ToCommand(volunteerId), cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.IsSuccess);
+    }
+
+    [HttpPost("{volunteerId:guid}/change-status-pet")]
+    public async Task<IActionResult> ChangeStatusPet(
+        [FromRoute] Guid volunteerId,
+        [FromBody] ChangeStatusPetRequest request,
+        [FromServices] PetChangeStatusHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
         if (result.IsFailure)
         {
             return result.Error.ToResponse();
