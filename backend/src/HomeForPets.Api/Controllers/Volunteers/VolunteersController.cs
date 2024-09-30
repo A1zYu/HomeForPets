@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers.Volunteers;
 
-public class VolunteerController : ApplicationController
+public class VolunteersController : ApplicationController
 {
     [HttpPost]
     public async Task<ActionResult> Create(
