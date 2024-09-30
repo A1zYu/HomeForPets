@@ -183,6 +183,18 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         return UnitResult.Success<Error>();
     }
 
+    public UnitResult<Error> SetPetStatus(PetId id, HelpStatus helpStatus)
+    {
+        var pet = _pets.FirstOrDefault(i => i.Id == id);
+        if (pet is null)
+        {
+            return Errors.General.NotFound(id);
+        }
+        
+        pet.SetHelpStatus(helpStatus);
+        return UnitResult.Success<Error>();
+    }
+
     public void UpdateMainInfo(
         FullName fullName,
         Description description,
