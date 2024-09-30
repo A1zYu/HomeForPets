@@ -139,4 +139,6 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
         _petPhotos.Remove(photo);
         return UnitResult.Success<Error>();
     }
+
+    internal void SetHelpStatus(HelpStatus helpStatus) => HelpStatus = helpStatus;
 }
