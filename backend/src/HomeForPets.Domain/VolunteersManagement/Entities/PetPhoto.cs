@@ -9,7 +9,7 @@ public class PetPhoto  : Shared.Entity<PetPhotoId>
     public string Path { get; private set; } 
     public bool IsMain { get; private set; }
 
-    public void SetMain() => IsMain = !IsMain;
+    internal void SetMain() => IsMain = !IsMain;
     
     private PetPhoto(PetPhotoId id) : base(id)
     {

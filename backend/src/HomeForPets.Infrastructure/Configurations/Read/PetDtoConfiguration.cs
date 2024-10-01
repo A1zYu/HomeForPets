@@ -16,6 +16,6 @@ public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
         builder.HasMany(p=>p.PetPhotos)
             .WithOne()
             .HasForeignKey(p=>p.PetId);
-
+        builder.Navigation(x => x.PetPhotos).AutoInclude();
     }
 }
