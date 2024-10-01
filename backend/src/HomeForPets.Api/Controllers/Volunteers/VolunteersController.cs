@@ -12,6 +12,7 @@ using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet
 using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
 using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
+using HomeForPets.Application.VolunteersManagement.Queries.GetPetById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetPetsWithPagination;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteerById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
@@ -243,6 +244,22 @@ public class VolunteersController : ApplicationController
             return result.Error.ToResponse();
         }
         
+        return Ok(result.Value);
+    }
+
+    [HttpGet("{petId:guid}/get-pet")]
+    public async Task<IActionResult> GetPetById(
+        [FromRoute] Guid petId,
+        [FromServices] GetPetByIdHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+
+        var query = new GetPetByIdQuery(petId);
+        var result = await handler.Handle(query, cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
         return Ok(result.Value);
     }
 }

@@ -1,4 +1,5 @@
-﻿using HomeForPets.Application.Dtos;
+﻿using System.Text.Json;
+using HomeForPets.Application.Dtos;
 using HomeForPets.Application.Dtos.Volunteers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,5 +16,6 @@ public class PetDtoConfiguration : IEntityTypeConfiguration<PetDto>
         builder.HasMany(p=>p.PetPhotos)
             .WithOne()
             .HasForeignKey(p=>p.PetId);
+
     }
 }
