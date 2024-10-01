@@ -10,21 +10,3 @@ public class VolunteerDto
     public PaymentDetailsDto[] PaymentDetails { get; init; }
     
 }
-
-public class PetDto
-{
-    public Guid Id { get; init; }
-    public Guid VolunteerId { get; init; }
-    public Guid SpeciesId { get; init; } 
-    public Guid BreedId { get; init; } 
-    public PetsPhoto[] PetPhotos { get; init; }
-    
-}
-
-public class PetsPhoto
-{
-    public Guid Id { get; init; }
-    public Guid PetId { get; init; }
-    public string Path { get; private set; } 
-    public bool IsMain { get; private set; }
-}

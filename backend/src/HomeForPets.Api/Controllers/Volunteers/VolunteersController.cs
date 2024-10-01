@@ -1,8 +1,6 @@
-﻿using FluentValidation;
-using HomeForPets.Api.Controllers.Volunteers.Request;
+﻿using HomeForPets.Api.Controllers.Volunteers.Request;
 using HomeForPets.Api.Extensions;
 using HomeForPets.Api.Processor;
-using HomeForPets.Api.Response;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
 using HomeForPets.Application.VolunteersManagement.Commands.ChangePetStatus;
 using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
@@ -14,14 +12,14 @@ using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet
 using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
 using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
-using HomeForPets.Application.VolunteersManagement.Queries;
+using HomeForPets.Application.VolunteersManagement.Queries.GetPetsWithPagination;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteerById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers.Volunteers;
 
-public class VolunteerController : ApplicationController
+public class VolunteersController : ApplicationController
 {
     [HttpPost]
     public async Task<ActionResult> Create(
@@ -209,6 +207,7 @@ public class VolunteerController : ApplicationController
         {
             return result.Error.ToResponse();
         }
+  
         
         return Ok(result.IsSuccess);
     }
@@ -229,5 +228,21 @@ public class VolunteerController : ApplicationController
         }
         
         return Ok(result.IsSuccess);
+    }
+
+    [HttpGet("pets")]
+    public async Task<IActionResult> GetPets(
+        [FromRoute] Guid volunteerId,
+        [FromQuery] GetPetsWithPaginationRequest request,
+        [FromServices] GetFilteredPetsWithPaginationHandler handler,
+        CancellationToken cancellationToken = default)
+    {
+        var result =await handler.Handle(request.ToQuery(), cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.Value);
     }
 }
