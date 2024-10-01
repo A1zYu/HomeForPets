@@ -118,7 +118,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             value => Position.Create(value).Value
         );
     
-    builder.Property("_idDeleted")
+    builder.Property("_isDeleted")
         .UsePropertyAccessMode(PropertyAccessMode.Field)
         .HasColumnName("is_deleted");
 }

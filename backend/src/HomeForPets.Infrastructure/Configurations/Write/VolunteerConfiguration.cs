@@ -80,7 +80,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.Navigation(v => v.Pets).AutoInclude();
 
-        builder.Property("_idDeleted")
+        builder.Property("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted");
     }
