@@ -16,6 +16,7 @@ public record GetPetsWithPaginationRequest(
     string? SortBy,
     string? SortDirection)
 {
+    
     public GetFilteredPetsWithPaginationQuery ToQuery()=>new(
         PageNumber,
         PageSize,
