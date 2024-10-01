@@ -13,7 +13,7 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
     private List<PaymentDetails> _paymentDetails=[];
     private List<SocialNetwork> _socialNetworks=[];
 
-    private bool _idDeleted = false;
+    private bool _isDeleted = false;
 
     //ef core
     private Volunteer(VolunteerId id) : base(id)
@@ -45,14 +45,14 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
 
     public void Delete()
     {
-        _idDeleted = true;
+        _isDeleted = true;
         foreach (var pet in _pets)
             pet.Delete();
     }
 
     public void Restore()
     {
-        _idDeleted = false;
+        _isDeleted = false;
         foreach (var pet in _pets)
             pet.Restore();
     }
@@ -188,6 +188,19 @@ public class Volunteer : Shared.Entity<VolunteerId>, ISoftDeletable
         }
         
         pet.SetHelpStatus(helpStatus);
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> DeletePet(PetId petId)
+    {
+        var pet = _pets.FirstOrDefault(i => i.Id == petId);
+        if (pet is null)
+        {
+            return Errors.General.NotFound(petId.Value);
+        }
+        
+        pet.Delete();
+        
         return UnitResult.Success<Error>();
     }
 
