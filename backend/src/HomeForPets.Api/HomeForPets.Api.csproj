@@ -25,6 +25,7 @@
     <ItemGroup>
       <ProjectReference Include="..\HomeForPets.Application\HomeForPets.Application.csproj" />
       <ProjectReference Include="..\HomeForPets.Domain\HomeForPets.Domain.csproj" />
+      <ProjectReference Include="..\HomeForPets.Infrastructure.Authorization\HomeForPets.Infrastructure.Authorization.csproj" />
       <ProjectReference Include="..\HomeForPets.Infrastructure\HomeForPets.Infrastructure.csproj" />
     </ItemGroup>
 

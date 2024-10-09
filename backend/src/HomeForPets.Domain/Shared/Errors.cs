@@ -14,6 +14,11 @@ public static class Errors
             var forId = id==null?"": $" for id: '{id}' ";
             return Error.NotFound("record.not.found", $"record not found {forId}");
         }
+        public static Error NotFound(string? name = null)
+        {
+            return Error.NotFound("record.not.found", $"record not found {name}");
+        }
+        
         public static Error ValueIsRequired(string? name = null)
         {
             var label = name == null ? "" : " " + name + " ";
@@ -48,6 +53,14 @@ public static class Errors
         public static Error Validation(string? number)
         {
             return Error.Validation("phone.number.not.invalid", $"phone number '{number}' not invalid");
+        }
+    }
+    
+    public static class User
+    {
+        public static Error InvalidCredentials(string? name = null)
+        {
+            return Error.Validation("credentials.is.invalid", $"Your credentials is invalid");
         }
     }
 }

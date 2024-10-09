@@ -2,6 +2,10 @@ using HomeForPets.Api.Extensions;
 using HomeForPets.Api.Middlewares;
 using HomeForPets.Application;
 using HomeForPets.Infrastructure;
+using HomeForPets.Infrastructure.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 
@@ -16,23 +20,47 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
     .CreateLogger();
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "My API",
+        Version = "v1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please insert JWT with Bearer into field",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
 
 builder.Services.AddSerilog();
 
 builder.Services
     .AddInfrastructure(builder.Configuration)
-    .AddApplication();
+    .AddApplication()
+    .AddAuthorizationInfrastructure(builder.Configuration);
 
 
-// builder.Services.AddFluentValidationAutoValidation(configuration =>
-// {
-//         configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
-// });
 var app = builder.Build();
 app.UseExceptionMiddleware();
 // Configure the HTTP request pipeline.
@@ -46,6 +74,7 @@ app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

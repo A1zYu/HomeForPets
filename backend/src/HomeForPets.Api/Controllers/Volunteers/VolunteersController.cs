@@ -16,6 +16,7 @@ using HomeForPets.Application.VolunteersManagement.Queries.GetPetById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetPetsWithPagination;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteerById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers.Volunteers;
@@ -138,7 +139,7 @@ public class VolunteersController : ApplicationController
 
         return Ok(result.Value);
     }
-
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Get(
         [FromQuery] GetVolunteersWithPaginationRequest request,
