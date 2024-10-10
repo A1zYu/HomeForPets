@@ -2,7 +2,7 @@
 
 namespace HomeForPets.Application.VolunteersManagement.Queries.GetVolunteerById;
 
-public class GetVolunteerByIdCommand : ICommand
+public class GetVolunteerByIdQuery : IQuery
 {
     public Guid Id { get; set; }
 }
