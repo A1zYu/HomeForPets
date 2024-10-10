@@ -141,4 +141,22 @@ public class Pet : Shared.Entity<PetId>, ISoftDeletable
     }
 
     internal void SetHelpStatus(HelpStatus helpStatus) => HelpStatus = helpStatus;
+
+    public UnitResult<Error> SetMainPhoto(PetPhotoId id)
+    {
+        foreach (var petPhoto in _petPhotos)
+        {
+            if (petPhoto.IsMain)
+            {
+                petPhoto.SetMain();
+            }
+        }
+        var photo = _petPhotos.FirstOrDefault(x => x.Id == id);
+        if (photo is null)
+        {
+            return Errors.General.NotFound(id);
+        }
+        photo.SetMain();
+        return UnitResult.Success<Error>();
+    }
 }

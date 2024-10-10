@@ -7,6 +7,7 @@ using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
 using HomeForPets.Application.VolunteersManagement.Commands.Delete;
 using HomeForPets.Application.VolunteersManagement.Commands.DeletePet;
 using HomeForPets.Application.VolunteersManagement.Commands.DeletePhotoPet;
+using HomeForPets.Application.VolunteersManagement.Commands.SetMainPetPhoto;
 using HomeForPets.Application.VolunteersManagement.Commands.Update;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdateMainInfoForPet;
 using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
@@ -247,7 +248,7 @@ public class VolunteersController : ApplicationController
         return Ok(result.Value);
     }
 
-    [HttpGet("{petId:guid}/get-pet")]
+    [HttpGet("pet/{petId:guid}")]
     public async Task<IActionResult> GetPetById(
         [FromRoute] Guid petId,
         [FromServices] GetPetByIdHandler handler,
@@ -260,5 +261,25 @@ public class VolunteersController : ApplicationController
             return result.Error.ToResponse();
         }
         return Ok(result.Value);
+    }
+
+    [HttpPut("{volunteerId}/pet/{petId:guid}/main-photo/{photoId:guid}")]
+    public async Task<IActionResult> SetMainPhoto(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromRoute] Guid photoId,
+        [FromServices] SetMainPetPhotoHandler handler,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var command = new SetMainPetPhotoCommand(volunteerId, petId, photoId);
+        
+        var result = await handler.Handle(command, cancellationToken);
+        if (result.IsFailure)
+        {
+            return result.Error.ToResponse();
+        }
+        
+        return Ok(result.IsSuccess);
     }
 }
