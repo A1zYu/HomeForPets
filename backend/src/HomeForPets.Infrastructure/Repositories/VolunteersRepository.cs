@@ -49,7 +49,7 @@ public class VolunteersRepository : IVolunteersRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         
         if (volunteer is null)
-            return Errors.General.NotFound();
+            return Errors.General.NotFound(id.Value);
 
         return volunteer;
     }

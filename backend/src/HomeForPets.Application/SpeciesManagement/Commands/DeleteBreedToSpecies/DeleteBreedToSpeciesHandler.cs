@@ -45,19 +45,13 @@ public class DeleteBreedToSpeciesHandler : ICommandHandler<DeleteBreedToSpeciesC
         {
             return species.Error.ToErrorList();
         }
-
-        var breed = species.Value.Breeds.FirstOrDefault(x => x.Id.Value == command.BreedId);
-        if (breed is null)
-        {
-            return Errors.General.NotFound(breed?.Id.Value).ToErrorList();
-        }
         
-        var deleteBreed = species.Value.RemoveBreed(breed.Id);
+        var deleteBreed = species.Value.RemoveBreed(command.BreedId);
         if (deleteBreed.IsFailure)
         {
             return deleteBreed.Error.ToErrorList();
         }
-
+        
         await _unitOfWork.SaveChanges(ct);
         
         _logger.LogInformation($"Successfully deleted breed {command.BreedId}");

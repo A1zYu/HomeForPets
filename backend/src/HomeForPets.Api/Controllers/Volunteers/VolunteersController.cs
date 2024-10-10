@@ -17,6 +17,7 @@ using HomeForPets.Application.VolunteersManagement.Queries.GetPetById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetPetsWithPagination;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteerById;
 using HomeForPets.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Api.Controllers.Volunteers;
@@ -139,13 +140,13 @@ public class VolunteersController : ApplicationController
 
         return Ok(result.Value);
     }
-
+    
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Get(
         [FromQuery] GetVolunteersWithPaginationRequest request,
         [FromServices] GetVolunteersWithPaginationHandler handler,
         CancellationToken cancellationToken = default)
-
     {
         var result = await handler.Handle(request.ToQuery(), cancellationToken);
 
@@ -158,7 +159,7 @@ public class VolunteersController : ApplicationController
         [FromServices] GetVolunteerByIdHandler handler,
         CancellationToken cancellationToken = default)
     {
-        var command = new GetVolunteerByIdCommand{ Id = id };
+        var command = new GetVolunteerByIdQuery{ Id = id };
         var result = await handler.Handle(command, cancellationToken);
         return Ok(result.Value);
     }
@@ -168,8 +169,7 @@ public class VolunteersController : ApplicationController
         [FromRoute] Guid volunteerId,
         [FromBody] UpdateMainInfoPetRequst request,
         [FromServices] UpdateMainInfoForPetHandler handler,
-        CancellationToken cancellationToken = default
-        )
+        CancellationToken cancellationToken = default)
     {
         var result =await handler.Handle(request.ToCommand(volunteerId),cancellationToken);
 
@@ -254,7 +254,6 @@ public class VolunteersController : ApplicationController
         [FromServices] GetPetByIdHandler handler,
         CancellationToken cancellationToken = default)
     {
-
         var query = new GetPetByIdQuery(petId);
         var result = await handler.Handle(query, cancellationToken);
         if (result.IsFailure)

@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeForPets.Domain.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeForPets.Application.UnitTests", "tests\HomeForPets.Application.UnitTests\HomeForPets.Application.UnitTests.csproj", "{49D58828-6FCE-4EB7-A158-17466052C180}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeForPets.Infrastructure.Authorization", "src\HomeForPets.Infrastructure.Authorization\HomeForPets.Infrastructure.Authorization.csproj", "{F5344D10-C006-4579-A738-C30949F3F813}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{49D58828-6FCE-4EB7-A158-17466052C180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49D58828-6FCE-4EB7-A158-17466052C180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49D58828-6FCE-4EB7-A158-17466052C180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5344D10-C006-4579-A738-C30949F3F813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5344D10-C006-4579-A738-C30949F3F813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5344D10-C006-4579-A738-C30949F3F813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5344D10-C006-4579-A738-C30949F3F813}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{911BA4A3-0C7F-4289-8EA8-88C0C18A2219} = {64F6686C-8B15-448B-8663-0FA8D81D199D}
@@ -65,5 +71,6 @@ Global
 		{A27B75D7-7196-4EC1-854F-F143331618B9} = {64F6686C-8B15-448B-8663-0FA8D81D199D}
 		{3C8AF0B0-91CB-4E82-BC64-5B8CF31DFCF8} = {10C393BD-B371-481F-BCDB-6B94186A9743}
 		{49D58828-6FCE-4EB7-A158-17466052C180} = {10C393BD-B371-481F-BCDB-6B94186A9743}
+		{F5344D10-C006-4579-A738-C30949F3F813} = {64F6686C-8B15-448B-8663-0FA8D81D199D}
 	EndGlobalSection
 EndGlobal
