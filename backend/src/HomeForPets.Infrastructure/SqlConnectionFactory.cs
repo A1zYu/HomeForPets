@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using HomeForPets.Application.Database;
+using HomeForPets.Core;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 

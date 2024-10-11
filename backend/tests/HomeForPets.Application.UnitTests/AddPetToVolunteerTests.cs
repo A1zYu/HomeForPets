@@ -2,16 +2,15 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
-using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos;
-using HomeForPets.Application.Dtos.Volunteers;
 using HomeForPets.Application.VolunteersManagement;
 using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
-using HomeForPets.Domain.Shared;
-using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Domain.VolunteersManagement.Enums;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
+using HomeForPets.Core;
+using HomeForPets.Core.Dtos.Volunteers;
+using HomeForPets.Core.Ids;
 using Microsoft.Extensions.Logging;
 using Moq;
 

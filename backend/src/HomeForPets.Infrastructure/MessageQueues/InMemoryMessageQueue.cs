@@ -1,6 +1,6 @@
 ﻿using System.Threading.Channels;
-using HomeForPets.Application.Messaging;
-using FileInfo = HomeForPets.Application.Files.FileInfo;
+using HomeForPets.Core.Messaging;
+using FileInfo = HomeForPets.Core.FileInfo;
 
 namespace HomeForPets.Infrastructure.MessageQueues;
 

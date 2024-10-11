@@ -1,10 +1,9 @@
 using FluentAssertions;
-using HomeForPets.Domain.Shared.Ids;
-using HomeForPets.Domain.Shared.ValueObjects;
 using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Domain.VolunteersManagement.Entities;
 using HomeForPets.Domain.VolunteersManagement.Enums;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
+using HomeForPets.Core.Ids;
 
 namespace UnitTests;
 
