@@ -1,16 +1,5 @@
 ﻿using FluentValidation;
-using HomeForPets.Application.Abstaction;
-using HomeForPets.Application.File.Create;
-using HomeForPets.Application.File.Delete;
-using HomeForPets.Application.File.Get;
-using HomeForPets.Application.VolunteersManagement.Commands.AddPet;
-using HomeForPets.Application.VolunteersManagement.Commands.CreateVolunteer;
-using HomeForPets.Application.VolunteersManagement.Commands.Delete;
-using HomeForPets.Application.VolunteersManagement.Commands.Update;
-using HomeForPets.Application.VolunteersManagement.Commands.UpdatePaymentDetails;
-using HomeForPets.Application.VolunteersManagement.Commands.UpdateSocialNetworks;
-using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
-using HomeForPets.Application.VolunteersManagement.Queries;
+using HomeForPets.Core.Abstaction;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeForPets.Application;

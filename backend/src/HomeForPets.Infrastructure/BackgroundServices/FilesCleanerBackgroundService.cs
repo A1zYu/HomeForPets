@@ -1,9 +1,9 @@
 ﻿using HomeForPets.Application.Files;
-using HomeForPets.Application.Messaging;
+using HomeForPets.Core.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using FileInfo = HomeForPets.Application.Files.FileInfo;
+using FileInfo = HomeForPets.Core.FileInfo;
 
 namespace HomeForPets.Infrastructure.BackgroundServices;
 

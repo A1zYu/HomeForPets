@@ -2,22 +2,21 @@ using CSharpFunctionalExtensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
-using HomeForPets.Application.Database;
 using HomeForPets.Application.Dtos;
-using HomeForPets.Application.Dtos.FilesDto;
 using HomeForPets.Application.Files;
-using HomeForPets.Application.Messaging;
 using HomeForPets.Application.VolunteersManagement;
 using HomeForPets.Application.VolunteersManagement.Commands.UploadFilesToPet;
-using HomeForPets.Domain.Shared;
-using HomeForPets.Domain.Shared.Ids;
 using HomeForPets.Domain.VolunteersManagement;
 using HomeForPets.Domain.VolunteersManagement.Entities;
 using HomeForPets.Domain.VolunteersManagement.Enums;
 using HomeForPets.Domain.VolunteersManagement.ValueObjects;
+using HomeForPets.Core;
+using HomeForPets.Core.Dtos.FilesDto;
+using HomeForPets.Core.Ids;
+using HomeForPets.Core.Messaging;
 using Microsoft.Extensions.Logging;
 using Moq;
-using FileInfo = HomeForPets.Application.Files.FileInfo;
+using FileInfo = HomeForPets.Core.FileInfo;
 
 namespace HomeForPets.Application.UnitTests;
 
