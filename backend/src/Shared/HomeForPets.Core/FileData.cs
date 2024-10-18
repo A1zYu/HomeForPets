@@ -1,4 +1,3 @@
 ﻿namespace HomeForPets.Core;
 
-public record FileData(Stream Stream,FileInfo Info);
-public record FileInfo( FilePath FilePath, string BucketName);
+public record FileData(Stream Stream,FileInfoCommnad InfoCommnad);

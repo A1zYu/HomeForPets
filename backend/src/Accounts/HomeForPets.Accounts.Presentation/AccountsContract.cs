@@ -3,6 +3,7 @@ using HomeForPets.Accounts.Application.Commands.RegisterUser;
 using HomeForPets.Accounts.Contacts.Interfaces;
 using HomeForPets.Accounts.Contacts.Interfaces.Request;
 using HomeForPets.Core;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Accounts.Presentation;
 

@@ -1,15 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
-using HomeForPets.Application.Files;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Extensions;
-using HomeForPets.Core.Ids;
 using HomeForPets.Core.Messaging;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 using HomeForPets.Volunteers.Domain.Entities;
-using HomeForPets.Volunteers.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
-using FileInfo = HomeForPets.Core.FileInfo;
 
 namespace HomeForPets.Volunteers.Application.VolunteersManagement.Commands.UploadFilesToPet;
 
@@ -21,20 +19,20 @@ public class UploadFilesToPetPhotoHandler : ICommandHandler<Guid, UploadFilesToP
     private const string BUCKET_NAME = "pet-photos";
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<UploadFilesToPetPhotoCommand> _validator;
-    private readonly IMessageQueue<IEnumerable<FileInfo>> _messageQueue;
+    // private readonly IMessageQueue<IEnumerable<FileInfoCommnad>> _messageQueue;
 
     public UploadFilesToPetPhotoHandler(
         IFileProvider fileProvider,
         IVolunteersRepository volunteersRepository,
         IUnitOfWork unitOfWork,
         IValidator<UploadFilesToPetPhotoCommand> validator,
-        IMessageQueue<IEnumerable<FileInfo>> messageQueue,
+        // IMessageQueue<IEnumerable<FileInfoCommnad>> messageQueue,
         ILogger<UploadFilesToPetPhotoHandler> logger)
     {
         _fileProvider = fileProvider;
         _volunteersRepository = volunteersRepository;
         _logger = logger;
-        _messageQueue = messageQueue;
+        // _messageQueue = messageQueue;
         _unitOfWork = unitOfWork;
         _validator = validator;
     }
@@ -65,29 +63,29 @@ public class UploadFilesToPetPhotoHandler : ICommandHandler<Guid, UploadFilesToP
         }
 
         List<FileData> filesData = [];
-        foreach (var file in command.Files)
-        {
-            var extension = Path.GetExtension(file.FileName);
-
-            var filePath = FilePath.Create(Guid.NewGuid(), extension);
-
-            if (filePath.IsFailure)
-                return filePath.Error.ToErrorList();
-
-            var fileData = new FileData(file.Content, new FileInfo(filePath.Value, BUCKET_NAME));
-
-            filesData.Add(fileData);
-        }
+        // foreach (var file in command.Files)
+        // {
+        //     var extension = Path.GetExtension(file.FileName);
+        //
+        //     var filePath = FilePath.Create(Guid.NewGuid(), extension);
+        //     
+        //     if (filePath.IsFailure)
+        //         return filePath.Error.ToErrorList();
+        //
+        //     var fileData = new FileData(file.Content, new FileInfoCommnad(filePath.Value, BUCKET_NAME));
+        //
+        //     filesData.Add(fileData);
+        // }
 
         var uploadResult = await _fileProvider.UploadFiles(filesData, cancellationToken);
         if (uploadResult.IsFailure)
         {
-            await _messageQueue.WriteAsync(filesData.Select(f=>f.Info), cancellationToken);
+            // await _messageQueue.WriteAsync(filesData.Select(f=>f.InfoCommnad), cancellationToken);
             return uploadResult.Error.ToErrorList();
         }
 
         var petPhotos = filesData
-            .Select(x => PetPhoto.Create(PetPhotoId.NewId(), x.Info.FilePath.Path, false).Value)
+            .Select(x => PetPhoto.Create(PetPhotoId.NewId(), x.InfoCommnad.FilePath.Path, false).Value)
             .ToList();
         if (petPhotos.Count != 0)
         {

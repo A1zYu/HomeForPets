@@ -10,5 +10,11 @@
       <ProjectReference Include="..\..\Shared\HomeForPets.Core\HomeForPets.Core.csproj" />
       <ProjectReference Include="..\HomeForPets.Accounts.Domain\HomeForPets.Accounts.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.10.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
+      <PackageReference Include="Scrutor" Version="5.0.1" />
+    </ItemGroup>
     
 </Project>

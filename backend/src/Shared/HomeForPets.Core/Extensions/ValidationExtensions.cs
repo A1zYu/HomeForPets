@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Core.Extensions;
 

@@ -22,6 +22,7 @@ public class AuthorizationsDbContext(IConfiguration configuration) :
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("accounts");
         base.OnModelCreating(modelBuilder);
         
         modelBuilder.Entity<User>()
@@ -71,6 +72,7 @@ public class AuthorizationsDbContext(IConfiguration configuration) :
 
         modelBuilder.Entity<IdentityUserRole<Guid>>()
             .ToTable("user_roles");
+        
     }
     private ILoggerFactory CreateLoggerFactory =>
         LoggerFactory.Create(builder => { builder.AddConsole(); });

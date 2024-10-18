@@ -15,7 +15,7 @@
 // using Microsoft.Extensions.Configuration;
 // using Microsoft.Extensions.DependencyInjection;
 // using Minio;
-// using FileInfo = HomeForPets.Core.FileInfo;
+// using FileInfoCommnad = HomeForPets.Core.FileInfoCommnad;
 //
 // namespace HomeForPets.Infrastructure;
 //
@@ -38,7 +38,7 @@
 //     }
 //     private static IServiceCollection AddMessageQueues(this IServiceCollection service)
 //     {
-//         service.AddSingleton<IMessageQueue<IEnumerable<FileInfo>>,InMemoryMessageQueue<IEnumerable<FileInfo>>>();
+//         service.AddSingleton<IMessageQueue<IEnumerable<FileInfoCommnad>>,InMemoryMessageQueue<IEnumerable<FileInfoCommnad>>>();
 //         
 //         return service;
 //     }

@@ -1,5 +1,7 @@
 ﻿
 using HomeForPets.Core;
+using HomeForPets.Core.Models;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Web.Middlewares;
 

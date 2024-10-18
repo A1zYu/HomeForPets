@@ -1,7 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Dtos.SpeciesDto;
+using HomeForPets.SharedKernel;
 using Microsoft.Extensions.Logging;
 
 namespace HomeForPets.Species.Application.SpeciesManagement.Queries.GetBreedsBySpecial;
@@ -9,11 +10,11 @@ namespace HomeForPets.Species.Application.SpeciesManagement.Queries.GetBreedsByS
 public class GetBreedsBySpecialHandler : IQueryHandler<List<BreedDto>, GetBreedsBySpecialQuery>
 {
     private readonly ILogger<GetBreedsBySpecialHandler> _logger;
-    // private readonly IReadDbContext _readDbContext;
+    // private readonly ISpeciesReadDbContext _readDbContext;
 
     public GetBreedsBySpecialHandler(
         ILogger<GetBreedsBySpecialHandler> logger
-        // IReadDbContext readDbContext
+        // ISpeciesReadDbContext readDbContext
         )
     {
         _logger = logger;

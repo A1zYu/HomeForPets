@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Extensions;
+using HomeForPets.SharedKernel;
 using Microsoft.Extensions.Logging;
 
 namespace HomeForPets.Species.Application.SpeciesManagement.Commands.DeleteSpecies;
@@ -12,11 +13,11 @@ public class DeleteSpeciesHandler : ICommandHandler<DeleteSpeciesCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ILogger<DeleteSpeciesHandler> _logger;
-    // private readonly IReadDbContext _readDbContext;
+    // private readonly ISpeciesReadDbContext _readDbContext;
     private readonly IValidator<DeleteSpeciesCommand> _validator;
 
     public DeleteSpeciesHandler(IUnitOfWork unitOfWork, ISpeciesRepository speciesRepository, ILogger<DeleteSpeciesHandler> logger,
-        // IReadDbContext readDbContext,
+        // ISpeciesReadDbContext readDbContext,
         IValidator<DeleteSpeciesCommand> validator)
     {
         _unitOfWork = unitOfWork;

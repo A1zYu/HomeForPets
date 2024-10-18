@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Ids;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 
 namespace HomeForPets.Volunteers.Domain.Entities;
 
-public class PetPhoto  : Core.Entity<PetPhotoId>
+public class PetPhoto  : SharedKernel.Entity<PetPhotoId>
 {
     public string Path { get; private set; } 
     public bool IsMain { get; private set; }

@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
-using HomeForPets.Core.Ids;
+using HomeForPets.Core.Abstactions;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 using HomeForPets.Volunteers.Application.VolunteersManagement.Commands.DeletePhotoPet;
 using Microsoft.Extensions.Logging;
 
@@ -47,9 +48,9 @@ public class DeletePetHandler : ICommandHandler<DeletePetCommand>
 
         // foreach (var photo in petPhotos)
         // {
-        // var fileInfo = new FileInfo(FilePath.Create(photo.Path).Value,BUCKET_NAME);
+        // var fileInfoCommnad = new FileInfoCommnad(FilePath.Create(photo.Path).Value,BUCKET_NAME);
 
-        // var deleteFileinMinioResult =await _fileProvider.DeleteFile(fileInfo,ct);
+        // var deleteFileinMinioResult =await _fileProvider.DeleteFile(fileInfoCommnad,ct);
         // if (deleteFileinMinioResult.IsFailure)
         // {
         // return deleteFileinMinioResult.Error.ToErrorList();

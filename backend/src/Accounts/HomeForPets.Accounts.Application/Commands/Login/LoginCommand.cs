@@ -1,4 +1,4 @@
-﻿using HomeForPets.Core.Abstaction;
+﻿using HomeForPets.Core.Abstactions;
 
 namespace HomeForPets.Accounts.Application.Commands.Login;
 

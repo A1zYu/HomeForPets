@@ -1,12 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Ids;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 
 namespace HomeForPets.Species.Domain;
 
-public class Breed: Core.Entity<BreedId>
+public class Breed: SharedKernel.Entity<BreedId>
 {
-    private Breed(BreedId id) : base(id) {}
+    protected Breed(BreedId id) : base(id) { }
     private Breed(BreedId breedId, string name) : base(breedId)
     {
         Name = name;

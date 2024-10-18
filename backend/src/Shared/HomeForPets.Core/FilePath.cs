@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Core;
 

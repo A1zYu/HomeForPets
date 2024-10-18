@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Extensions;
+using HomeForPets.SharedKernel;
 using HomeForPets.Volunteers.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
@@ -52,7 +53,7 @@ public class DeletePetPhotoHandler : ICommandHandler<DeletePhotoPetCommand>
                 return Errors.General.NotFound(command.PhotoId).ToErrorList();
             }
 
-            // var resultDelete = await _fileProvider.DeleteFile(new FileInfo(FilePath.Create(photo.Path).Value, BUCKET_NAME),ct);
+            // var resultDelete = await _fileProvider.DeleteFile(new FileInfoCommnad(FilePath.Create(photo.Path).Value, BUCKET_NAME),ct);
             // if (resultDelete.IsFailure)
             // {
                 // return resultDelete.Error.ToErrorList();

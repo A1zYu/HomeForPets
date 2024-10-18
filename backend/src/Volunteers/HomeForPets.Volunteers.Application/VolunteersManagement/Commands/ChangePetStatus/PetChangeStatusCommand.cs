@@ -1,4 +1,4 @@
-﻿using HomeForPets.Core.Abstaction;
+﻿using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Enums;
 
 namespace HomeForPets.Volunteers.Application.VolunteersManagement.Commands.ChangePetStatus;

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HomeForPets.Core.FilesDto;
 using HomeForPets.Core.Validation;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Core;
 

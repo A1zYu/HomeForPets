@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Accounts.Contacts.Interfaces.Request;
 using HomeForPets.Core;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Accounts.Contacts.Interfaces;
 

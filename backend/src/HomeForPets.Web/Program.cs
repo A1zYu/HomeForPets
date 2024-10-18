@@ -1,8 +1,19 @@
+using System.Text;
+using HomeForPets.Accounts.Application;
+using HomeForPets.Accounts.Infrastructure;
 using HomeForPets.Web.Middlewares;
-using HomeForPets.Application;
-using HomeForPets.Core.Authorization;
 using HomeForPets.Core.Extensions;
+using HomeForPets.Framework.Authorization;
+using HomeForPets.Framework.Extensions;
+using HomeForPets.Species.Application;
+using HomeForPets.Species.Infrastructure;
+using HomeForPets.Species.Infrastructure.DbContexts;
+using HomeForPets.Volunteers.Application;
+using HomeForPets.Volunteers.Infrastucture;
+using HomeForPets.Volunteers.Infrastucture.DbContexts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
 
@@ -18,20 +29,50 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
     .CreateLogger();
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddCustomSwagger();
+builder.Services.AddSwaggerGenWithAuth();
 
 builder.Services.AddSerilog();
 
 builder.Services
-    // .AddInfrastructure(builder.Configuration)
-    .AddApplication();
-    // .AddAuthorizationInfrastructure(builder.Configuration);
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        var jwtOptions = builder.Configuration.GetSection(JwtOptions.JWT).Get<JwtOptions>()
+                         ?? throw new ApplicationException("Missing jwt configuration");
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+builder.Services
+    .AddAccountsApplication()
+    .AddAccountsInfrastructure(builder.Configuration)
+    .AddSpeciesApplication()
+    .AddSpeciesInfrastructure(builder.Configuration)
+    .AddVolunteersApplication()
+    .AddVolunteerInfrastructure(builder.Configuration);
 
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionRequirementHandler>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 app.UseExceptionMiddleware();
@@ -40,7 +81,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    await app.ApplyMigrations();
+    await app.ApplyMigrations<SpeciesWriteDbContext>();
+    await app.ApplyMigrations<VolunteerWriteDbContext>();
+    await app.ApplyMigrations<AuthorizationsDbContext>();
 }
 app.UseSerilogRequestLogging();
 

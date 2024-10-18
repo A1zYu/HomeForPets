@@ -1,7 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Dtos.Volunteers;
+using HomeForPets.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

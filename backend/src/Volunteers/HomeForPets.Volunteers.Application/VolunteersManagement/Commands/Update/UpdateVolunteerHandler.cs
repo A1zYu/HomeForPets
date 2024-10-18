@@ -1,8 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Extensions;
+using HomeForPets.SharedKernel;
 using HomeForPets.Volunteers.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 

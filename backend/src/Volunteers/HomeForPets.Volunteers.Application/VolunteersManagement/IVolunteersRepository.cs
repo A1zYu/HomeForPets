@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Ids;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 using HomeForPets.Volunteers.Domain;
 using HomeForPets.Volunteers.Domain.ValueObjects;
 

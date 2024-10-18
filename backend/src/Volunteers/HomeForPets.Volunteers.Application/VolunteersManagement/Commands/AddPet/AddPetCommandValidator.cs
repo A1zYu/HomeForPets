@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using HomeForPets.Core;
 using HomeForPets.Core.Validation;
+using HomeForPets.SharedKernel;
 using HomeForPets.Volunteers.Domain.ValueObjects;
 
 namespace HomeForPets.Volunteers.Application.VolunteersManagement.Commands.AddPet;

@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Core.Validation;
 

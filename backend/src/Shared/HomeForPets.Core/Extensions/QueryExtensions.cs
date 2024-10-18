@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using HomeForPets.Core.Model;
+using HomeForPets.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomeForPets.Core.Extensions;

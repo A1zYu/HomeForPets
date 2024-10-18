@@ -1,17 +1,18 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Dtos.SpeciesDto;
-using HomeForPets.Core.Model;
+using HomeForPets.Core.Models;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Species.Application.SpeciesManagement.Queries.GetSpeciesWithPagination;
 
 public class GetSpeciesWithPaginationHandler : IQueryHandler<PagedList<SpeciesDto>,GetSpeciesWithPaginationQuery>
 {
-    // private readonly IReadDbContext _readDbContext;
+    // private readonly ISpeciesReadDbContext _readDbContext;
 
     public GetSpeciesWithPaginationHandler(
-        // IReadDbContext readDbContext
+        // ISpeciesReadDbContext readDbContext
         )
     {
         // _readDbContext = readDbContext;

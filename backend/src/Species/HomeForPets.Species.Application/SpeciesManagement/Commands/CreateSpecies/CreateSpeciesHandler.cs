@@ -1,9 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Extensions;
-using HomeForPets.Core.Ids;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 using HomeForPets.Species.Domain;
 using Microsoft.Extensions.Logging;
 
@@ -14,10 +15,10 @@ public class CreateSpeciesHandler : ICommandHandler<Guid,CreateSpeciesCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly ISpeciesRepository _speciesRepository;
     private readonly ILogger<CreateSpeciesHandler> _logger;
-    // private readonly IReadDbContext _readDbContext;
+    // private readonly ISpeciesReadDbContext _readDbContext;
     private readonly IValidator<CreateSpeciesCommand> _validator;
     public CreateSpeciesHandler(IUnitOfWork unitOfWork, ISpeciesRepository speciesRepository, ILogger<CreateSpeciesHandler> logger,
-        // IReadDbContext readDbContext,
+        // ISpeciesReadDbContext readDbContext,
         IValidator<CreateSpeciesCommand> validator)
     {
         _unitOfWork = unitOfWork;
@@ -36,7 +37,7 @@ public class CreateSpeciesHandler : ICommandHandler<Guid,CreateSpeciesCommand>
         
         var speciesId = SpeciesId.NewId;
         
-        var speciesToAdd = Specie.Create(speciesId,command.Name);
+        var speciesToAdd = Domain.Species.Create(speciesId,command.Name);
 
         // var speciesExist =  _readDbContext.Species.Any(x=>x.Name==command.Name);
         // if (speciesExist)

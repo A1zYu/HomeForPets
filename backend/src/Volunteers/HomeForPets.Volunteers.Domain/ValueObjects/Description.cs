@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Volunteers.Domain.ValueObjects;
 

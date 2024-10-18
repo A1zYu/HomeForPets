@@ -1,7 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
-using HomeForPets.Core.Ids;
+using HomeForPets.Core.Abstactions;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 using HomeForPets.Species.Application.SpeciesManagement.Commands.CreateSpecies;
 using HomeForPets.Species.Domain;
 using Microsoft.Extensions.Logging;

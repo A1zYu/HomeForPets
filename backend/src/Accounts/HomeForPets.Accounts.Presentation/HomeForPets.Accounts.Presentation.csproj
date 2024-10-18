@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Shared\HomeForPets.Framework\HomeForPets.Framework.csproj" />
       <ProjectReference Include="..\HomeForPets.Accounts.Application\HomeForPets.Accounts.Application.csproj" />
       <ProjectReference Include="..\HomeForPets.Accounts.Contacts.Interfaces\HomeForPets.Accounts.Contacts.Interfaces.csproj" />
     </ItemGroup>

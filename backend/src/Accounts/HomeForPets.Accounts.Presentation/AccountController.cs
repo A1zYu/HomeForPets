@@ -1,9 +1,8 @@
 ﻿using HomeForPets.Accounts.Application.Commands.Login;
 using HomeForPets.Accounts.Application.Commands.RegisterUser;
 using HomeForPets.Accounts.Contacts.Interfaces.Request;
-using HomeForPets.Core;
-using HomeForPets.Core.Authorization;
-using HomeForPets.Core.Extensions;
+using HomeForPets.Framework;
+using HomeForPets.Framework.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeForPets.Accounts.Presentation;

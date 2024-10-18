@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
+using HomeForPets.SharedKernel;
 using Microsoft.Extensions.Logging;
 
 namespace HomeForPets.Volunteers.Application.VolunteersManagement.Commands.SetMainPetPhoto;

@@ -1,13 +1,14 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
 using HomeForPets.Core.Enums;
-using HomeForPets.Core.Ids;
+using HomeForPets.SharedKernel;
+using HomeForPets.SharedKernel.Ids;
 using HomeForPets.Volunteers.Domain.Entities;
 using HomeForPets.Volunteers.Domain.ValueObjects;
 
 namespace HomeForPets.Volunteers.Domain;
 
-public class Volunteer : Core.Entity<VolunteerId>, ISoftDeletable
+public class Volunteer : SharedKernel.Entity<VolunteerId>, ISoftDeletable
 {
     private readonly List<Pet> _pets = [];
     private List<PaymentDetails> _paymentDetails=[];

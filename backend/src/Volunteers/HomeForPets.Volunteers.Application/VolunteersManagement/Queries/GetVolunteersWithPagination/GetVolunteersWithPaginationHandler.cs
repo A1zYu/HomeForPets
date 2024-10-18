@@ -1,9 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using HomeForPets.Core;
-using HomeForPets.Core.Abstaction;
+using HomeForPets.Core.Abstactions;
 using HomeForPets.Core.Dtos.Volunteers;
 using HomeForPets.Core.Extensions;
-using HomeForPets.Core.Model;
+using HomeForPets.Core.Models;
+using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Volunteers.Application.VolunteersManagement.Queries.GetVolunteersWithPagination;
 
