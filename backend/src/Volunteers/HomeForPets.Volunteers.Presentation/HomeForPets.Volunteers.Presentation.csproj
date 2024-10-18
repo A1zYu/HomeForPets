@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>HomeForPets.Volunteers.Controllers</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\HomeForPets.Framework\HomeForPets.Framework.csproj" />
+      <ProjectReference Include="..\HomeForPets.Volunteers.Application\HomeForPets.Volunteers.Application.csproj" />
+    </ItemGroup>
+
+</Project>

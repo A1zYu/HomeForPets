@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>HomeForPets.Species.Controllers</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Shared\HomeForPets.Framework\HomeForPets.Framework.csproj" />
+      <ProjectReference Include="..\HomeForPets.Species.Application\HomeForPets.Species.Application.csproj" />
+      <ProjectReference Include="..\HomeForPets.Species.Contracts\HomeForPets.Species.Contracts.csproj" />
+    </ItemGroup>
+
+</Project>
