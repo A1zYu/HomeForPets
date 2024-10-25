@@ -3,7 +3,8 @@ using HomeForPets.SharedKernel;
 
 namespace HomeForPets.Core.Abstactions;
 
-public interface ICommandHandler<TResponse,in TCommand>
+public interface 
+    ICommandHandler<TResponse,in TCommand>
 {
     public Task<Result<TResponse,ErrorList>> Handle(TCommand command, CancellationToken ct);
 }
